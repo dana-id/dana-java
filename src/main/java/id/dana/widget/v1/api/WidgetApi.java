@@ -24,10 +24,14 @@ import id.dana.widget.v1.model.ApplyOTTRequest;
 import id.dana.widget.v1.model.ApplyOTTResponse;
 import id.dana.widget.v1.model.ApplyTokenRequest;
 import id.dana.widget.v1.model.ApplyTokenResponse;
+import id.dana.widget.v1.model.BalanceInquiryRequest;
+import id.dana.widget.v1.model.BalanceInquiryResponse;
 import id.dana.widget.v1.model.CancelOrderRequest;
 import id.dana.widget.v1.model.CancelOrderResponse;
 import id.dana.widget.v1.model.QueryPaymentRequest;
 import id.dana.widget.v1.model.QueryPaymentResponse;
+import id.dana.widget.v1.model.QueryUserProfileRequest;
+import id.dana.widget.v1.model.QueryUserProfileResponse;
 import id.dana.widget.v1.model.RefundOrderRequest;
 import id.dana.widget.v1.model.RefundOrderResponse;
 import id.dana.widget.v1.model.WidgetPaymentRequest;
@@ -89,6 +93,21 @@ interface WidgetApiService {
   );
 
   /**
+   * Balance Inquiry
+   * This API is used to query user&#39;s DANA account balance via merchant
+   * @param balanceInquiryRequest  (required)
+   * @return Call&lt;BalanceInquiryResponse&gt;
+   */
+  @Headers({
+    "Content-Type:application/json",
+    "X-API-TYPE:SNAP_B2B"
+  })
+  @POST("v1.0/balance-inquiry.htm")
+  Call<BalanceInquiryResponse> balanceInquiry(
+    @retrofit2.http.Body BalanceInquiryRequest balanceInquiryRequest
+  );
+
+  /**
    * Cancel Order - Widget
    * This API is used to cancel the order from merchant&#39;s platform to DANA
    * @param cancelOrderRequest  (required)
@@ -120,6 +139,22 @@ interface WidgetApiService {
   @POST("rest/v1.1/debit/status")
   Call<QueryPaymentResponse> queryPayment(
     @retrofit2.http.Body QueryPaymentRequest queryPaymentRequest
+  );
+
+  /**
+   * Query User Profile
+   * The API is used to query user profile such as DANA balance (unit in IDR), masked DANA phone number, KYC or OTT (one time token) between merchant server and DANA&#39;s server
+   * @param queryUserProfileRequest  (required)
+   * @return Call&lt;QueryUserProfileResponse&gt;
+   */
+  @Headers({
+    "Content-Type:application/json",
+    "X-API-TYPE:OPEN_API",
+    "X-API-FUNCTION:dana.member.query.queryUserProfile"
+  })
+  @POST("dana/member/query/queryUserProfile.htm")
+  Call<QueryUserProfileResponse> queryUserProfile(
+    @retrofit2.http.Body QueryUserProfileRequest queryUserProfileRequest
   );
 
   /**
@@ -256,6 +291,33 @@ public class WidgetApi {
   }
 
   /**
+   * Balance Inquiry
+   * This API is used to query user&#39;s DANA account balance via merchant
+   * @param balanceInquiryRequest  (required)
+   * @return Call&lt;BalanceInquiryResponse&gt;
+   */
+  public BalanceInquiryResponse balanceInquiry(
+    @retrofit2.http.Body BalanceInquiryRequest balanceInquiryRequest
+  ) {
+    try {
+      Response<BalanceInquiryResponse> response = service.balanceInquiry(balanceInquiryRequest).execute();
+      if (response.isSuccessful()) {
+        return response.body();
+      } else {
+        try (ResponseBody errorBody = response.errorBody()) {
+          if (errorBody != null) {
+            return objectMapper.readValue(errorBody.string(), BalanceInquiryResponse.class);
+          } else {
+            throw new DanaException("Empty error body");
+          }
+        }
+      }
+    } catch (IOException e) {
+      throw new DanaException("Network error", e);
+    }
+  }
+
+  /**
    * Cancel Order - Widget
    * This API is used to cancel the order from merchant&#39;s platform to DANA
    * @param cancelOrderRequest  (required)
@@ -303,6 +365,33 @@ public class WidgetApi {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
             return objectMapper.readValue(errorBody.string(), QueryPaymentResponse.class);
+          } else {
+            throw new DanaException("Empty error body");
+          }
+        }
+      }
+    } catch (IOException e) {
+      throw new DanaException("Network error", e);
+    }
+  }
+
+  /**
+   * Query User Profile
+   * The API is used to query user profile such as DANA balance (unit in IDR), masked DANA phone number, KYC or OTT (one time token) between merchant server and DANA&#39;s server
+   * @param queryUserProfileRequest  (required)
+   * @return Call&lt;QueryUserProfileResponse&gt;
+   */
+  public QueryUserProfileResponse queryUserProfile(
+    @retrofit2.http.Body QueryUserProfileRequest queryUserProfileRequest
+  ) {
+    try {
+      Response<QueryUserProfileResponse> response = service.queryUserProfile(queryUserProfileRequest).execute();
+      if (response.isSuccessful()) {
+        return response.body();
+      } else {
+        try (ResponseBody errorBody = response.errorBody()) {
+          if (errorBody != null) {
+            return objectMapper.readValue(errorBody.string(), QueryUserProfileResponse.class);
           } else {
             throw new DanaException("Empty error body");
           }

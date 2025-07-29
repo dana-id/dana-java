@@ -11,5 +11,6 @@ public final class EnvKey {
   public static final String PRIVATE_KEY_PATH = "PRIVATE_KEY_PATH";
   public static final String ORIGIN = "ORIGIN";
   public static final String ENV = "ENV";
+  public static final String CLIENT_SECRET = "CLIENT_SECRET";
 
 }

@@ -7,8 +7,10 @@ All URIs are relative to *https://api.saas.dana.id*
 | [**accountUnbinding**](WidgetApi.md#accountUnbinding) | **POST** v1.0/registration-account-unbinding.htm | Account unbinding - Binding |
 | [**applyOTT**](WidgetApi.md#applyOTT) | **POST** rest/v1.1/qr/apply-ott | Apply OTT - Widget |
 | [**applyToken**](WidgetApi.md#applyToken) | **POST** v1.0/access-token/b2b2c.htm | Apply Token, required by Apply OTT - Binding |
+| [**balanceInquiry**](WidgetApi.md#balanceInquiry) | **POST** v1.0/balance-inquiry.htm | Balance Inquiry |
 | [**cancelOrder**](WidgetApi.md#cancelOrder) | **POST** v1.0/debit/cancel.htm | Cancel Order - Widget |
 | [**queryPayment**](WidgetApi.md#queryPayment) | **POST** rest/v1.1/debit/status | Query Payment - Widget |
+| [**queryUserProfile**](WidgetApi.md#queryUserProfile) | **POST** dana/member/query/queryUserProfile.htm | Query User Profile |
 | [**refundOrder**](WidgetApi.md#refundOrder) | **POST** v1.0/debit/refund.htm | Refund Order - Widget |
 | [**widgetPayment**](WidgetApi.md#widgetPayment) | **POST** rest/redirection/v1.0/debit/payment-host-to-host | Widget Payment - Widget |
 
@@ -299,6 +301,103 @@ public class Example {
 | **200** | Apply token response |  -  |
 
 
+## balanceInquiry
+
+> BalanceInquiryResponse balanceInquiry(balanceInquiryRequest)
+
+Balance Inquiry
+
+This API is used to query user&#39;s DANA account balance via merchant
+
+### Example
+
+```java
+// Import classes:
+import id.dana.invoker.ApiClient;
+import id.dana.invoker.ApiException;
+import id.dana.invoker.Configuration;
+import id.dana.invoker.auth.*;
+import id.dana.invoker.models.*;
+import id.dana.widget.v1.api.WidgetApi;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://api.saas.dana.id");
+        
+        // Configure API key authorization: ORIGIN
+        ApiKeyAuth ORIGIN = (ApiKeyAuth) defaultClient.getAuthentication("ORIGIN");
+        ORIGIN.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //ORIGIN.setApiKeyPrefix("Token");
+
+        // Configure API key authorization: X_PARTNER_ID
+        ApiKeyAuth X_PARTNER_ID = (ApiKeyAuth) defaultClient.getAuthentication("X_PARTNER_ID");
+        X_PARTNER_ID.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //X_PARTNER_ID.setApiKeyPrefix("Token");
+
+        // Configure API key authorization: CHANNEL_ID
+        ApiKeyAuth CHANNEL_ID = (ApiKeyAuth) defaultClient.getAuthentication("CHANNEL_ID");
+        CHANNEL_ID.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //CHANNEL_ID.setApiKeyPrefix("Token");
+
+        // Configure API key authorization: PRIVATE_KEY
+        ApiKeyAuth PRIVATE_KEY = (ApiKeyAuth) defaultClient.getAuthentication("PRIVATE_KEY");
+        PRIVATE_KEY.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //PRIVATE_KEY.setApiKeyPrefix("Token");
+
+        // Configure API key authorization: PRIVATE_KEY_PATH
+        ApiKeyAuth PRIVATE_KEY_PATH = (ApiKeyAuth) defaultClient.getAuthentication("PRIVATE_KEY_PATH");
+        PRIVATE_KEY_PATH.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //PRIVATE_KEY_PATH.setApiKeyPrefix("Token");
+
+        WidgetApi apiInstance = new WidgetApi(defaultClient);
+        BalanceInquiryRequest balanceInquiryRequest = new BalanceInquiryRequest(); // BalanceInquiryRequest | 
+        try {
+            BalanceInquiryResponse result = apiInstance.balanceInquiry(balanceInquiryRequest);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling WidgetApi#balanceInquiry");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **balanceInquiryRequest** | [**BalanceInquiryRequest**](BalanceInquiryRequest.md)|  | |
+
+### Return type
+
+[**BalanceInquiryResponse**](BalanceInquiryResponse.md)
+
+### Authorization
+
+[ORIGIN](../README.md#ORIGIN), [X_PARTNER_ID](../README.md#X_PARTNER_ID), [CHANNEL_ID](../README.md#CHANNEL_ID), [PRIVATE_KEY](../README.md#PRIVATE_KEY), [PRIVATE_KEY_PATH](../README.md#PRIVATE_KEY_PATH)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Balance inquiry response |  * Content-Type - Content type, value always application/json <br>  * X-TIMESTAMP - Transaction date time, in format YYYY-MM-DDTHH:mm:ss+07:00. Time must be in GMT+7 (Jakarta time) <br>  |
+
+
 ## cancelOrder
 
 > CancelOrderResponse cancelOrder(cancelOrderRequest)
@@ -491,6 +590,72 @@ public class Example {
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Query payment response |  -  |
+
+
+## queryUserProfile
+
+> QueryUserProfileResponse queryUserProfile(queryUserProfileRequest)
+
+Query User Profile
+
+The API is used to query user profile such as DANA balance (unit in IDR), masked DANA phone number, KYC or OTT (one time token) between merchant server and DANA&#39;s server
+
+### Example
+
+```java
+// Import classes:
+import id.dana.invoker.ApiClient;
+import id.dana.invoker.ApiException;
+import id.dana.invoker.Configuration;
+import id.dana.invoker.models.*;
+import id.dana.widget.v1.api.WidgetApi;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("https://api.saas.dana.id");
+
+        WidgetApi apiInstance = new WidgetApi(defaultClient);
+        QueryUserProfileRequest queryUserProfileRequest = new QueryUserProfileRequest(); // QueryUserProfileRequest | 
+        try {
+            QueryUserProfileResponse result = apiInstance.queryUserProfile(queryUserProfileRequest);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling WidgetApi#queryUserProfile");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **queryUserProfileRequest** | [**QueryUserProfileRequest**](QueryUserProfileRequest.md)|  | |
+
+### Return type
+
+[**QueryUserProfileResponse**](QueryUserProfileResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Query user profile response |  -  |
 
 
 ## refundOrder

@@ -1,5 +1,8 @@
 package id.dana.invoker.model.context;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SnapB2B2CContext {
 
   private SnapB2B2CContextAdditionalInfo additionalInfo;
