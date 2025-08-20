@@ -1,526 +1,316 @@
 # MerchantManagementApi
 
-All URIs are relative to *https://api.saas.dana.id*
+You can use the APIs below to interface with DANA's `MerchantManagementApi` API.
+To start using the API, you need to destruct instantiated DANA client. This client would be a singleton object that you can use across various api and operation.
+
+```java
+import id.dana.invoker.Dana;
+import id.dana.invoker.model.DanaConfig;
+import id.dana.invoker.model.constant.EnvKey;
+import id.dana.invoker.model.enumeration.DanaEnvironment;
+import id.dana.merchantmanagement.v1.api.MerchantManagementApi;
+
+import id.dana.util.ConfigUtil;
+
+public class Example {
+    public static void main(String[] args) {
+        DanaConfig.Builder danaConfigBuilder = new DanaConfig.Builder();
+        danaConfigBuilder
+            .partnerId(ConfigUtil.getConfig("X_PARTNER_ID", ""))
+            .privateKey(ConfigUtil.getConfig("PRIVATE_KEY", ""))
+            .origin(ConfigUtil.getConfig("ORIGIN", ""))
+            .env(DanaEnvironment.getByName(ConfigUtil.getConfig(EnvKey.ENV, "SANDBOX")));
+
+        DanaConfig.getInstance(danaConfigBuilder);
+
+        MerchantManagementApi api = Dana.getInstance().getMerchantManagementApi();
+    }
+}
+```
+
+All URIs are relative to *https://api.saas.dana.id*, except if the operation defines another base path (for sandbox it is http://api.sandbox.dana.id).
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**createDivision**](MerchantManagementApi.md#createDivision) | **POST** dana/merchant/division/createDivision.htm | Create Division |
-| [**createShop**](MerchantManagementApi.md#createShop) | **POST** dana/merchant/shop/createShop.htm | Member – Create Shop |
-| [**queryDivision**](MerchantManagementApi.md#queryDivision) | **POST** dana/merchant/division/queryDivision.htm | Query Division |
-| [**queryMerchantResource**](MerchantManagementApi.md#queryMerchantResource) | **POST** dana/merchant/queryMerchantResource.htm | Member – Merchant Open API Check Disbursement Account |
-| [**queryShop**](MerchantManagementApi.md#queryShop) | **POST** dana/merchant/shop/queryShop.htm | Member – Query Shop |
-| [**updateDivision**](MerchantManagementApi.md#updateDivision) | **POST** dana/merchant/division/updateDivision.htm | Update Division |
-| [**updateShop**](MerchantManagementApi.md#updateShop) | **POST** dana/merchant/shop/updateShop.htm | Update Shop |
+| [**createDivision**](MerchantManagementApi.md#createDivision) | **POST** dana/merchant/division/createDivision.htm | This API is used to create a new division |
+| [**createShop**](MerchantManagementApi.md#createShop) | **POST** dana/merchant/shop/createShop.htm | Create shop under merchant or division |
+| [**queryDivision**](MerchantManagementApi.md#queryDivision) | **POST** dana/merchant/division/queryDivision.htm | This API is used to obtain information of division |
+| [**queryMerchantResource**](MerchantManagementApi.md#queryMerchantResource) | **POST** dana/merchant/queryMerchantResource.htm | The interface is check merchant resource info (account balance merchant) |
+| [**queryShop**](MerchantManagementApi.md#queryShop) | **POST** dana/merchant/shop/queryShop.htm | This API is used to obtain information of shop information |
+| [**updateDivision**](MerchantManagementApi.md#updateDivision) | **POST** dana/merchant/division/updateDivision.htm | This API is used to update the division information |
+| [**updateShop**](MerchantManagementApi.md#updateShop) | **POST** dana/merchant/shop/updateShop.htm | This API is used to update the shop information |
 
 
+<a name="createDivision"></a>
+## `createDivision()` Function
 
-## createDivision
+### Function Signature
+| Name | Value |
+| ------------- | ------------- |
+| Function Name | `createDivision` |
+| Request Parameters | [**CreateDivisionRequest**](../model/CreateDivisionRequest.md) |
+| Return Type | [**CreateDivisionResponse**](../model/CreateDivisionResponse.md) |
 
-> CreateDivisionResponse createDivision(createDivisionRequest)
-
-Create Division
-
-This API is used to create a new division
-
-### Example
-
+### Usage Example
 ```java
-// Import classes:
-import id.dana.invoker.ApiClient;
-import id.dana.invoker.ApiException;
-import id.dana.invoker.Configuration;
-import id.dana.invoker.auth.*;
-import id.dana.invoker.models.*;
+import id.dana.invoker.Dana;
+import id.dana.invoker.model.DanaConfig;
+import id.dana.invoker.model.constant.EnvKey;
+import id.dana.invoker.model.enumeration.DanaEnvironment;
 import id.dana.merchantmanagement.v1.api.MerchantManagementApi;
+
+import id.dana.util.ConfigUtil;
 
 public class Example {
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://api.saas.dana.id");
-        
-        // Configure API key authorization: CLIENT_SECRET
-        ApiKeyAuth CLIENT_SECRET = (ApiKeyAuth) defaultClient.getAuthentication("CLIENT_SECRET");
-        CLIENT_SECRET.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //CLIENT_SECRET.setApiKeyPrefix("Token");
+        DanaConfig.Builder danaConfigBuilder = new DanaConfig.Builder();
+        danaConfigBuilder
+            .partnerId(ConfigUtil.getConfig("X_PARTNER_ID", ""))
+            .privateKey(ConfigUtil.getConfig("PRIVATE_KEY", ""))
+            .origin(ConfigUtil.getConfig("ORIGIN", ""))
+            .env(DanaEnvironment.getByName(ConfigUtil.getConfig(EnvKey.ENV, "SANDBOX")));
 
-        MerchantManagementApi apiInstance = new MerchantManagementApi(defaultClient);
-        CreateDivisionRequest createDivisionRequest = new CreateDivisionRequest(); // CreateDivisionRequest | 
-        try {
-            CreateDivisionResponse result = apiInstance.createDivision(createDivisionRequest);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling MerchantManagementApi#createDivision");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
+        DanaConfig.getInstance(danaConfigBuilder);
+
+        MerchantManagementApi api = Dana.getInstance().getMerchantManagementApi();
+
+        CreateDivisionRequest createDivisionRequest = new CreateDivisionRequest();
+        CreateDivisionResponse response = api.createDivision(createDivisionRequest);
     }
 }
 ```
 
-### Parameters
+<a name="createShop"></a>
+## `createShop()` Function
 
+### Function Signature
+| Name | Value |
+| ------------- | ------------- |
+| Function Name | `createShop` |
+| Request Parameters | [**CreateShopRequest**](../model/CreateShopRequest.md) |
+| Return Type | [**CreateShopResponse**](../model/CreateShopResponse.md) |
 
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **createDivisionRequest** | [**CreateDivisionRequest**](CreateDivisionRequest.md)|  | |
-
-### Return type
-
-[**CreateDivisionResponse**](CreateDivisionResponse.md)
-
-### Authorization
-
-[CLIENT_SECRET](../README.md#CLIENT_SECRET)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Create division response |  -  |
-
-
-## createShop
-
-> CreateShopResponse createShop(createShopRequest)
-
-Member – Create Shop
-
-Create shop under merchant or division
-
-### Example
-
+### Usage Example
 ```java
-// Import classes:
-import id.dana.invoker.ApiClient;
-import id.dana.invoker.ApiException;
-import id.dana.invoker.Configuration;
-import id.dana.invoker.auth.*;
-import id.dana.invoker.models.*;
+import id.dana.invoker.Dana;
+import id.dana.invoker.model.DanaConfig;
+import id.dana.invoker.model.constant.EnvKey;
+import id.dana.invoker.model.enumeration.DanaEnvironment;
 import id.dana.merchantmanagement.v1.api.MerchantManagementApi;
+
+import id.dana.util.ConfigUtil;
 
 public class Example {
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://api.saas.dana.id");
-        
-        // Configure API key authorization: CLIENT_SECRET
-        ApiKeyAuth CLIENT_SECRET = (ApiKeyAuth) defaultClient.getAuthentication("CLIENT_SECRET");
-        CLIENT_SECRET.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //CLIENT_SECRET.setApiKeyPrefix("Token");
+        DanaConfig.Builder danaConfigBuilder = new DanaConfig.Builder();
+        danaConfigBuilder
+            .partnerId(ConfigUtil.getConfig("X_PARTNER_ID", ""))
+            .privateKey(ConfigUtil.getConfig("PRIVATE_KEY", ""))
+            .origin(ConfigUtil.getConfig("ORIGIN", ""))
+            .env(DanaEnvironment.getByName(ConfigUtil.getConfig(EnvKey.ENV, "SANDBOX")));
 
-        MerchantManagementApi apiInstance = new MerchantManagementApi(defaultClient);
-        CreateShopRequest createShopRequest = new CreateShopRequest(); // CreateShopRequest | 
-        try {
-            CreateShopResponse result = apiInstance.createShop(createShopRequest);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling MerchantManagementApi#createShop");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
+        DanaConfig.getInstance(danaConfigBuilder);
+
+        MerchantManagementApi api = Dana.getInstance().getMerchantManagementApi();
+
+        CreateShopRequest createShopRequest = new CreateShopRequest();
+        CreateShopResponse response = api.createShop(createShopRequest);
     }
 }
 ```
 
-### Parameters
+<a name="queryDivision"></a>
+## `queryDivision()` Function
 
+### Function Signature
+| Name | Value |
+| ------------- | ------------- |
+| Function Name | `queryDivision` |
+| Request Parameters | [**QueryDivisionRequest**](../model/QueryDivisionRequest.md) |
+| Return Type | [**QueryDivisionResponse**](../model/QueryDivisionResponse.md) |
 
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **createShopRequest** | [**CreateShopRequest**](CreateShopRequest.md)|  | |
-
-### Return type
-
-[**CreateShopResponse**](CreateShopResponse.md)
-
-### Authorization
-
-[CLIENT_SECRET](../README.md#CLIENT_SECRET)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Create shop response |  -  |
-
-
-## queryDivision
-
-> QueryDivisionResponse queryDivision(queryDivisionRequest)
-
-Query Division
-
-This API is used to obtain information of division
-
-### Example
-
+### Usage Example
 ```java
-// Import classes:
-import id.dana.invoker.ApiClient;
-import id.dana.invoker.ApiException;
-import id.dana.invoker.Configuration;
-import id.dana.invoker.auth.*;
-import id.dana.invoker.models.*;
+import id.dana.invoker.Dana;
+import id.dana.invoker.model.DanaConfig;
+import id.dana.invoker.model.constant.EnvKey;
+import id.dana.invoker.model.enumeration.DanaEnvironment;
 import id.dana.merchantmanagement.v1.api.MerchantManagementApi;
+
+import id.dana.util.ConfigUtil;
 
 public class Example {
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://api.saas.dana.id");
-        
-        // Configure API key authorization: CLIENT_SECRET
-        ApiKeyAuth CLIENT_SECRET = (ApiKeyAuth) defaultClient.getAuthentication("CLIENT_SECRET");
-        CLIENT_SECRET.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //CLIENT_SECRET.setApiKeyPrefix("Token");
+        DanaConfig.Builder danaConfigBuilder = new DanaConfig.Builder();
+        danaConfigBuilder
+            .partnerId(ConfigUtil.getConfig("X_PARTNER_ID", ""))
+            .privateKey(ConfigUtil.getConfig("PRIVATE_KEY", ""))
+            .origin(ConfigUtil.getConfig("ORIGIN", ""))
+            .env(DanaEnvironment.getByName(ConfigUtil.getConfig(EnvKey.ENV, "SANDBOX")));
 
-        MerchantManagementApi apiInstance = new MerchantManagementApi(defaultClient);
-        QueryDivisionRequest queryDivisionRequest = new QueryDivisionRequest(); // QueryDivisionRequest | 
-        try {
-            QueryDivisionResponse result = apiInstance.queryDivision(queryDivisionRequest);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling MerchantManagementApi#queryDivision");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
+        DanaConfig.getInstance(danaConfigBuilder);
+
+        MerchantManagementApi api = Dana.getInstance().getMerchantManagementApi();
+
+        QueryDivisionRequest queryDivisionRequest = new QueryDivisionRequest();
+        QueryDivisionResponse response = api.queryDivision(queryDivisionRequest);
     }
 }
 ```
 
-### Parameters
+<a name="queryMerchantResource"></a>
+## `queryMerchantResource()` Function
 
+### Function Signature
+| Name | Value |
+| ------------- | ------------- |
+| Function Name | `queryMerchantResource` |
+| Request Parameters | [**QueryMerchantResourceRequest**](../model/QueryMerchantResourceRequest.md) |
+| Return Type | [**QueryMerchantResourceResponse**](../model/QueryMerchantResourceResponse.md) |
 
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **queryDivisionRequest** | [**QueryDivisionRequest**](QueryDivisionRequest.md)|  | |
-
-### Return type
-
-[**QueryDivisionResponse**](QueryDivisionResponse.md)
-
-### Authorization
-
-[CLIENT_SECRET](../README.md#CLIENT_SECRET)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Query division response |  -  |
-
-
-## queryMerchantResource
-
-> QueryMerchantResourceResponse queryMerchantResource(queryMerchantResourceRequest)
-
-Member – Merchant Open API Check Disbursement Account
-
-The interface is check merchant resource info (account balance merchant)
-
-### Example
-
+### Usage Example
 ```java
-// Import classes:
-import id.dana.invoker.ApiClient;
-import id.dana.invoker.ApiException;
-import id.dana.invoker.Configuration;
-import id.dana.invoker.auth.*;
-import id.dana.invoker.models.*;
+import id.dana.invoker.Dana;
+import id.dana.invoker.model.DanaConfig;
+import id.dana.invoker.model.constant.EnvKey;
+import id.dana.invoker.model.enumeration.DanaEnvironment;
 import id.dana.merchantmanagement.v1.api.MerchantManagementApi;
+
+import id.dana.util.ConfigUtil;
 
 public class Example {
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://api.saas.dana.id");
-        
-        // Configure API key authorization: CLIENT_SECRET
-        ApiKeyAuth CLIENT_SECRET = (ApiKeyAuth) defaultClient.getAuthentication("CLIENT_SECRET");
-        CLIENT_SECRET.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //CLIENT_SECRET.setApiKeyPrefix("Token");
+        DanaConfig.Builder danaConfigBuilder = new DanaConfig.Builder();
+        danaConfigBuilder
+            .partnerId(ConfigUtil.getConfig("X_PARTNER_ID", ""))
+            .privateKey(ConfigUtil.getConfig("PRIVATE_KEY", ""))
+            .origin(ConfigUtil.getConfig("ORIGIN", ""))
+            .env(DanaEnvironment.getByName(ConfigUtil.getConfig(EnvKey.ENV, "SANDBOX")));
 
-        MerchantManagementApi apiInstance = new MerchantManagementApi(defaultClient);
-        QueryMerchantResourceRequest queryMerchantResourceRequest = new QueryMerchantResourceRequest(); // QueryMerchantResourceRequest | 
-        try {
-            QueryMerchantResourceResponse result = apiInstance.queryMerchantResource(queryMerchantResourceRequest);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling MerchantManagementApi#queryMerchantResource");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
+        DanaConfig.getInstance(danaConfigBuilder);
+
+        MerchantManagementApi api = Dana.getInstance().getMerchantManagementApi();
+
+        QueryMerchantResourceRequest queryMerchantResourceRequest = new QueryMerchantResourceRequest();
+        QueryMerchantResourceResponse response = api.queryMerchantResource(queryMerchantResourceRequest);
     }
 }
 ```
 
-### Parameters
+<a name="queryShop"></a>
+## `queryShop()` Function
 
+### Function Signature
+| Name | Value |
+| ------------- | ------------- |
+| Function Name | `queryShop` |
+| Request Parameters | [**QueryShopRequest**](../model/QueryShopRequest.md) |
+| Return Type | [**QueryShopResponse**](../model/QueryShopResponse.md) |
 
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **queryMerchantResourceRequest** | [**QueryMerchantResourceRequest**](QueryMerchantResourceRequest.md)|  | |
-
-### Return type
-
-[**QueryMerchantResourceResponse**](QueryMerchantResourceResponse.md)
-
-### Authorization
-
-[CLIENT_SECRET](../README.md#CLIENT_SECRET)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Query merchant resource response |  -  |
-
-
-## queryShop
-
-> QueryShopResponse queryShop(queryShopRequest)
-
-Member – Query Shop
-
-This API is used to obtain information of shop information
-
-### Example
-
+### Usage Example
 ```java
-// Import classes:
-import id.dana.invoker.ApiClient;
-import id.dana.invoker.ApiException;
-import id.dana.invoker.Configuration;
-import id.dana.invoker.auth.*;
-import id.dana.invoker.models.*;
+import id.dana.invoker.Dana;
+import id.dana.invoker.model.DanaConfig;
+import id.dana.invoker.model.constant.EnvKey;
+import id.dana.invoker.model.enumeration.DanaEnvironment;
 import id.dana.merchantmanagement.v1.api.MerchantManagementApi;
+
+import id.dana.util.ConfigUtil;
 
 public class Example {
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://api.saas.dana.id");
-        
-        // Configure API key authorization: CLIENT_SECRET
-        ApiKeyAuth CLIENT_SECRET = (ApiKeyAuth) defaultClient.getAuthentication("CLIENT_SECRET");
-        CLIENT_SECRET.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //CLIENT_SECRET.setApiKeyPrefix("Token");
+        DanaConfig.Builder danaConfigBuilder = new DanaConfig.Builder();
+        danaConfigBuilder
+            .partnerId(ConfigUtil.getConfig("X_PARTNER_ID", ""))
+            .privateKey(ConfigUtil.getConfig("PRIVATE_KEY", ""))
+            .origin(ConfigUtil.getConfig("ORIGIN", ""))
+            .env(DanaEnvironment.getByName(ConfigUtil.getConfig(EnvKey.ENV, "SANDBOX")));
 
-        MerchantManagementApi apiInstance = new MerchantManagementApi(defaultClient);
-        QueryShopRequest queryShopRequest = new QueryShopRequest(); // QueryShopRequest | 
-        try {
-            QueryShopResponse result = apiInstance.queryShop(queryShopRequest);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling MerchantManagementApi#queryShop");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
+        DanaConfig.getInstance(danaConfigBuilder);
+
+        MerchantManagementApi api = Dana.getInstance().getMerchantManagementApi();
+
+        QueryShopRequest queryShopRequest = new QueryShopRequest();
+        QueryShopResponse response = api.queryShop(queryShopRequest);
     }
 }
 ```
 
-### Parameters
+<a name="updateDivision"></a>
+## `updateDivision()` Function
 
+### Function Signature
+| Name | Value |
+| ------------- | ------------- |
+| Function Name | `updateDivision` |
+| Request Parameters | [**UpdateDivisionRequest**](../model/UpdateDivisionRequest.md) |
+| Return Type | [**UpdateDivisionResponse**](../model/UpdateDivisionResponse.md) |
 
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **queryShopRequest** | [**QueryShopRequest**](QueryShopRequest.md)|  | |
-
-### Return type
-
-[**QueryShopResponse**](QueryShopResponse.md)
-
-### Authorization
-
-[CLIENT_SECRET](../README.md#CLIENT_SECRET)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Query shop response |  -  |
-
-
-## updateDivision
-
-> UpdateDivisionResponse updateDivision(updateDivisionRequest)
-
-Update Division
-
-This API is used to update the division information
-
-### Example
-
+### Usage Example
 ```java
-// Import classes:
-import id.dana.invoker.ApiClient;
-import id.dana.invoker.ApiException;
-import id.dana.invoker.Configuration;
-import id.dana.invoker.auth.*;
-import id.dana.invoker.models.*;
+import id.dana.invoker.Dana;
+import id.dana.invoker.model.DanaConfig;
+import id.dana.invoker.model.constant.EnvKey;
+import id.dana.invoker.model.enumeration.DanaEnvironment;
 import id.dana.merchantmanagement.v1.api.MerchantManagementApi;
+
+import id.dana.util.ConfigUtil;
 
 public class Example {
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://api.saas.dana.id");
-        
-        // Configure API key authorization: CLIENT_SECRET
-        ApiKeyAuth CLIENT_SECRET = (ApiKeyAuth) defaultClient.getAuthentication("CLIENT_SECRET");
-        CLIENT_SECRET.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //CLIENT_SECRET.setApiKeyPrefix("Token");
+        DanaConfig.Builder danaConfigBuilder = new DanaConfig.Builder();
+        danaConfigBuilder
+            .partnerId(ConfigUtil.getConfig("X_PARTNER_ID", ""))
+            .privateKey(ConfigUtil.getConfig("PRIVATE_KEY", ""))
+            .origin(ConfigUtil.getConfig("ORIGIN", ""))
+            .env(DanaEnvironment.getByName(ConfigUtil.getConfig(EnvKey.ENV, "SANDBOX")));
 
-        MerchantManagementApi apiInstance = new MerchantManagementApi(defaultClient);
-        UpdateDivisionRequest updateDivisionRequest = new UpdateDivisionRequest(); // UpdateDivisionRequest | 
-        try {
-            UpdateDivisionResponse result = apiInstance.updateDivision(updateDivisionRequest);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling MerchantManagementApi#updateDivision");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
+        DanaConfig.getInstance(danaConfigBuilder);
+
+        MerchantManagementApi api = Dana.getInstance().getMerchantManagementApi();
+
+        UpdateDivisionRequest updateDivisionRequest = new UpdateDivisionRequest();
+        UpdateDivisionResponse response = api.updateDivision(updateDivisionRequest);
     }
 }
 ```
 
-### Parameters
+<a name="updateShop"></a>
+## `updateShop()` Function
 
+### Function Signature
+| Name | Value |
+| ------------- | ------------- |
+| Function Name | `updateShop` |
+| Request Parameters | [**UpdateShopRequest**](../model/UpdateShopRequest.md) |
+| Return Type | [**UpdateShopResponse**](../model/UpdateShopResponse.md) |
 
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **updateDivisionRequest** | [**UpdateDivisionRequest**](UpdateDivisionRequest.md)|  | |
-
-### Return type
-
-[**UpdateDivisionResponse**](UpdateDivisionResponse.md)
-
-### Authorization
-
-[CLIENT_SECRET](../README.md#CLIENT_SECRET)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Update division response |  -  |
-
-
-## updateShop
-
-> UpdateShopResponse updateShop(updateShopRequest)
-
-Update Shop
-
-This API is used to update the shop information
-
-### Example
-
+### Usage Example
 ```java
-// Import classes:
-import id.dana.invoker.ApiClient;
-import id.dana.invoker.ApiException;
-import id.dana.invoker.Configuration;
-import id.dana.invoker.auth.*;
-import id.dana.invoker.models.*;
+import id.dana.invoker.Dana;
+import id.dana.invoker.model.DanaConfig;
+import id.dana.invoker.model.constant.EnvKey;
+import id.dana.invoker.model.enumeration.DanaEnvironment;
 import id.dana.merchantmanagement.v1.api.MerchantManagementApi;
+
+import id.dana.util.ConfigUtil;
 
 public class Example {
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://api.saas.dana.id");
-        
-        // Configure API key authorization: CLIENT_SECRET
-        ApiKeyAuth CLIENT_SECRET = (ApiKeyAuth) defaultClient.getAuthentication("CLIENT_SECRET");
-        CLIENT_SECRET.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //CLIENT_SECRET.setApiKeyPrefix("Token");
+        DanaConfig.Builder danaConfigBuilder = new DanaConfig.Builder();
+        danaConfigBuilder
+            .partnerId(ConfigUtil.getConfig("X_PARTNER_ID", ""))
+            .privateKey(ConfigUtil.getConfig("PRIVATE_KEY", ""))
+            .origin(ConfigUtil.getConfig("ORIGIN", ""))
+            .env(DanaEnvironment.getByName(ConfigUtil.getConfig(EnvKey.ENV, "SANDBOX")));
 
-        MerchantManagementApi apiInstance = new MerchantManagementApi(defaultClient);
-        UpdateShopRequest updateShopRequest = new UpdateShopRequest(); // UpdateShopRequest | 
-        try {
-            UpdateShopResponse result = apiInstance.updateShop(updateShopRequest);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling MerchantManagementApi#updateShop");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
+        DanaConfig.getInstance(danaConfigBuilder);
+
+        MerchantManagementApi api = Dana.getInstance().getMerchantManagementApi();
+
+        UpdateShopRequest updateShopRequest = new UpdateShopRequest();
+        UpdateShopResponse response = api.updateShop(updateShopRequest);
     }
 }
 ```
-
-### Parameters
-
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **updateShopRequest** | [**UpdateShopRequest**](UpdateShopRequest.md)|  | |
-
-### Return type
-
-[**UpdateShopResponse**](UpdateShopResponse.md)
-
-### Authorization
-
-[CLIENT_SECRET](../README.md#CLIENT_SECRET)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Update shop response |  -  |
 

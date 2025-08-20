@@ -39,7 +39,7 @@ public class BalanceInquiryRequest {
   private List<String> balanceTypes = new ArrayList<>();
 
   public static final String JSON_PROPERTY_ADDITIONAL_INFO = "additionalInfo";
-  @javax.annotation.Nullable
+  @javax.annotation.Nonnull
   private BalanceInquiryRequestAdditionalInfo additionalInfo;
 
   public BalanceInquiryRequest() {
@@ -103,19 +103,19 @@ public class BalanceInquiryRequest {
     this.balanceTypes = balanceTypes;
   }
 
-  public BalanceInquiryRequest additionalInfo(@javax.annotation.Nullable BalanceInquiryRequestAdditionalInfo additionalInfo) {
+  public BalanceInquiryRequest additionalInfo(@javax.annotation.Nonnull BalanceInquiryRequestAdditionalInfo additionalInfo) {
     
     this.additionalInfo = additionalInfo;
     return this;
   }
 
   /**
-   * Get additionalInfo
+   * Additional information
    * @return additionalInfo
    */
-  @javax.annotation.Nullable
+  @javax.annotation.Nonnull
   @JsonProperty(JSON_PROPERTY_ADDITIONAL_INFO)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public BalanceInquiryRequestAdditionalInfo getAdditionalInfo() {
     return additionalInfo;
@@ -123,8 +123,8 @@ public class BalanceInquiryRequest {
 
 
   @JsonProperty(JSON_PROPERTY_ADDITIONAL_INFO)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setAdditionalInfo(@javax.annotation.Nullable BalanceInquiryRequestAdditionalInfo additionalInfo) {
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setAdditionalInfo(@javax.annotation.Nonnull BalanceInquiryRequestAdditionalInfo additionalInfo) {
     this.additionalInfo = additionalInfo;
   }
 

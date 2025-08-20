@@ -1,859 +1,396 @@
 # WidgetApi
 
-All URIs are relative to *https://api.saas.dana.id*
+You can use the APIs below to interface with DANA's `WidgetApi` API.
+To start using the API, you need to destruct instantiated DANA client. This client would be a singleton object that you can use across various api and operation.
+
+```java
+import id.dana.invoker.Dana;
+import id.dana.invoker.model.DanaConfig;
+import id.dana.invoker.model.constant.EnvKey;
+import id.dana.invoker.model.enumeration.DanaEnvironment;
+import id.dana.widget.v1.api.WidgetApi;
+
+import id.dana.util.ConfigUtil;
+
+public class Example {
+    public static void main(String[] args) {
+        DanaConfig.Builder danaConfigBuilder = new DanaConfig.Builder();
+        danaConfigBuilder
+            .partnerId(ConfigUtil.getConfig("X_PARTNER_ID", ""))
+            .privateKey(ConfigUtil.getConfig("PRIVATE_KEY", ""))
+            .origin(ConfigUtil.getConfig("ORIGIN", ""))
+            .env(DanaEnvironment.getByName(ConfigUtil.getConfig(EnvKey.ENV, "SANDBOX")));
+
+        DanaConfig.getInstance(danaConfigBuilder);
+
+        WidgetApi api = Dana.getInstance().getWidgetApi();
+    }
+}
+```
+
+All URIs are relative to *https://api.saas.dana.id*, except if the operation defines another base path (for sandbox it is http://api.sandbox.dana.id).
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**accountUnbinding**](WidgetApi.md#accountUnbinding) | **POST** v1.0/registration-account-unbinding.htm | Account unbinding - Binding |
-| [**applyOTT**](WidgetApi.md#applyOTT) | **POST** rest/v1.1/qr/apply-ott | Apply OTT - Widget |
-| [**applyToken**](WidgetApi.md#applyToken) | **POST** v1.0/access-token/b2b2c.htm | Apply Token, required by Apply OTT - Binding |
-| [**balanceInquiry**](WidgetApi.md#balanceInquiry) | **POST** v1.0/balance-inquiry.htm | Balance Inquiry |
-| [**cancelOrder**](WidgetApi.md#cancelOrder) | **POST** v1.0/debit/cancel.htm | Cancel Order - Widget |
-| [**queryPayment**](WidgetApi.md#queryPayment) | **POST** rest/v1.1/debit/status | Query Payment - Widget |
-| [**queryUserProfile**](WidgetApi.md#queryUserProfile) | **POST** dana/member/query/queryUserProfile.htm | Query User Profile |
-| [**refundOrder**](WidgetApi.md#refundOrder) | **POST** v1.0/debit/refund.htm | Refund Order - Widget |
-| [**widgetPayment**](WidgetApi.md#widgetPayment) | **POST** rest/redirection/v1.0/debit/payment-host-to-host | Widget Payment - Widget |
+| [**accountUnbinding**](WidgetApi.md#accountUnbinding) | **POST** v1.0/registration-account-unbinding.htm | This API is used to reverses the account binding process by revoking the accessToken and refreshToken |
+| [**applyOTT**](WidgetApi.md#applyOTT) | **POST** rest/v1.1/qr/apply-ott | This API is used to get one time token that will be used as authorization parameter upon redirecting to DANA |
+| [**applyToken**](WidgetApi.md#applyToken) | **POST** v1.0/access-token/b2b2c.htm | This API is used to finalized account binding process by exchanging the authCode into accessToken that can be used as user authorization |
+| [**balanceInquiry**](WidgetApi.md#balanceInquiry) | **POST** v1.0/balance-inquiry.htm | This API is used to query user&#39;s DANA account balance via merchant |
+| [**cancelOrder**](WidgetApi.md#cancelOrder) | **POST** v1.0/debit/cancel.htm | This API is used to cancel the order from merchant&#39;s platform to DANA |
+| [**queryPayment**](WidgetApi.md#queryPayment) | **POST** rest/v1.1/debit/status | This API is used to inquiry payment status and information from merchant&#39;s platform to DANA |
+| [**queryUserProfile**](WidgetApi.md#queryUserProfile) | **POST** dana/member/query/queryUserProfile.htm | The API is used to query user profile such as DANA balance (unit in IDR), masked DANA phone number, KYC or OTT (one time token) between merchant server and DANA&#39;s server |
+| [**refundOrder**](WidgetApi.md#refundOrder) | **POST** v1.0/debit/refund.htm | This API is used to refund the order from merchant&#39;s platform to DANA |
+| [**widgetPayment**](WidgetApi.md#widgetPayment) | **POST** rest/redirection/v1.0/debit/payment-host-to-host | This API is used to initiate payment from merchant&#39;s platform to DANA |
 
 
+<a name="accountUnbinding"></a>
+## `accountUnbinding()` Function
 
-## accountUnbinding
+### Function Signature
+| Name | Value |
+| ------------- | ------------- |
+| Function Name | `accountUnbinding` |
+| Request Parameters | [**AccountUnbindingRequest**](../model/AccountUnbindingRequest.md) |
+| Return Type | [**AccountUnbindingResponse**](../model/AccountUnbindingResponse.md) |
 
-> AccountUnbindingResponse accountUnbinding(accountUnbindingRequest)
-
-Account unbinding - Binding
-
-This API is used to reverses the account binding process by revoking the accessToken and refreshToken
-
-### Example
-
+### Usage Example
 ```java
-// Import classes:
-import id.dana.invoker.ApiClient;
-import id.dana.invoker.ApiException;
-import id.dana.invoker.Configuration;
-import id.dana.invoker.auth.*;
-import id.dana.invoker.models.*;
+import id.dana.invoker.Dana;
+import id.dana.invoker.model.DanaConfig;
+import id.dana.invoker.model.constant.EnvKey;
+import id.dana.invoker.model.enumeration.DanaEnvironment;
 import id.dana.widget.v1.api.WidgetApi;
+
+import id.dana.util.ConfigUtil;
 
 public class Example {
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://api.saas.dana.id");
-        
-        // Configure API key authorization: X_PARTNER_ID
-        ApiKeyAuth X_PARTNER_ID = (ApiKeyAuth) defaultClient.getAuthentication("X_PARTNER_ID");
-        X_PARTNER_ID.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //X_PARTNER_ID.setApiKeyPrefix("Token");
+        DanaConfig.Builder danaConfigBuilder = new DanaConfig.Builder();
+        danaConfigBuilder
+            .partnerId(ConfigUtil.getConfig("X_PARTNER_ID", ""))
+            .privateKey(ConfigUtil.getConfig("PRIVATE_KEY", ""))
+            .origin(ConfigUtil.getConfig("ORIGIN", ""))
+            .env(DanaEnvironment.getByName(ConfigUtil.getConfig(EnvKey.ENV, "SANDBOX")));
 
-        // Configure API key authorization: PRIVATE_KEY
-        ApiKeyAuth PRIVATE_KEY = (ApiKeyAuth) defaultClient.getAuthentication("PRIVATE_KEY");
-        PRIVATE_KEY.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //PRIVATE_KEY.setApiKeyPrefix("Token");
+        DanaConfig.getInstance(danaConfigBuilder);
 
-        // Configure API key authorization: PRIVATE_KEY_PATH
-        ApiKeyAuth PRIVATE_KEY_PATH = (ApiKeyAuth) defaultClient.getAuthentication("PRIVATE_KEY_PATH");
-        PRIVATE_KEY_PATH.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //PRIVATE_KEY_PATH.setApiKeyPrefix("Token");
+        WidgetApi api = Dana.getInstance().getWidgetApi();
 
-        // Configure API key authorization: ENV
-        ApiKeyAuth ENV = (ApiKeyAuth) defaultClient.getAuthentication("ENV");
-        ENV.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //ENV.setApiKeyPrefix("Token");
-
-        WidgetApi apiInstance = new WidgetApi(defaultClient);
-        AccountUnbindingRequest accountUnbindingRequest = new AccountUnbindingRequest(); // AccountUnbindingRequest | 
-        try {
-            AccountUnbindingResponse result = apiInstance.accountUnbinding(accountUnbindingRequest);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling WidgetApi#accountUnbinding");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
+        AccountUnbindingRequest accountUnbindingRequest = new AccountUnbindingRequest();
+        AccountUnbindingResponse response = api.accountUnbinding(accountUnbindingRequest);
     }
 }
 ```
 
-### Parameters
+<a name="applyOTT"></a>
+## `applyOTT()` Function
 
+### Function Signature
+| Name | Value |
+| ------------- | ------------- |
+| Function Name | `applyOTT` |
+| Request Parameters | [**ApplyOTTRequest**](../model/ApplyOTTRequest.md) |
+| Return Type | [**ApplyOTTResponse**](../model/ApplyOTTResponse.md) |
 
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **accountUnbindingRequest** | [**AccountUnbindingRequest**](AccountUnbindingRequest.md)|  | |
-
-### Return type
-
-[**AccountUnbindingResponse**](AccountUnbindingResponse.md)
-
-### Authorization
-
-[X_PARTNER_ID](../README.md#X_PARTNER_ID), [PRIVATE_KEY](../README.md#PRIVATE_KEY), [PRIVATE_KEY_PATH](../README.md#PRIVATE_KEY_PATH), [ENV](../README.md#ENV)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Account unbinding response |  -  |
-
-
-## applyOTT
-
-> ApplyOTTResponse applyOTT(applyOTTRequest)
-
-Apply OTT - Widget
-
-This API is used to get one time token that will be used as authorization parameter upon redirecting to DANA
-
-### Example
-
+### Usage Example
 ```java
-// Import classes:
-import id.dana.invoker.ApiClient;
-import id.dana.invoker.ApiException;
-import id.dana.invoker.Configuration;
-import id.dana.invoker.auth.*;
-import id.dana.invoker.models.*;
+import id.dana.invoker.Dana;
+import id.dana.invoker.model.DanaConfig;
+import id.dana.invoker.model.constant.EnvKey;
+import id.dana.invoker.model.enumeration.DanaEnvironment;
 import id.dana.widget.v1.api.WidgetApi;
+
+import id.dana.util.ConfigUtil;
 
 public class Example {
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://api.saas.dana.id");
-        
-        // Configure API key authorization: ORIGIN
-        ApiKeyAuth ORIGIN = (ApiKeyAuth) defaultClient.getAuthentication("ORIGIN");
-        ORIGIN.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //ORIGIN.setApiKeyPrefix("Token");
+        DanaConfig.Builder danaConfigBuilder = new DanaConfig.Builder();
+        danaConfigBuilder
+            .partnerId(ConfigUtil.getConfig("X_PARTNER_ID", ""))
+            .privateKey(ConfigUtil.getConfig("PRIVATE_KEY", ""))
+            .origin(ConfigUtil.getConfig("ORIGIN", ""))
+            .env(DanaEnvironment.getByName(ConfigUtil.getConfig(EnvKey.ENV, "SANDBOX")));
 
-        // Configure API key authorization: X_PARTNER_ID
-        ApiKeyAuth X_PARTNER_ID = (ApiKeyAuth) defaultClient.getAuthentication("X_PARTNER_ID");
-        X_PARTNER_ID.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //X_PARTNER_ID.setApiKeyPrefix("Token");
+        DanaConfig.getInstance(danaConfigBuilder);
 
-        // Configure API key authorization: CHANNEL_ID
-        ApiKeyAuth CHANNEL_ID = (ApiKeyAuth) defaultClient.getAuthentication("CHANNEL_ID");
-        CHANNEL_ID.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //CHANNEL_ID.setApiKeyPrefix("Token");
+        WidgetApi api = Dana.getInstance().getWidgetApi();
 
-        // Configure API key authorization: PRIVATE_KEY
-        ApiKeyAuth PRIVATE_KEY = (ApiKeyAuth) defaultClient.getAuthentication("PRIVATE_KEY");
-        PRIVATE_KEY.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //PRIVATE_KEY.setApiKeyPrefix("Token");
-
-        // Configure API key authorization: PRIVATE_KEY_PATH
-        ApiKeyAuth PRIVATE_KEY_PATH = (ApiKeyAuth) defaultClient.getAuthentication("PRIVATE_KEY_PATH");
-        PRIVATE_KEY_PATH.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //PRIVATE_KEY_PATH.setApiKeyPrefix("Token");
-
-        // Configure API key authorization: ENV
-        ApiKeyAuth ENV = (ApiKeyAuth) defaultClient.getAuthentication("ENV");
-        ENV.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //ENV.setApiKeyPrefix("Token");
-
-        WidgetApi apiInstance = new WidgetApi(defaultClient);
-        ApplyOTTRequest applyOTTRequest = new ApplyOTTRequest(); // ApplyOTTRequest | 
-        try {
-            ApplyOTTResponse result = apiInstance.applyOTT(applyOTTRequest);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling WidgetApi#applyOTT");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
+        ApplyOTTRequest applyOTTRequest = new ApplyOTTRequest();
+        ApplyOTTResponse response = api.applyOTT(applyOTTRequest);
     }
 }
 ```
 
-### Parameters
+<a name="applyToken"></a>
+## `applyToken()` Function
 
+### Function Signature
+| Name | Value |
+| ------------- | ------------- |
+| Function Name | `applyToken` |
+| Request Parameters | [**ApplyTokenRequest**](../model/ApplyTokenRequest.md) |
+| Return Type | [**ApplyTokenResponse**](../model/ApplyTokenResponse.md) |
 
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **applyOTTRequest** | [**ApplyOTTRequest**](ApplyOTTRequest.md)|  | |
-
-### Return type
-
-[**ApplyOTTResponse**](ApplyOTTResponse.md)
-
-### Authorization
-
-[ORIGIN](../README.md#ORIGIN), [X_PARTNER_ID](../README.md#X_PARTNER_ID), [CHANNEL_ID](../README.md#CHANNEL_ID), [PRIVATE_KEY](../README.md#PRIVATE_KEY), [PRIVATE_KEY_PATH](../README.md#PRIVATE_KEY_PATH), [ENV](../README.md#ENV)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Apply OTT response |  -  |
-
-
-## applyToken
-
-> ApplyTokenResponse applyToken(applyTokenRequest)
-
-Apply Token, required by Apply OTT - Binding
-
-This API is used to finalized account binding process by exchanging the authCode into accessToken that can be used as user authorization
-
-### Example
-
+### Usage Example
 ```java
-// Import classes:
-import id.dana.invoker.ApiClient;
-import id.dana.invoker.ApiException;
-import id.dana.invoker.Configuration;
-import id.dana.invoker.auth.*;
-import id.dana.invoker.models.*;
+import id.dana.invoker.Dana;
+import id.dana.invoker.model.DanaConfig;
+import id.dana.invoker.model.constant.EnvKey;
+import id.dana.invoker.model.enumeration.DanaEnvironment;
 import id.dana.widget.v1.api.WidgetApi;
+
+import id.dana.util.ConfigUtil;
 
 public class Example {
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://api.saas.dana.id");
-        
-        // Configure API key authorization: X_PARTNER_ID
-        ApiKeyAuth X_PARTNER_ID = (ApiKeyAuth) defaultClient.getAuthentication("X_PARTNER_ID");
-        X_PARTNER_ID.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //X_PARTNER_ID.setApiKeyPrefix("Token");
+        DanaConfig.Builder danaConfigBuilder = new DanaConfig.Builder();
+        danaConfigBuilder
+            .partnerId(ConfigUtil.getConfig("X_PARTNER_ID", ""))
+            .privateKey(ConfigUtil.getConfig("PRIVATE_KEY", ""))
+            .origin(ConfigUtil.getConfig("ORIGIN", ""))
+            .env(DanaEnvironment.getByName(ConfigUtil.getConfig(EnvKey.ENV, "SANDBOX")));
 
-        // Configure API key authorization: PRIVATE_KEY
-        ApiKeyAuth PRIVATE_KEY = (ApiKeyAuth) defaultClient.getAuthentication("PRIVATE_KEY");
-        PRIVATE_KEY.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //PRIVATE_KEY.setApiKeyPrefix("Token");
+        DanaConfig.getInstance(danaConfigBuilder);
 
-        // Configure API key authorization: PRIVATE_KEY_PATH
-        ApiKeyAuth PRIVATE_KEY_PATH = (ApiKeyAuth) defaultClient.getAuthentication("PRIVATE_KEY_PATH");
-        PRIVATE_KEY_PATH.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //PRIVATE_KEY_PATH.setApiKeyPrefix("Token");
+        WidgetApi api = Dana.getInstance().getWidgetApi();
 
-        // Configure API key authorization: ENV
-        ApiKeyAuth ENV = (ApiKeyAuth) defaultClient.getAuthentication("ENV");
-        ENV.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //ENV.setApiKeyPrefix("Token");
-
-        WidgetApi apiInstance = new WidgetApi(defaultClient);
-        ApplyTokenRequest applyTokenRequest = new ApplyTokenRequest(); // ApplyTokenRequest | 
-        try {
-            ApplyTokenResponse result = apiInstance.applyToken(applyTokenRequest);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling WidgetApi#applyToken");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
+        ApplyTokenRequest applyTokenRequest = new ApplyTokenRequest();
+        ApplyTokenResponse response = api.applyToken(applyTokenRequest);
     }
 }
 ```
 
-### Parameters
+<a name="balanceInquiry"></a>
+## `balanceInquiry()` Function
 
+### Function Signature
+| Name | Value |
+| ------------- | ------------- |
+| Function Name | `balanceInquiry` |
+| Request Parameters | [**BalanceInquiryRequest**](../model/BalanceInquiryRequest.md) |
+| Return Type | [**BalanceInquiryResponse**](../model/BalanceInquiryResponse.md) |
 
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **applyTokenRequest** | [**ApplyTokenRequest**](ApplyTokenRequest.md)|  | |
-
-### Return type
-
-[**ApplyTokenResponse**](ApplyTokenResponse.md)
-
-### Authorization
-
-[X_PARTNER_ID](../README.md#X_PARTNER_ID), [PRIVATE_KEY](../README.md#PRIVATE_KEY), [PRIVATE_KEY_PATH](../README.md#PRIVATE_KEY_PATH), [ENV](../README.md#ENV)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Apply token response |  -  |
-
-
-## balanceInquiry
-
-> BalanceInquiryResponse balanceInquiry(balanceInquiryRequest)
-
-Balance Inquiry
-
-This API is used to query user&#39;s DANA account balance via merchant
-
-### Example
-
+### Usage Example
 ```java
-// Import classes:
-import id.dana.invoker.ApiClient;
-import id.dana.invoker.ApiException;
-import id.dana.invoker.Configuration;
-import id.dana.invoker.auth.*;
-import id.dana.invoker.models.*;
+import id.dana.invoker.Dana;
+import id.dana.invoker.model.DanaConfig;
+import id.dana.invoker.model.constant.EnvKey;
+import id.dana.invoker.model.enumeration.DanaEnvironment;
 import id.dana.widget.v1.api.WidgetApi;
+
+import id.dana.util.ConfigUtil;
 
 public class Example {
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://api.saas.dana.id");
-        
-        // Configure API key authorization: ORIGIN
-        ApiKeyAuth ORIGIN = (ApiKeyAuth) defaultClient.getAuthentication("ORIGIN");
-        ORIGIN.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //ORIGIN.setApiKeyPrefix("Token");
+        DanaConfig.Builder danaConfigBuilder = new DanaConfig.Builder();
+        danaConfigBuilder
+            .partnerId(ConfigUtil.getConfig("X_PARTNER_ID", ""))
+            .privateKey(ConfigUtil.getConfig("PRIVATE_KEY", ""))
+            .origin(ConfigUtil.getConfig("ORIGIN", ""))
+            .env(DanaEnvironment.getByName(ConfigUtil.getConfig(EnvKey.ENV, "SANDBOX")));
 
-        // Configure API key authorization: X_PARTNER_ID
-        ApiKeyAuth X_PARTNER_ID = (ApiKeyAuth) defaultClient.getAuthentication("X_PARTNER_ID");
-        X_PARTNER_ID.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //X_PARTNER_ID.setApiKeyPrefix("Token");
+        DanaConfig.getInstance(danaConfigBuilder);
 
-        // Configure API key authorization: CHANNEL_ID
-        ApiKeyAuth CHANNEL_ID = (ApiKeyAuth) defaultClient.getAuthentication("CHANNEL_ID");
-        CHANNEL_ID.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //CHANNEL_ID.setApiKeyPrefix("Token");
+        WidgetApi api = Dana.getInstance().getWidgetApi();
 
-        // Configure API key authorization: PRIVATE_KEY
-        ApiKeyAuth PRIVATE_KEY = (ApiKeyAuth) defaultClient.getAuthentication("PRIVATE_KEY");
-        PRIVATE_KEY.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //PRIVATE_KEY.setApiKeyPrefix("Token");
-
-        // Configure API key authorization: PRIVATE_KEY_PATH
-        ApiKeyAuth PRIVATE_KEY_PATH = (ApiKeyAuth) defaultClient.getAuthentication("PRIVATE_KEY_PATH");
-        PRIVATE_KEY_PATH.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //PRIVATE_KEY_PATH.setApiKeyPrefix("Token");
-
-        WidgetApi apiInstance = new WidgetApi(defaultClient);
-        BalanceInquiryRequest balanceInquiryRequest = new BalanceInquiryRequest(); // BalanceInquiryRequest | 
-        try {
-            BalanceInquiryResponse result = apiInstance.balanceInquiry(balanceInquiryRequest);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling WidgetApi#balanceInquiry");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
+        BalanceInquiryRequest balanceInquiryRequest = new BalanceInquiryRequest();
+        BalanceInquiryResponse response = api.balanceInquiry(balanceInquiryRequest);
     }
 }
 ```
 
-### Parameters
+<a name="cancelOrder"></a>
+## `cancelOrder()` Function
 
+### Function Signature
+| Name | Value |
+| ------------- | ------------- |
+| Function Name | `cancelOrder` |
+| Request Parameters | [**CancelOrderRequest**](../model/CancelOrderRequest.md) |
+| Return Type | [**CancelOrderResponse**](../model/CancelOrderResponse.md) |
 
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **balanceInquiryRequest** | [**BalanceInquiryRequest**](BalanceInquiryRequest.md)|  | |
-
-### Return type
-
-[**BalanceInquiryResponse**](BalanceInquiryResponse.md)
-
-### Authorization
-
-[ORIGIN](../README.md#ORIGIN), [X_PARTNER_ID](../README.md#X_PARTNER_ID), [CHANNEL_ID](../README.md#CHANNEL_ID), [PRIVATE_KEY](../README.md#PRIVATE_KEY), [PRIVATE_KEY_PATH](../README.md#PRIVATE_KEY_PATH)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Balance inquiry response |  * Content-Type - Content type, value always application/json <br>  * X-TIMESTAMP - Transaction date time, in format YYYY-MM-DDTHH:mm:ss+07:00. Time must be in GMT+7 (Jakarta time) <br>  |
-
-
-## cancelOrder
-
-> CancelOrderResponse cancelOrder(cancelOrderRequest)
-
-Cancel Order - Widget
-
-This API is used to cancel the order from merchant&#39;s platform to DANA
-
-### Example
-
+### Usage Example
 ```java
-// Import classes:
-import id.dana.invoker.ApiClient;
-import id.dana.invoker.ApiException;
-import id.dana.invoker.Configuration;
-import id.dana.invoker.auth.*;
-import id.dana.invoker.models.*;
+import id.dana.invoker.Dana;
+import id.dana.invoker.model.DanaConfig;
+import id.dana.invoker.model.constant.EnvKey;
+import id.dana.invoker.model.enumeration.DanaEnvironment;
 import id.dana.widget.v1.api.WidgetApi;
+
+import id.dana.util.ConfigUtil;
 
 public class Example {
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://api.saas.dana.id");
-        
-        // Configure API key authorization: ORIGIN
-        ApiKeyAuth ORIGIN = (ApiKeyAuth) defaultClient.getAuthentication("ORIGIN");
-        ORIGIN.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //ORIGIN.setApiKeyPrefix("Token");
+        DanaConfig.Builder danaConfigBuilder = new DanaConfig.Builder();
+        danaConfigBuilder
+            .partnerId(ConfigUtil.getConfig("X_PARTNER_ID", ""))
+            .privateKey(ConfigUtil.getConfig("PRIVATE_KEY", ""))
+            .origin(ConfigUtil.getConfig("ORIGIN", ""))
+            .env(DanaEnvironment.getByName(ConfigUtil.getConfig(EnvKey.ENV, "SANDBOX")));
 
-        // Configure API key authorization: X_PARTNER_ID
-        ApiKeyAuth X_PARTNER_ID = (ApiKeyAuth) defaultClient.getAuthentication("X_PARTNER_ID");
-        X_PARTNER_ID.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //X_PARTNER_ID.setApiKeyPrefix("Token");
+        DanaConfig.getInstance(danaConfigBuilder);
 
-        // Configure API key authorization: CHANNEL_ID
-        ApiKeyAuth CHANNEL_ID = (ApiKeyAuth) defaultClient.getAuthentication("CHANNEL_ID");
-        CHANNEL_ID.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //CHANNEL_ID.setApiKeyPrefix("Token");
+        WidgetApi api = Dana.getInstance().getWidgetApi();
 
-        // Configure API key authorization: PRIVATE_KEY
-        ApiKeyAuth PRIVATE_KEY = (ApiKeyAuth) defaultClient.getAuthentication("PRIVATE_KEY");
-        PRIVATE_KEY.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //PRIVATE_KEY.setApiKeyPrefix("Token");
-
-        // Configure API key authorization: PRIVATE_KEY_PATH
-        ApiKeyAuth PRIVATE_KEY_PATH = (ApiKeyAuth) defaultClient.getAuthentication("PRIVATE_KEY_PATH");
-        PRIVATE_KEY_PATH.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //PRIVATE_KEY_PATH.setApiKeyPrefix("Token");
-
-        WidgetApi apiInstance = new WidgetApi(defaultClient);
-        CancelOrderRequest cancelOrderRequest = new CancelOrderRequest(); // CancelOrderRequest | 
-        try {
-            CancelOrderResponse result = apiInstance.cancelOrder(cancelOrderRequest);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling WidgetApi#cancelOrder");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
+        CancelOrderRequest cancelOrderRequest = new CancelOrderRequest();
+        CancelOrderResponse response = api.cancelOrder(cancelOrderRequest);
     }
 }
 ```
 
-### Parameters
+<a name="queryPayment"></a>
+## `queryPayment()` Function
 
+### Function Signature
+| Name | Value |
+| ------------- | ------------- |
+| Function Name | `queryPayment` |
+| Request Parameters | [**QueryPaymentRequest**](../model/QueryPaymentRequest.md) |
+| Return Type | [**QueryPaymentResponse**](../model/QueryPaymentResponse.md) |
 
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **cancelOrderRequest** | [**CancelOrderRequest**](CancelOrderRequest.md)|  | |
-
-### Return type
-
-[**CancelOrderResponse**](CancelOrderResponse.md)
-
-### Authorization
-
-[ORIGIN](../README.md#ORIGIN), [X_PARTNER_ID](../README.md#X_PARTNER_ID), [CHANNEL_ID](../README.md#CHANNEL_ID), [PRIVATE_KEY](../README.md#PRIVATE_KEY), [PRIVATE_KEY_PATH](../README.md#PRIVATE_KEY_PATH)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Cancel order response |  -  |
-
-
-## queryPayment
-
-> QueryPaymentResponse queryPayment(queryPaymentRequest)
-
-Query Payment - Widget
-
-This API is used to inquiry payment status and information from merchant&#39;s platform to DANA
-
-### Example
-
+### Usage Example
 ```java
-// Import classes:
-import id.dana.invoker.ApiClient;
-import id.dana.invoker.ApiException;
-import id.dana.invoker.Configuration;
-import id.dana.invoker.auth.*;
-import id.dana.invoker.models.*;
+import id.dana.invoker.Dana;
+import id.dana.invoker.model.DanaConfig;
+import id.dana.invoker.model.constant.EnvKey;
+import id.dana.invoker.model.enumeration.DanaEnvironment;
 import id.dana.widget.v1.api.WidgetApi;
+
+import id.dana.util.ConfigUtil;
 
 public class Example {
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://api.saas.dana.id");
-        
-        // Configure API key authorization: ORIGIN
-        ApiKeyAuth ORIGIN = (ApiKeyAuth) defaultClient.getAuthentication("ORIGIN");
-        ORIGIN.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //ORIGIN.setApiKeyPrefix("Token");
+        DanaConfig.Builder danaConfigBuilder = new DanaConfig.Builder();
+        danaConfigBuilder
+            .partnerId(ConfigUtil.getConfig("X_PARTNER_ID", ""))
+            .privateKey(ConfigUtil.getConfig("PRIVATE_KEY", ""))
+            .origin(ConfigUtil.getConfig("ORIGIN", ""))
+            .env(DanaEnvironment.getByName(ConfigUtil.getConfig(EnvKey.ENV, "SANDBOX")));
 
-        // Configure API key authorization: X_PARTNER_ID
-        ApiKeyAuth X_PARTNER_ID = (ApiKeyAuth) defaultClient.getAuthentication("X_PARTNER_ID");
-        X_PARTNER_ID.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //X_PARTNER_ID.setApiKeyPrefix("Token");
+        DanaConfig.getInstance(danaConfigBuilder);
 
-        // Configure API key authorization: CHANNEL_ID
-        ApiKeyAuth CHANNEL_ID = (ApiKeyAuth) defaultClient.getAuthentication("CHANNEL_ID");
-        CHANNEL_ID.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //CHANNEL_ID.setApiKeyPrefix("Token");
+        WidgetApi api = Dana.getInstance().getWidgetApi();
 
-        // Configure API key authorization: PRIVATE_KEY
-        ApiKeyAuth PRIVATE_KEY = (ApiKeyAuth) defaultClient.getAuthentication("PRIVATE_KEY");
-        PRIVATE_KEY.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //PRIVATE_KEY.setApiKeyPrefix("Token");
-
-        // Configure API key authorization: PRIVATE_KEY_PATH
-        ApiKeyAuth PRIVATE_KEY_PATH = (ApiKeyAuth) defaultClient.getAuthentication("PRIVATE_KEY_PATH");
-        PRIVATE_KEY_PATH.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //PRIVATE_KEY_PATH.setApiKeyPrefix("Token");
-
-        WidgetApi apiInstance = new WidgetApi(defaultClient);
-        QueryPaymentRequest queryPaymentRequest = new QueryPaymentRequest(); // QueryPaymentRequest | 
-        try {
-            QueryPaymentResponse result = apiInstance.queryPayment(queryPaymentRequest);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling WidgetApi#queryPayment");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
+        QueryPaymentRequest queryPaymentRequest = new QueryPaymentRequest();
+        QueryPaymentResponse response = api.queryPayment(queryPaymentRequest);
     }
 }
 ```
 
-### Parameters
+<a name="queryUserProfile"></a>
+## `queryUserProfile()` Function
 
+### Function Signature
+| Name | Value |
+| ------------- | ------------- |
+| Function Name | `queryUserProfile` |
+| Request Parameters | [**QueryUserProfileRequest**](../model/QueryUserProfileRequest.md) |
+| Return Type | [**QueryUserProfileResponse**](../model/QueryUserProfileResponse.md) |
 
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **queryPaymentRequest** | [**QueryPaymentRequest**](QueryPaymentRequest.md)|  | |
-
-### Return type
-
-[**QueryPaymentResponse**](QueryPaymentResponse.md)
-
-### Authorization
-
-[ORIGIN](../README.md#ORIGIN), [X_PARTNER_ID](../README.md#X_PARTNER_ID), [CHANNEL_ID](../README.md#CHANNEL_ID), [PRIVATE_KEY](../README.md#PRIVATE_KEY), [PRIVATE_KEY_PATH](../README.md#PRIVATE_KEY_PATH)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Query payment response |  -  |
-
-
-## queryUserProfile
-
-> QueryUserProfileResponse queryUserProfile(queryUserProfileRequest)
-
-Query User Profile
-
-The API is used to query user profile such as DANA balance (unit in IDR), masked DANA phone number, KYC or OTT (one time token) between merchant server and DANA&#39;s server
-
-### Example
-
+### Usage Example
 ```java
-// Import classes:
-import id.dana.invoker.ApiClient;
-import id.dana.invoker.ApiException;
-import id.dana.invoker.Configuration;
-import id.dana.invoker.models.*;
+import id.dana.invoker.Dana;
+import id.dana.invoker.model.DanaConfig;
+import id.dana.invoker.model.constant.EnvKey;
+import id.dana.invoker.model.enumeration.DanaEnvironment;
 import id.dana.widget.v1.api.WidgetApi;
+
+import id.dana.util.ConfigUtil;
 
 public class Example {
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://api.saas.dana.id");
+        DanaConfig.Builder danaConfigBuilder = new DanaConfig.Builder();
+        danaConfigBuilder
+            .partnerId(ConfigUtil.getConfig("X_PARTNER_ID", ""))
+            .privateKey(ConfigUtil.getConfig("PRIVATE_KEY", ""))
+            .origin(ConfigUtil.getConfig("ORIGIN", ""))
+            .env(DanaEnvironment.getByName(ConfigUtil.getConfig(EnvKey.ENV, "SANDBOX")));
 
-        WidgetApi apiInstance = new WidgetApi(defaultClient);
-        QueryUserProfileRequest queryUserProfileRequest = new QueryUserProfileRequest(); // QueryUserProfileRequest | 
-        try {
-            QueryUserProfileResponse result = apiInstance.queryUserProfile(queryUserProfileRequest);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling WidgetApi#queryUserProfile");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
+        DanaConfig.getInstance(danaConfigBuilder);
+
+        WidgetApi api = Dana.getInstance().getWidgetApi();
+
+        QueryUserProfileRequest queryUserProfileRequest = new QueryUserProfileRequest();
+        QueryUserProfileResponse response = api.queryUserProfile(queryUserProfileRequest);
     }
 }
 ```
 
-### Parameters
+<a name="refundOrder"></a>
+## `refundOrder()` Function
 
+### Function Signature
+| Name | Value |
+| ------------- | ------------- |
+| Function Name | `refundOrder` |
+| Request Parameters | [**RefundOrderRequest**](../model/RefundOrderRequest.md) |
+| Return Type | [**RefundOrderResponse**](../model/RefundOrderResponse.md) |
 
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **queryUserProfileRequest** | [**QueryUserProfileRequest**](QueryUserProfileRequest.md)|  | |
-
-### Return type
-
-[**QueryUserProfileResponse**](QueryUserProfileResponse.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Query user profile response |  -  |
-
-
-## refundOrder
-
-> RefundOrderResponse refundOrder(refundOrderRequest)
-
-Refund Order - Widget
-
-This API is used to refund the order from merchant&#39;s platform to DANA
-
-### Example
-
+### Usage Example
 ```java
-// Import classes:
-import id.dana.invoker.ApiClient;
-import id.dana.invoker.ApiException;
-import id.dana.invoker.Configuration;
-import id.dana.invoker.auth.*;
-import id.dana.invoker.models.*;
+import id.dana.invoker.Dana;
+import id.dana.invoker.model.DanaConfig;
+import id.dana.invoker.model.constant.EnvKey;
+import id.dana.invoker.model.enumeration.DanaEnvironment;
 import id.dana.widget.v1.api.WidgetApi;
+
+import id.dana.util.ConfigUtil;
 
 public class Example {
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://api.saas.dana.id");
-        
-        // Configure API key authorization: ORIGIN
-        ApiKeyAuth ORIGIN = (ApiKeyAuth) defaultClient.getAuthentication("ORIGIN");
-        ORIGIN.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //ORIGIN.setApiKeyPrefix("Token");
+        DanaConfig.Builder danaConfigBuilder = new DanaConfig.Builder();
+        danaConfigBuilder
+            .partnerId(ConfigUtil.getConfig("X_PARTNER_ID", ""))
+            .privateKey(ConfigUtil.getConfig("PRIVATE_KEY", ""))
+            .origin(ConfigUtil.getConfig("ORIGIN", ""))
+            .env(DanaEnvironment.getByName(ConfigUtil.getConfig(EnvKey.ENV, "SANDBOX")));
 
-        // Configure API key authorization: X_PARTNER_ID
-        ApiKeyAuth X_PARTNER_ID = (ApiKeyAuth) defaultClient.getAuthentication("X_PARTNER_ID");
-        X_PARTNER_ID.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //X_PARTNER_ID.setApiKeyPrefix("Token");
+        DanaConfig.getInstance(danaConfigBuilder);
 
-        // Configure API key authorization: CHANNEL_ID
-        ApiKeyAuth CHANNEL_ID = (ApiKeyAuth) defaultClient.getAuthentication("CHANNEL_ID");
-        CHANNEL_ID.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //CHANNEL_ID.setApiKeyPrefix("Token");
+        WidgetApi api = Dana.getInstance().getWidgetApi();
 
-        // Configure API key authorization: PRIVATE_KEY
-        ApiKeyAuth PRIVATE_KEY = (ApiKeyAuth) defaultClient.getAuthentication("PRIVATE_KEY");
-        PRIVATE_KEY.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //PRIVATE_KEY.setApiKeyPrefix("Token");
-
-        // Configure API key authorization: PRIVATE_KEY_PATH
-        ApiKeyAuth PRIVATE_KEY_PATH = (ApiKeyAuth) defaultClient.getAuthentication("PRIVATE_KEY_PATH");
-        PRIVATE_KEY_PATH.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //PRIVATE_KEY_PATH.setApiKeyPrefix("Token");
-
-        WidgetApi apiInstance = new WidgetApi(defaultClient);
-        RefundOrderRequest refundOrderRequest = new RefundOrderRequest(); // RefundOrderRequest | 
-        try {
-            RefundOrderResponse result = apiInstance.refundOrder(refundOrderRequest);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling WidgetApi#refundOrder");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
+        RefundOrderRequest refundOrderRequest = new RefundOrderRequest();
+        RefundOrderResponse response = api.refundOrder(refundOrderRequest);
     }
 }
 ```
 
-### Parameters
+<a name="widgetPayment"></a>
+## `widgetPayment()` Function
 
+### Function Signature
+| Name | Value |
+| ------------- | ------------- |
+| Function Name | `widgetPayment` |
+| Request Parameters | [**WidgetPaymentRequest**](../model/WidgetPaymentRequest.md) |
+| Return Type | [**WidgetPaymentResponse**](../model/WidgetPaymentResponse.md) |
 
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **refundOrderRequest** | [**RefundOrderRequest**](RefundOrderRequest.md)|  | |
-
-### Return type
-
-[**RefundOrderResponse**](RefundOrderResponse.md)
-
-### Authorization
-
-[ORIGIN](../README.md#ORIGIN), [X_PARTNER_ID](../README.md#X_PARTNER_ID), [CHANNEL_ID](../README.md#CHANNEL_ID), [PRIVATE_KEY](../README.md#PRIVATE_KEY), [PRIVATE_KEY_PATH](../README.md#PRIVATE_KEY_PATH)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Refund order response |  -  |
-
-
-## widgetPayment
-
-> WidgetPaymentResponse widgetPayment(widgetPaymentRequest)
-
-Widget Payment - Widget
-
-This API is used to initiate payment from merchant&#39;s platform to DANA
-
-### Example
-
+### Usage Example
 ```java
-// Import classes:
-import id.dana.invoker.ApiClient;
-import id.dana.invoker.ApiException;
-import id.dana.invoker.Configuration;
-import id.dana.invoker.auth.*;
-import id.dana.invoker.models.*;
+import id.dana.invoker.Dana;
+import id.dana.invoker.model.DanaConfig;
+import id.dana.invoker.model.constant.EnvKey;
+import id.dana.invoker.model.enumeration.DanaEnvironment;
 import id.dana.widget.v1.api.WidgetApi;
+
+import id.dana.util.ConfigUtil;
 
 public class Example {
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://api.saas.dana.id");
-        
-        // Configure API key authorization: ORIGIN
-        ApiKeyAuth ORIGIN = (ApiKeyAuth) defaultClient.getAuthentication("ORIGIN");
-        ORIGIN.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //ORIGIN.setApiKeyPrefix("Token");
+        DanaConfig.Builder danaConfigBuilder = new DanaConfig.Builder();
+        danaConfigBuilder
+            .partnerId(ConfigUtil.getConfig("X_PARTNER_ID", ""))
+            .privateKey(ConfigUtil.getConfig("PRIVATE_KEY", ""))
+            .origin(ConfigUtil.getConfig("ORIGIN", ""))
+            .env(DanaEnvironment.getByName(ConfigUtil.getConfig(EnvKey.ENV, "SANDBOX")));
 
-        // Configure API key authorization: X_PARTNER_ID
-        ApiKeyAuth X_PARTNER_ID = (ApiKeyAuth) defaultClient.getAuthentication("X_PARTNER_ID");
-        X_PARTNER_ID.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //X_PARTNER_ID.setApiKeyPrefix("Token");
+        DanaConfig.getInstance(danaConfigBuilder);
 
-        // Configure API key authorization: CHANNEL_ID
-        ApiKeyAuth CHANNEL_ID = (ApiKeyAuth) defaultClient.getAuthentication("CHANNEL_ID");
-        CHANNEL_ID.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //CHANNEL_ID.setApiKeyPrefix("Token");
+        WidgetApi api = Dana.getInstance().getWidgetApi();
 
-        // Configure API key authorization: PRIVATE_KEY
-        ApiKeyAuth PRIVATE_KEY = (ApiKeyAuth) defaultClient.getAuthentication("PRIVATE_KEY");
-        PRIVATE_KEY.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //PRIVATE_KEY.setApiKeyPrefix("Token");
-
-        // Configure API key authorization: PRIVATE_KEY_PATH
-        ApiKeyAuth PRIVATE_KEY_PATH = (ApiKeyAuth) defaultClient.getAuthentication("PRIVATE_KEY_PATH");
-        PRIVATE_KEY_PATH.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //PRIVATE_KEY_PATH.setApiKeyPrefix("Token");
-
-        // Configure API key authorization: ENV
-        ApiKeyAuth ENV = (ApiKeyAuth) defaultClient.getAuthentication("ENV");
-        ENV.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //ENV.setApiKeyPrefix("Token");
-
-        WidgetApi apiInstance = new WidgetApi(defaultClient);
-        WidgetPaymentRequest widgetPaymentRequest = new WidgetPaymentRequest(); // WidgetPaymentRequest | 
-        try {
-            WidgetPaymentResponse result = apiInstance.widgetPayment(widgetPaymentRequest);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling WidgetApi#widgetPayment");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
+        WidgetPaymentRequest widgetPaymentRequest = new WidgetPaymentRequest();
+        WidgetPaymentResponse response = api.widgetPayment(widgetPaymentRequest);
     }
 }
 ```
-
-### Parameters
-
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **widgetPaymentRequest** | [**WidgetPaymentRequest**](WidgetPaymentRequest.md)|  | |
-
-### Return type
-
-[**WidgetPaymentResponse**](WidgetPaymentResponse.md)
-
-### Authorization
-
-[ORIGIN](../README.md#ORIGIN), [X_PARTNER_ID](../README.md#X_PARTNER_ID), [CHANNEL_ID](../README.md#CHANNEL_ID), [PRIVATE_KEY](../README.md#PRIVATE_KEY), [PRIVATE_KEY_PATH](../README.md#PRIVATE_KEY_PATH), [ENV](../README.md#ENV)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Widget payment response |  -  |
 

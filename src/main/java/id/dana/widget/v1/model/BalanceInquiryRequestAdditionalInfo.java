@@ -17,17 +17,36 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * Additional information
+ * BalanceInquiryRequestAdditionalInfo
  */
 @JsonPropertyOrder({
-  BalanceInquiryRequestAdditionalInfo.JSON_PROPERTY_ACCESS_TOKEN
+  BalanceInquiryRequestAdditionalInfo.JSON_PROPERTY_ACCESS_TOKEN,
+  BalanceInquiryRequestAdditionalInfo.JSON_PROPERTY_END_USER_IP_ADDRESS,
+  BalanceInquiryRequestAdditionalInfo.JSON_PROPERTY_DEVICE_ID,
+  BalanceInquiryRequestAdditionalInfo.JSON_PROPERTY_LATITUDE,
+  BalanceInquiryRequestAdditionalInfo.JSON_PROPERTY_LONGITUDE
 })
-@JsonTypeName("BalanceInquiryRequest_additionalInfo")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.12.0")
 public class BalanceInquiryRequestAdditionalInfo {
   public static final String JSON_PROPERTY_ACCESS_TOKEN = "accessToken";
   @javax.annotation.Nonnull
   private String accessToken;
+
+  public static final String JSON_PROPERTY_END_USER_IP_ADDRESS = "endUserIpAddress";
+  @javax.annotation.Nullable
+  private String endUserIpAddress;
+
+  public static final String JSON_PROPERTY_DEVICE_ID = "deviceId";
+  @javax.annotation.Nonnull
+  private String deviceId;
+
+  public static final String JSON_PROPERTY_LATITUDE = "latitude";
+  @javax.annotation.Nullable
+  private String latitude;
+
+  public static final String JSON_PROPERTY_LONGITUDE = "longitude";
+  @javax.annotation.Nullable
+  private String longitude;
 
   public BalanceInquiryRequestAdditionalInfo() {
   }
@@ -39,7 +58,7 @@ public class BalanceInquiryRequestAdditionalInfo {
   }
 
   /**
-   * Contains customer token, which has been obtained from binding process, refer to Account Binding &amp; Unbinding documentation 
+   * Contains customer token, which has been obtained from binding process
    * @return accessToken
    */
   @javax.annotation.Nonnull
@@ -57,6 +76,106 @@ public class BalanceInquiryRequestAdditionalInfo {
     this.accessToken = accessToken;
   }
 
+  public BalanceInquiryRequestAdditionalInfo endUserIpAddress(@javax.annotation.Nullable String endUserIpAddress) {
+    
+    this.endUserIpAddress = endUserIpAddress;
+    return this;
+  }
+
+  /**
+   * IP address of the end user (customer) using IPv4 format
+   * @return endUserIpAddress
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_END_USER_IP_ADDRESS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getEndUserIpAddress() {
+    return endUserIpAddress;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_END_USER_IP_ADDRESS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setEndUserIpAddress(@javax.annotation.Nullable String endUserIpAddress) {
+    this.endUserIpAddress = endUserIpAddress;
+  }
+
+  public BalanceInquiryRequestAdditionalInfo deviceId(@javax.annotation.Nonnull String deviceId) {
+    
+    this.deviceId = deviceId;
+    return this;
+  }
+
+  /**
+   * Device identification on which the API services is currently being accessed by the end user (customer)
+   * @return deviceId
+   */
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_DEVICE_ID)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public String getDeviceId() {
+    return deviceId;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_DEVICE_ID)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setDeviceId(@javax.annotation.Nonnull String deviceId) {
+    this.deviceId = deviceId;
+  }
+
+  public BalanceInquiryRequestAdditionalInfo latitude(@javax.annotation.Nullable String latitude) {
+    
+    this.latitude = latitude;
+    return this;
+  }
+
+  /**
+   * Location on which the API services is currently being accessed by the end user (customer), refer to ISO 6709 standard representation of geographic point location by coordinates
+   * @return latitude
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_LATITUDE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getLatitude() {
+    return latitude;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_LATITUDE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setLatitude(@javax.annotation.Nullable String latitude) {
+    this.latitude = latitude;
+  }
+
+  public BalanceInquiryRequestAdditionalInfo longitude(@javax.annotation.Nullable String longitude) {
+    
+    this.longitude = longitude;
+    return this;
+  }
+
+  /**
+   * Location on which the API services is currently being accessed by the end user (customer), refer to ISO 6709 Standard representation of geographic point location by coordinates
+   * @return longitude
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_LONGITUDE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getLongitude() {
+    return longitude;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_LONGITUDE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setLongitude(@javax.annotation.Nullable String longitude) {
+    this.longitude = longitude;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -66,12 +185,16 @@ public class BalanceInquiryRequestAdditionalInfo {
       return false;
     }
     BalanceInquiryRequestAdditionalInfo balanceInquiryRequestAdditionalInfo = (BalanceInquiryRequestAdditionalInfo) o;
-    return Objects.equals(this.accessToken, balanceInquiryRequestAdditionalInfo.accessToken);
+    return Objects.equals(this.accessToken, balanceInquiryRequestAdditionalInfo.accessToken) &&
+        Objects.equals(this.endUserIpAddress, balanceInquiryRequestAdditionalInfo.endUserIpAddress) &&
+        Objects.equals(this.deviceId, balanceInquiryRequestAdditionalInfo.deviceId) &&
+        Objects.equals(this.latitude, balanceInquiryRequestAdditionalInfo.latitude) &&
+        Objects.equals(this.longitude, balanceInquiryRequestAdditionalInfo.longitude);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(accessToken);
+    return Objects.hash(accessToken, endUserIpAddress, deviceId, latitude, longitude);
   }
 
   @Override
@@ -79,6 +202,10 @@ public class BalanceInquiryRequestAdditionalInfo {
     StringBuilder sb = new StringBuilder();
     sb.append("class BalanceInquiryRequestAdditionalInfo {\n");
     sb.append("    accessToken: ").append(toIndentedString(accessToken)).append("\n");
+    sb.append("    endUserIpAddress: ").append(toIndentedString(endUserIpAddress)).append("\n");
+    sb.append("    deviceId: ").append(toIndentedString(deviceId)).append("\n");
+    sb.append("    latitude: ").append(toIndentedString(latitude)).append("\n");
+    sb.append("    longitude: ").append(toIndentedString(longitude)).append("\n");
     sb.append("}");
     return sb.toString();
   }

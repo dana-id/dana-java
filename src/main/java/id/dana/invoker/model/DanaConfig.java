@@ -56,6 +56,11 @@ public class DanaConfig {
       return this;
     }
 
+    public Builder clientSecret(String clientSecret) {
+      this.clientSecret = clientSecret;
+      return this;
+    }
+
     private static String loadPrivateKey() {
       String privateKeyPath = ConfigUtil.getConfig(EnvKey.PRIVATE_KEY_PATH, "");
       if (!privateKeyPath.isEmpty()) {

@@ -100,7 +100,7 @@ interface WidgetApiService {
    */
   @Headers({
     "Content-Type:application/json",
-    "X-API-TYPE:SNAP_B2B"
+    "X-API-TYPE:SNAP_B2B2C"
   })
   @POST("v1.0/balance-inquiry.htm")
   Call<BalanceInquiryResponse> balanceInquiry(

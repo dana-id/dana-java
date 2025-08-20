@@ -7,6 +7,7 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
+|**name** | **String** | Goods name |  |
 |**merchantGoodsId** | **String** | Goods identifier provided by merchant |  |
 |**description** | **String** | Goods description |  |
 |**category** | **String** | Goods category |  |

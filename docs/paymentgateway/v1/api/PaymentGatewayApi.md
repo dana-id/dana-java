@@ -1,512 +1,236 @@
 # PaymentGatewayApi
 
-All URIs are relative to *https://api.saas.dana.id*
+You can use the APIs below to interface with DANA's `PaymentGatewayApi` API.
+To start using the API, you need to destruct instantiated DANA client. This client would be a singleton object that you can use across various api and operation.
+
+```java
+import id.dana.invoker.Dana;
+import id.dana.invoker.model.DanaConfig;
+import id.dana.invoker.model.constant.EnvKey;
+import id.dana.invoker.model.enumeration.DanaEnvironment;
+import id.dana.paymentgateway.v1.api.PaymentGatewayApi;
+
+import id.dana.util.ConfigUtil;
+
+public class Example {
+    public static void main(String[] args) {
+        DanaConfig.Builder danaConfigBuilder = new DanaConfig.Builder();
+        danaConfigBuilder
+            .partnerId(ConfigUtil.getConfig("X_PARTNER_ID", ""))
+            .privateKey(ConfigUtil.getConfig("PRIVATE_KEY", ""))
+            .origin(ConfigUtil.getConfig("ORIGIN", ""))
+            .env(DanaEnvironment.getByName(ConfigUtil.getConfig(EnvKey.ENV, "SANDBOX")));
+
+        DanaConfig.getInstance(danaConfigBuilder);
+
+        PaymentGatewayApi api = Dana.getInstance().getPaymentGatewayApi();
+    }
+}
+```
+
+All URIs are relative to *https://api.saas.dana.id*, except if the operation defines another base path (for sandbox it is http://api.sandbox.dana.id).
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**cancelOrder**](PaymentGatewayApi.md#cancelOrder) | **POST** payment-gateway/v1.0/debit/cancel.htm | Cancel Order - Payment Gateway |
-| [**consultPay**](PaymentGatewayApi.md#consultPay) | **POST** v1.0/payment-gateway/consult-pay.htm | Consult Pay - Payment Gateway |
-| [**createOrder**](PaymentGatewayApi.md#createOrder) | **POST** payment-gateway/v1.0/debit/payment-host-to-host.htm | Create Order - Payment Gateway |
-| [**queryPayment**](PaymentGatewayApi.md#queryPayment) | **POST** payment-gateway/v1.0/debit/status.htm | Query Payment - Payment Gateway |
-| [**refundOrder**](PaymentGatewayApi.md#refundOrder) | **POST** payment-gateway/v1.0/debit/refund.htm | Refund Order - Payment Gateway |
+| [**cancelOrder**](PaymentGatewayApi.md#cancelOrder) | **POST** payment-gateway/v1.0/debit/cancel.htm | This API is used to cancel the order from merchant&#39;s platform to DANA |
+| [**consultPay**](PaymentGatewayApi.md#consultPay) | **POST** v1.0/payment-gateway/consult-pay.htm | This API is used to consult the list of payment methods or payment channels that user has and used in certain transactions or orders |
+| [**createOrder**](PaymentGatewayApi.md#createOrder) | **POST** payment-gateway/v1.0/debit/payment-host-to-host.htm | This API is used for merchant to create order in DANA side |
+| [**queryPayment**](PaymentGatewayApi.md#queryPayment) | **POST** payment-gateway/v1.0/debit/status.htm | This API is used to inquiry payment status and information from merchant&#39;s platform to DANA |
+| [**refundOrder**](PaymentGatewayApi.md#refundOrder) | **POST** payment-gateway/v1.0/debit/refund.htm | This API is used to refund the order from merchant&#39;s platform to DANA |
 
 
+<a name="cancelOrder"></a>
+## `cancelOrder()` Function
 
-## cancelOrder
+### Function Signature
+| Name | Value |
+| ------------- | ------------- |
+| Function Name | `cancelOrder` |
+| Request Parameters | [**CancelOrderRequest**](../model/CancelOrderRequest.md) |
+| Return Type | [**CancelOrderResponse**](../model/CancelOrderResponse.md) |
 
-> CancelOrderResponse cancelOrder(cancelOrderRequest)
-
-Cancel Order - Payment Gateway
-
-This API is used to cancel the order from merchant&#39;s platform to DANA
-
-### Example
-
+### Usage Example
 ```java
-// Import classes:
-import id.dana.invoker.ApiClient;
-import id.dana.invoker.ApiException;
-import id.dana.invoker.Configuration;
-import id.dana.invoker.auth.*;
-import id.dana.invoker.models.*;
+import id.dana.invoker.Dana;
+import id.dana.invoker.model.DanaConfig;
+import id.dana.invoker.model.constant.EnvKey;
+import id.dana.invoker.model.enumeration.DanaEnvironment;
 import id.dana.paymentgateway.v1.api.PaymentGatewayApi;
+
+import id.dana.util.ConfigUtil;
 
 public class Example {
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://api.saas.dana.id");
-        
-        // Configure API key authorization: ORIGIN
-        ApiKeyAuth ORIGIN = (ApiKeyAuth) defaultClient.getAuthentication("ORIGIN");
-        ORIGIN.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //ORIGIN.setApiKeyPrefix("Token");
+        DanaConfig.Builder danaConfigBuilder = new DanaConfig.Builder();
+        danaConfigBuilder
+            .partnerId(ConfigUtil.getConfig("X_PARTNER_ID", ""))
+            .privateKey(ConfigUtil.getConfig("PRIVATE_KEY", ""))
+            .origin(ConfigUtil.getConfig("ORIGIN", ""))
+            .env(DanaEnvironment.getByName(ConfigUtil.getConfig(EnvKey.ENV, "SANDBOX")));
 
-        // Configure API key authorization: X_PARTNER_ID
-        ApiKeyAuth X_PARTNER_ID = (ApiKeyAuth) defaultClient.getAuthentication("X_PARTNER_ID");
-        X_PARTNER_ID.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //X_PARTNER_ID.setApiKeyPrefix("Token");
+        DanaConfig.getInstance(danaConfigBuilder);
 
-        // Configure API key authorization: CHANNEL_ID
-        ApiKeyAuth CHANNEL_ID = (ApiKeyAuth) defaultClient.getAuthentication("CHANNEL_ID");
-        CHANNEL_ID.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //CHANNEL_ID.setApiKeyPrefix("Token");
+        PaymentGatewayApi api = Dana.getInstance().getPaymentGatewayApi();
 
-        // Configure API key authorization: PRIVATE_KEY
-        ApiKeyAuth PRIVATE_KEY = (ApiKeyAuth) defaultClient.getAuthentication("PRIVATE_KEY");
-        PRIVATE_KEY.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //PRIVATE_KEY.setApiKeyPrefix("Token");
-
-        // Configure API key authorization: PRIVATE_KEY_PATH
-        ApiKeyAuth PRIVATE_KEY_PATH = (ApiKeyAuth) defaultClient.getAuthentication("PRIVATE_KEY_PATH");
-        PRIVATE_KEY_PATH.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //PRIVATE_KEY_PATH.setApiKeyPrefix("Token");
-
-        PaymentGatewayApi apiInstance = new PaymentGatewayApi(defaultClient);
-        CancelOrderRequest cancelOrderRequest = new CancelOrderRequest(); // CancelOrderRequest | 
-        try {
-            CancelOrderResponse result = apiInstance.cancelOrder(cancelOrderRequest);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling PaymentGatewayApi#cancelOrder");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
+        CancelOrderRequest cancelOrderRequest = new CancelOrderRequest();
+        CancelOrderResponse response = api.cancelOrder(cancelOrderRequest);
     }
 }
 ```
 
-### Parameters
+<a name="consultPay"></a>
+## `consultPay()` Function
 
+### Function Signature
+| Name | Value |
+| ------------- | ------------- |
+| Function Name | `consultPay` |
+| Request Parameters | [**ConsultPayRequest**](../model/ConsultPayRequest.md) |
+| Return Type | [**ConsultPayResponse**](../model/ConsultPayResponse.md) |
 
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **cancelOrderRequest** | [**CancelOrderRequest**](CancelOrderRequest.md)|  | |
-
-### Return type
-
-[**CancelOrderResponse**](CancelOrderResponse.md)
-
-### Authorization
-
-[ORIGIN](../README.md#ORIGIN), [X_PARTNER_ID](../README.md#X_PARTNER_ID), [CHANNEL_ID](../README.md#CHANNEL_ID), [PRIVATE_KEY](../README.md#PRIVATE_KEY), [PRIVATE_KEY_PATH](../README.md#PRIVATE_KEY_PATH)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Cancel order response |  -  |
-| **202** | Cancel order in progress response |  -  |
-
-
-## consultPay
-
-> ConsultPayResponse consultPay(consultPayRequest)
-
-Consult Pay - Payment Gateway
-
-This API is used to consult the list of payment methods or payment channels that user has and used in certain transactions or orders
-
-### Example
-
+### Usage Example
 ```java
-// Import classes:
-import id.dana.invoker.ApiClient;
-import id.dana.invoker.ApiException;
-import id.dana.invoker.Configuration;
-import id.dana.invoker.auth.*;
-import id.dana.invoker.models.*;
+import id.dana.invoker.Dana;
+import id.dana.invoker.model.DanaConfig;
+import id.dana.invoker.model.constant.EnvKey;
+import id.dana.invoker.model.enumeration.DanaEnvironment;
 import id.dana.paymentgateway.v1.api.PaymentGatewayApi;
+
+import id.dana.util.ConfigUtil;
 
 public class Example {
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://api.saas.dana.id");
-        
-        // Configure API key authorization: ORIGIN
-        ApiKeyAuth ORIGIN = (ApiKeyAuth) defaultClient.getAuthentication("ORIGIN");
-        ORIGIN.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //ORIGIN.setApiKeyPrefix("Token");
+        DanaConfig.Builder danaConfigBuilder = new DanaConfig.Builder();
+        danaConfigBuilder
+            .partnerId(ConfigUtil.getConfig("X_PARTNER_ID", ""))
+            .privateKey(ConfigUtil.getConfig("PRIVATE_KEY", ""))
+            .origin(ConfigUtil.getConfig("ORIGIN", ""))
+            .env(DanaEnvironment.getByName(ConfigUtil.getConfig(EnvKey.ENV, "SANDBOX")));
 
-        // Configure API key authorization: X_PARTNER_ID
-        ApiKeyAuth X_PARTNER_ID = (ApiKeyAuth) defaultClient.getAuthentication("X_PARTNER_ID");
-        X_PARTNER_ID.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //X_PARTNER_ID.setApiKeyPrefix("Token");
+        DanaConfig.getInstance(danaConfigBuilder);
 
-        // Configure API key authorization: CHANNEL_ID
-        ApiKeyAuth CHANNEL_ID = (ApiKeyAuth) defaultClient.getAuthentication("CHANNEL_ID");
-        CHANNEL_ID.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //CHANNEL_ID.setApiKeyPrefix("Token");
+        PaymentGatewayApi api = Dana.getInstance().getPaymentGatewayApi();
 
-        // Configure API key authorization: PRIVATE_KEY
-        ApiKeyAuth PRIVATE_KEY = (ApiKeyAuth) defaultClient.getAuthentication("PRIVATE_KEY");
-        PRIVATE_KEY.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //PRIVATE_KEY.setApiKeyPrefix("Token");
-
-        // Configure API key authorization: PRIVATE_KEY_PATH
-        ApiKeyAuth PRIVATE_KEY_PATH = (ApiKeyAuth) defaultClient.getAuthentication("PRIVATE_KEY_PATH");
-        PRIVATE_KEY_PATH.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //PRIVATE_KEY_PATH.setApiKeyPrefix("Token");
-
-        // Configure API key authorization: ENV
-        ApiKeyAuth ENV = (ApiKeyAuth) defaultClient.getAuthentication("ENV");
-        ENV.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //ENV.setApiKeyPrefix("Token");
-
-        PaymentGatewayApi apiInstance = new PaymentGatewayApi(defaultClient);
-        ConsultPayRequest consultPayRequest = new ConsultPayRequest(); // ConsultPayRequest | 
-        try {
-            ConsultPayResponse result = apiInstance.consultPay(consultPayRequest);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling PaymentGatewayApi#consultPay");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
+        ConsultPayRequest consultPayRequest = new ConsultPayRequest();
+        ConsultPayResponse response = api.consultPay(consultPayRequest);
     }
 }
 ```
 
-### Parameters
+<a name="createOrder"></a>
+## `createOrder()` Function
 
+### Function Signature
+| Name | Value |
+| ------------- | ------------- |
+| Function Name | `createOrder` |
+| Request Parameters | [**CreateOrderRequest**](../model/CreateOrderRequest.md) |
+| Return Type | [**CreateOrderResponse**](../model/CreateOrderResponse.md) |
 
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **consultPayRequest** | [**ConsultPayRequest**](ConsultPayRequest.md)|  | |
-
-### Return type
-
-[**ConsultPayResponse**](ConsultPayResponse.md)
-
-### Authorization
-
-[ORIGIN](../README.md#ORIGIN), [X_PARTNER_ID](../README.md#X_PARTNER_ID), [CHANNEL_ID](../README.md#CHANNEL_ID), [PRIVATE_KEY](../README.md#PRIVATE_KEY), [PRIVATE_KEY_PATH](../README.md#PRIVATE_KEY_PATH), [ENV](../README.md#ENV)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Consult pay response |  -  |
-
-
-## createOrder
-
-> CreateOrderResponse createOrder(createOrderRequest)
-
-Create Order - Payment Gateway
-
-This API is used for merchant to create order in DANA side
-
-### Example
-
+### Usage Example
 ```java
-// Import classes:
-import id.dana.invoker.ApiClient;
-import id.dana.invoker.ApiException;
-import id.dana.invoker.Configuration;
-import id.dana.invoker.auth.*;
-import id.dana.invoker.models.*;
+import id.dana.invoker.Dana;
+import id.dana.invoker.model.DanaConfig;
+import id.dana.invoker.model.constant.EnvKey;
+import id.dana.invoker.model.enumeration.DanaEnvironment;
 import id.dana.paymentgateway.v1.api.PaymentGatewayApi;
+
+import id.dana.util.ConfigUtil;
 
 public class Example {
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://api.saas.dana.id");
-        
-        // Configure API key authorization: ORIGIN
-        ApiKeyAuth ORIGIN = (ApiKeyAuth) defaultClient.getAuthentication("ORIGIN");
-        ORIGIN.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //ORIGIN.setApiKeyPrefix("Token");
+        DanaConfig.Builder danaConfigBuilder = new DanaConfig.Builder();
+        danaConfigBuilder
+            .partnerId(ConfigUtil.getConfig("X_PARTNER_ID", ""))
+            .privateKey(ConfigUtil.getConfig("PRIVATE_KEY", ""))
+            .origin(ConfigUtil.getConfig("ORIGIN", ""))
+            .env(DanaEnvironment.getByName(ConfigUtil.getConfig(EnvKey.ENV, "SANDBOX")));
 
-        // Configure API key authorization: X_PARTNER_ID
-        ApiKeyAuth X_PARTNER_ID = (ApiKeyAuth) defaultClient.getAuthentication("X_PARTNER_ID");
-        X_PARTNER_ID.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //X_PARTNER_ID.setApiKeyPrefix("Token");
+        DanaConfig.getInstance(danaConfigBuilder);
 
-        // Configure API key authorization: CHANNEL_ID
-        ApiKeyAuth CHANNEL_ID = (ApiKeyAuth) defaultClient.getAuthentication("CHANNEL_ID");
-        CHANNEL_ID.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //CHANNEL_ID.setApiKeyPrefix("Token");
+        PaymentGatewayApi api = Dana.getInstance().getPaymentGatewayApi();
 
-        // Configure API key authorization: PRIVATE_KEY
-        ApiKeyAuth PRIVATE_KEY = (ApiKeyAuth) defaultClient.getAuthentication("PRIVATE_KEY");
-        PRIVATE_KEY.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //PRIVATE_KEY.setApiKeyPrefix("Token");
-
-        // Configure API key authorization: PRIVATE_KEY_PATH
-        ApiKeyAuth PRIVATE_KEY_PATH = (ApiKeyAuth) defaultClient.getAuthentication("PRIVATE_KEY_PATH");
-        PRIVATE_KEY_PATH.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //PRIVATE_KEY_PATH.setApiKeyPrefix("Token");
-
-        // Configure API key authorization: ENV
-        ApiKeyAuth ENV = (ApiKeyAuth) defaultClient.getAuthentication("ENV");
-        ENV.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //ENV.setApiKeyPrefix("Token");
-
-        PaymentGatewayApi apiInstance = new PaymentGatewayApi(defaultClient);
-        CreateOrderRequest createOrderRequest = new CreateOrderRequest(); // CreateOrderRequest | 
-        try {
-            CreateOrderResponse result = apiInstance.createOrder(createOrderRequest);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling PaymentGatewayApi#createOrder");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
+        CreateOrderRequest createOrderRequest = new CreateOrderRequest();
+        CreateOrderResponse response = api.createOrder(createOrderRequest);
     }
 }
 ```
 
-### Parameters
+<a name="queryPayment"></a>
+## `queryPayment()` Function
 
+### Function Signature
+| Name | Value |
+| ------------- | ------------- |
+| Function Name | `queryPayment` |
+| Request Parameters | [**QueryPaymentRequest**](../model/QueryPaymentRequest.md) |
+| Return Type | [**QueryPaymentResponse**](../model/QueryPaymentResponse.md) |
 
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **createOrderRequest** | [**CreateOrderRequest**](CreateOrderRequest.md)|  | |
-
-### Return type
-
-[**CreateOrderResponse**](CreateOrderResponse.md)
-
-### Authorization
-
-[ORIGIN](../README.md#ORIGIN), [X_PARTNER_ID](../README.md#X_PARTNER_ID), [CHANNEL_ID](../README.md#CHANNEL_ID), [PRIVATE_KEY](../README.md#PRIVATE_KEY), [PRIVATE_KEY_PATH](../README.md#PRIVATE_KEY_PATH), [ENV](../README.md#ENV)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Create order response |  -  |
-
-
-## queryPayment
-
-> QueryPaymentResponse queryPayment(queryPaymentRequest)
-
-Query Payment - Payment Gateway
-
-This API is used to inquiry payment status and information from merchant&#39;s platform to DANA
-
-### Example
-
+### Usage Example
 ```java
-// Import classes:
-import id.dana.invoker.ApiClient;
-import id.dana.invoker.ApiException;
-import id.dana.invoker.Configuration;
-import id.dana.invoker.auth.*;
-import id.dana.invoker.models.*;
+import id.dana.invoker.Dana;
+import id.dana.invoker.model.DanaConfig;
+import id.dana.invoker.model.constant.EnvKey;
+import id.dana.invoker.model.enumeration.DanaEnvironment;
 import id.dana.paymentgateway.v1.api.PaymentGatewayApi;
+
+import id.dana.util.ConfigUtil;
 
 public class Example {
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://api.saas.dana.id");
-        
-        // Configure API key authorization: ORIGIN
-        ApiKeyAuth ORIGIN = (ApiKeyAuth) defaultClient.getAuthentication("ORIGIN");
-        ORIGIN.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //ORIGIN.setApiKeyPrefix("Token");
+        DanaConfig.Builder danaConfigBuilder = new DanaConfig.Builder();
+        danaConfigBuilder
+            .partnerId(ConfigUtil.getConfig("X_PARTNER_ID", ""))
+            .privateKey(ConfigUtil.getConfig("PRIVATE_KEY", ""))
+            .origin(ConfigUtil.getConfig("ORIGIN", ""))
+            .env(DanaEnvironment.getByName(ConfigUtil.getConfig(EnvKey.ENV, "SANDBOX")));
 
-        // Configure API key authorization: X_PARTNER_ID
-        ApiKeyAuth X_PARTNER_ID = (ApiKeyAuth) defaultClient.getAuthentication("X_PARTNER_ID");
-        X_PARTNER_ID.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //X_PARTNER_ID.setApiKeyPrefix("Token");
+        DanaConfig.getInstance(danaConfigBuilder);
 
-        // Configure API key authorization: CHANNEL_ID
-        ApiKeyAuth CHANNEL_ID = (ApiKeyAuth) defaultClient.getAuthentication("CHANNEL_ID");
-        CHANNEL_ID.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //CHANNEL_ID.setApiKeyPrefix("Token");
+        PaymentGatewayApi api = Dana.getInstance().getPaymentGatewayApi();
 
-        // Configure API key authorization: PRIVATE_KEY
-        ApiKeyAuth PRIVATE_KEY = (ApiKeyAuth) defaultClient.getAuthentication("PRIVATE_KEY");
-        PRIVATE_KEY.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //PRIVATE_KEY.setApiKeyPrefix("Token");
-
-        // Configure API key authorization: PRIVATE_KEY_PATH
-        ApiKeyAuth PRIVATE_KEY_PATH = (ApiKeyAuth) defaultClient.getAuthentication("PRIVATE_KEY_PATH");
-        PRIVATE_KEY_PATH.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //PRIVATE_KEY_PATH.setApiKeyPrefix("Token");
-
-        PaymentGatewayApi apiInstance = new PaymentGatewayApi(defaultClient);
-        QueryPaymentRequest queryPaymentRequest = new QueryPaymentRequest(); // QueryPaymentRequest | 
-        try {
-            QueryPaymentResponse result = apiInstance.queryPayment(queryPaymentRequest);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling PaymentGatewayApi#queryPayment");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
+        QueryPaymentRequest queryPaymentRequest = new QueryPaymentRequest();
+        QueryPaymentResponse response = api.queryPayment(queryPaymentRequest);
     }
 }
 ```
 
-### Parameters
+<a name="refundOrder"></a>
+## `refundOrder()` Function
 
+### Function Signature
+| Name | Value |
+| ------------- | ------------- |
+| Function Name | `refundOrder` |
+| Request Parameters | [**RefundOrderRequest**](../model/RefundOrderRequest.md) |
+| Return Type | [**RefundOrderResponse**](../model/RefundOrderResponse.md) |
 
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **queryPaymentRequest** | [**QueryPaymentRequest**](QueryPaymentRequest.md)|  | |
-
-### Return type
-
-[**QueryPaymentResponse**](QueryPaymentResponse.md)
-
-### Authorization
-
-[ORIGIN](../README.md#ORIGIN), [X_PARTNER_ID](../README.md#X_PARTNER_ID), [CHANNEL_ID](../README.md#CHANNEL_ID), [PRIVATE_KEY](../README.md#PRIVATE_KEY), [PRIVATE_KEY_PATH](../README.md#PRIVATE_KEY_PATH)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Query payment response |  -  |
-
-
-## refundOrder
-
-> RefundOrderResponse refundOrder(refundOrderRequest)
-
-Refund Order - Payment Gateway
-
-This API is used to refund the order from merchant&#39;s platform to DANA
-
-### Example
-
+### Usage Example
 ```java
-// Import classes:
-import id.dana.invoker.ApiClient;
-import id.dana.invoker.ApiException;
-import id.dana.invoker.Configuration;
-import id.dana.invoker.auth.*;
-import id.dana.invoker.models.*;
+import id.dana.invoker.Dana;
+import id.dana.invoker.model.DanaConfig;
+import id.dana.invoker.model.constant.EnvKey;
+import id.dana.invoker.model.enumeration.DanaEnvironment;
 import id.dana.paymentgateway.v1.api.PaymentGatewayApi;
+
+import id.dana.util.ConfigUtil;
 
 public class Example {
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://api.saas.dana.id");
-        
-        // Configure API key authorization: ORIGIN
-        ApiKeyAuth ORIGIN = (ApiKeyAuth) defaultClient.getAuthentication("ORIGIN");
-        ORIGIN.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //ORIGIN.setApiKeyPrefix("Token");
+        DanaConfig.Builder danaConfigBuilder = new DanaConfig.Builder();
+        danaConfigBuilder
+            .partnerId(ConfigUtil.getConfig("X_PARTNER_ID", ""))
+            .privateKey(ConfigUtil.getConfig("PRIVATE_KEY", ""))
+            .origin(ConfigUtil.getConfig("ORIGIN", ""))
+            .env(DanaEnvironment.getByName(ConfigUtil.getConfig(EnvKey.ENV, "SANDBOX")));
 
-        // Configure API key authorization: X_PARTNER_ID
-        ApiKeyAuth X_PARTNER_ID = (ApiKeyAuth) defaultClient.getAuthentication("X_PARTNER_ID");
-        X_PARTNER_ID.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //X_PARTNER_ID.setApiKeyPrefix("Token");
+        DanaConfig.getInstance(danaConfigBuilder);
 
-        // Configure API key authorization: CHANNEL_ID
-        ApiKeyAuth CHANNEL_ID = (ApiKeyAuth) defaultClient.getAuthentication("CHANNEL_ID");
-        CHANNEL_ID.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //CHANNEL_ID.setApiKeyPrefix("Token");
+        PaymentGatewayApi api = Dana.getInstance().getPaymentGatewayApi();
 
-        // Configure API key authorization: PRIVATE_KEY
-        ApiKeyAuth PRIVATE_KEY = (ApiKeyAuth) defaultClient.getAuthentication("PRIVATE_KEY");
-        PRIVATE_KEY.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //PRIVATE_KEY.setApiKeyPrefix("Token");
-
-        // Configure API key authorization: PRIVATE_KEY_PATH
-        ApiKeyAuth PRIVATE_KEY_PATH = (ApiKeyAuth) defaultClient.getAuthentication("PRIVATE_KEY_PATH");
-        PRIVATE_KEY_PATH.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //PRIVATE_KEY_PATH.setApiKeyPrefix("Token");
-
-        PaymentGatewayApi apiInstance = new PaymentGatewayApi(defaultClient);
-        RefundOrderRequest refundOrderRequest = new RefundOrderRequest(); // RefundOrderRequest | 
-        try {
-            RefundOrderResponse result = apiInstance.refundOrder(refundOrderRequest);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling PaymentGatewayApi#refundOrder");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
+        RefundOrderRequest refundOrderRequest = new RefundOrderRequest();
+        RefundOrderResponse response = api.refundOrder(refundOrderRequest);
     }
 }
 ```
-
-### Parameters
-
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **refundOrderRequest** | [**RefundOrderRequest**](RefundOrderRequest.md)|  | |
-
-### Return type
-
-[**RefundOrderResponse**](RefundOrderResponse.md)
-
-### Authorization
-
-[ORIGIN](../README.md#ORIGIN), [X_PARTNER_ID](../README.md#X_PARTNER_ID), [CHANNEL_ID](../README.md#CHANNEL_ID), [PRIVATE_KEY](../README.md#PRIVATE_KEY), [PRIVATE_KEY_PATH](../README.md#PRIVATE_KEY_PATH)
-
-### HTTP request headers
-
-- **Content-Type**: application/json
-- **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Refund order response |  -  |
-| **202** | Refund order in progress response |  -  |
 

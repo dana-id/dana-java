@@ -1,15 +1,19 @@
 
 
-# BalanceInquiryRequest
+# TransferToBankResponse
 
 
 ## Properties
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
+|**responseCode** | **String** | Refer to response code list |  |
+|**responseMessage** | **String** | Refer to response code list |  |
+|**referenceNo** | **String** | Transaction identifier on DANA system |  [optional] |
 |**partnerReferenceNo** | **String** | Unique transaction identifier on partner system which assigned to each transaction&lt;br&gt; Notes:&lt;br&gt; If the partner receives a timeout or an unexpected response from DANA and partner expects to perform retry request to DANA, please use the partnerReferenceNo that is the same as the one used in the transaction request process before  |  [optional] |
-|**balanceTypes** | **List&lt;String&gt;** | Information of balance types to specify which balance type expected to be returned. Will return all available balance type if this parameter empty |  [optional] |
-|**additionalInfo** | [**BalanceInquiryRequestAdditionalInfo**](BalanceInquiryRequestAdditionalInfo.md) | Additional information |  |
+|**transactionDate** | **String** | Transaction date, in format YYYY-MM-DDTHH:mm:ss+07:00. Time must be in GMT+7 (Jakarta time) |  [optional] |
+|**referenceNumber** | **String** | Reference number |  |
+|**additionalInfo** | **Object** | Additional information |  [optional] |
 
 
 

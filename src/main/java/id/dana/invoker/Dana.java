@@ -1,5 +1,6 @@
 package id.dana.invoker;
 
+import id.dana.disbursement.v1.api.DisbursementApi;
 import id.dana.invoker.auth.DanaAuth;
 import id.dana.paymentgateway.v1.api.PaymentGatewayApi;
 import id.dana.widget.v1.api.WidgetApi;
@@ -14,6 +15,8 @@ public class Dana {
 
   private final WidgetApi widgetApi;
 
+  private final DisbursementApi disbursementApi;
+
   private final MerchantManagementApi merchantManagementApi;
 
   private Dana() {
@@ -22,6 +25,7 @@ public class Dana {
         .build();
     this.paymentGatewayApi = new PaymentGatewayApi(client);
     this.widgetApi = new WidgetApi(client);
+    this.disbursementApi = new DisbursementApi(client);
     this.merchantManagementApi = new MerchantManagementApi(client);
   }
 
@@ -42,6 +46,10 @@ public class Dana {
 
   public WidgetApi getWidgetApi() {
     return widgetApi;
+  }
+
+  public DisbursementApi getDisbursementApi() {
+    return disbursementApi;
   }
 
   public MerchantManagementApi getMerchantManagementApi() {
