@@ -27,21 +27,42 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.12.0")
 public class StatusDetail {
   /**
-   * Acquirement status. The enums:&lt;br&gt; * INIT - Order is created but not paid yet&lt;br&gt; * SUCCESS - Order is succeeded&lt;br&gt; * CLOSED - Order is closed&lt;br&gt; * PAYING - Order is paid but not finish&lt;br&gt; * MERCHANT_ACCEPT - Order is accepted by merchant after order is paid for PAY-CONFIRM&lt;br&gt; * CANCELLED - Order is cancelled&lt;br&gt; 
+   * Acquirement status. The enums:<br> * INIT - Order is created but not paid yet<br> * SUCCESS - Order is succeeded<br> * CLOSED - Order is closed<br> * PAYING - Order is paid but not finish<br> * MERCHANT_ACCEPT - Order is accepted by merchant after order is paid for PAY-CONFIRM<br> * CANCELLED - Order is cancelled<br> 
    */
   public enum AcquirementStatusEnum {
+    /**
+     * Order is created but not paid yet
+     */
     INIT(String.valueOf("INIT")),
     
+    /**
+     * Order is succeeded
+     */
     SUCCESS(String.valueOf("SUCCESS")),
     
+    /**
+     * Order is closed
+     */
     CLOSED(String.valueOf("CLOSED")),
     
+    /**
+     * Order is paid but not finish
+     */
     PAYING(String.valueOf("PAYING")),
     
+    /**
+     * Order is accepted by merchant after order is paid for PAY-CONFIRM
+     */
     MERCHANT_ACCEPT(String.valueOf("MERCHANT_ACCEPT")),
     
+    /**
+     * Order is cancelled
+     */
     CANCELLED(String.valueOf("CANCELLED")),
     
+    /**
+     * To handle empty string value
+     */
     UNSPECIFIED(String.valueOf(""));
 
     private String value;
@@ -70,7 +91,6 @@ public class StatusDetail {
       throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
   }
-
   public static final String JSON_PROPERTY_ACQUIREMENT_STATUS = "acquirementStatus";
   @javax.annotation.Nonnull
   private AcquirementStatusEnum acquirementStatus;
@@ -93,7 +113,7 @@ public class StatusDetail {
   }
 
   /**
-   * Acquirement status. The enums:&lt;br&gt; * INIT - Order is created but not paid yet&lt;br&gt; * SUCCESS - Order is succeeded&lt;br&gt; * CLOSED - Order is closed&lt;br&gt; * PAYING - Order is paid but not finish&lt;br&gt; * MERCHANT_ACCEPT - Order is accepted by merchant after order is paid for PAY-CONFIRM&lt;br&gt; * CANCELLED - Order is cancelled&lt;br&gt; 
+   * Acquirement status. The enums:<br> * INIT - Order is created but not paid yet<br> * SUCCESS - Order is succeeded<br> * CLOSED - Order is closed<br> * PAYING - Order is paid but not finish<br> * MERCHANT_ACCEPT - Order is accepted by merchant after order is paid for PAY-CONFIRM<br> * CANCELLED - Order is cancelled<br> 
    * @return acquirementStatus
    */
   @javax.annotation.Nonnull
@@ -203,4 +223,3 @@ public class StatusDetail {
   }
 
 }
-

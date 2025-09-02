@@ -74,8 +74,14 @@ public class OrderRedirectObject {
    * For Payment Gateway Drop-in scenario, need to fill it as REDIRECT
    */
   public enum ScenarioEnum {
+    /**
+     * For Payment Gateway Drop-in scenario, need to fill it as REDIRECT
+     */
     REDIRECT(String.valueOf("REDIRECT")),
     
+    /**
+     * To handle empty string value
+     */
     UNSPECIFIED(String.valueOf(""));
 
     private String value;
@@ -104,7 +110,6 @@ public class OrderRedirectObject {
       throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
   }
-
   public static final String JSON_PROPERTY_SCENARIO = "scenario";
   @javax.annotation.Nullable
   private ScenarioEnum scenario;
@@ -407,4 +412,3 @@ public class OrderRedirectObject {
   }
 
 }
-

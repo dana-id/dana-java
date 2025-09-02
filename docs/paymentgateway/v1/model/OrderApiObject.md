@@ -18,12 +18,23 @@
 |**scenario** | [**ScenarioEnum**](#ScenarioEnum) | For Payment Gateway scenario, need to fill it as API |  [optional] |
 
 
-
+<a name="ScenarioEnum"></a>
 ## Enum: ScenarioEnum
 
-| Name | Value |
-|---- | -----|
-| API | &quot;API&quot; |
+| Name | Value | Description |
+| ---- | ----- | ----------- |
+| API | "API" | For Payment Gateway scenario, need to fill it as API |
+
+### Usage Example
+```java
+import id.dana.paymentgateway.v1.model.OrderApiObject.ScenarioEnum;
+
+public class Example {
+    public static void main(String[] args) {
+        ScenarioEnum exampleEnum = ScenarioEnum.API;
+    }
+}
+```
 
 
 

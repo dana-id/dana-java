@@ -75,7 +75,7 @@ public class ConsultPayRequest {
   }
 
   /**
-   * Amount. Contains two sub-fields:&lt;br&gt; 1. Value: Transaction amount, including the cents&lt;br&gt; 2. Currency: Currency code based on ISO&lt;br&gt; 
+   * Amount. Contains two sub-fields:<br> 1. Value: Transaction amount, including the cents<br> 2. Currency: Currency code based on ISO<br> 
    * @return amount
    */
   @javax.annotation.Nonnull
@@ -160,4 +160,3 @@ public class ConsultPayRequest {
   }
 
 }
-

@@ -52,7 +52,7 @@ public class PayOptionAdditionalInfo {
   }
 
   /**
-   * User&#39;s phone number
+   * User's phone number
    * @return phoneNumber
    */
   @javax.annotation.Nullable
@@ -170,4 +170,3 @@ public class PayOptionAdditionalInfo {
   }
 
 }
-

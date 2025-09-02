@@ -159,7 +159,7 @@ public class QueryPaymentRequest {
   }
 
   /**
-   * Transaction type indicator is based on the service code of the original transaction request:&lt;br&gt; - IPG Cashier Pay - SNAP: 54&lt;br&gt; - QRIS CPM (Acquirer) - SNAP: 60&lt;br&gt; - QRIS MPM (Acquirer) - SNAP: 47&lt;br&gt; - Payment Gateway: 54&lt;br&gt; 
+   * Transaction type indicator is based on the service code of the original transaction request:<br> - IPG Cashier Pay - SNAP: 54<br> - QRIS CPM (Acquirer) - SNAP: 60<br> - QRIS MPM (Acquirer) - SNAP: 47<br> - Payment Gateway: 54<br> 
    * @return serviceCode
    */
   @javax.annotation.Nonnull
@@ -209,7 +209,7 @@ public class QueryPaymentRequest {
   }
 
   /**
-   * Amount. Contains two sub-fields:&lt;br&gt; 1. Value: Transaction amount, including the cents&lt;br&gt; 2. Currency: Currency code based on ISO&lt;br&gt; 
+   * Amount. Contains two sub-fields:<br> 1. Value: Transaction amount, including the cents<br> 2. Currency: Currency code based on ISO<br> 
    * @return amount
    */
   @javax.annotation.Nullable
@@ -383,4 +383,3 @@ public class QueryPaymentRequest {
   }
 
 }
-

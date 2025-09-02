@@ -18,12 +18,23 @@
 |**scenario** | [**ScenarioEnum**](#ScenarioEnum) | For Payment Gateway Drop-in scenario, need to fill it as REDIRECT |  [optional] |
 
 
-
+<a name="ScenarioEnum"></a>
 ## Enum: ScenarioEnum
 
-| Name | Value |
-|---- | -----|
-| REDIRECT | &quot;REDIRECT&quot; |
+| Name | Value | Description |
+| ---- | ----- | ----------- |
+| REDIRECT | "REDIRECT" | For Payment Gateway Drop-in scenario, need to fill it as REDIRECT |
+
+### Usage Example
+```java
+import id.dana.paymentgateway.v1.model.OrderRedirectObject.ScenarioEnum;
+
+public class Example {
+    public static void main(String[] args) {
+        ScenarioEnum exampleEnum = ScenarioEnum.REDIRECT;
+    }
+}
+```
 
 
 

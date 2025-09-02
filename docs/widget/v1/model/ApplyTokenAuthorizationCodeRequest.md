@@ -13,12 +13,23 @@
 |**refreshToken** | **String** | This token is used for refresh session if existing token has been expired |  [optional] |
 
 
-
+<a name="GrantTypeEnum"></a>
 ## Enum: GrantTypeEnum
 
-| Name | Value |
-|---- | -----|
-| AUTHORIZATION_CODE | &quot;AUTHORIZATION_CODE&quot; |
+| Name | Value | Description |
+| ---- | ----- | ----------- |
+| AUTHORIZATION_CODE | "AUTHORIZATION_CODE" |  |
+
+### Usage Example
+```java
+import id.dana.widget.v1.model.ApplyTokenAuthorizationCodeRequest.GrantTypeEnum;
+
+public class Example {
+    public static void main(String[] args) {
+        GrantTypeEnum exampleEnum = GrantTypeEnum.AUTHORIZATION_CODE;
+    }
+}
+```
 
 
 ## Implemented Interfaces

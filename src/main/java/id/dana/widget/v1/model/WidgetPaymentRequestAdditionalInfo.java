@@ -106,7 +106,7 @@ public class WidgetPaymentRequestAdditionalInfo {
   }
 
   /**
-   * Additional information of user&#39;s phone number
+   * Additional information of user's phone number
    * @return phoneNumber
    */
   @javax.annotation.Nullable
@@ -131,7 +131,7 @@ public class WidgetPaymentRequestAdditionalInfo {
   }
 
   /**
-   * Additional information of public user&#39;s identifier
+   * Additional information of public user's identifier
    * @return publicUserId
    */
   @javax.annotation.Nullable
@@ -353,4 +353,3 @@ public class WidgetPaymentRequestAdditionalInfo {
   }
 
 }
-

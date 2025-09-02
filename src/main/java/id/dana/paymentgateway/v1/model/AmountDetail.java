@@ -69,7 +69,7 @@ public class AmountDetail {
   }
 
   /**
-   * Order amount. Contains two sub-fields:&lt;br&gt; 1. Value: Transaction amount, including the cents&lt;br&gt; 2. Currency: Currency code based on ISO&lt;br&gt; 
+   * Order amount. Contains two sub-fields:<br> 1. Value: Transaction amount, including the cents<br> 2. Currency: Currency code based on ISO<br> 
    * @return orderAmount
    */
   @javax.annotation.Nonnull
@@ -94,7 +94,7 @@ public class AmountDetail {
   }
 
   /**
-   * Pay amount. Contains two sub-fields:&lt;br&gt; 1. Value: Transaction amount, including the cents&lt;br&gt; 2. Currency: Currency code based on ISO&lt;br&gt; 
+   * Pay amount. Contains two sub-fields:<br> 1. Value: Transaction amount, including the cents<br> 2. Currency: Currency code based on ISO<br> 
    * @return payAmount
    */
   @javax.annotation.Nullable
@@ -119,7 +119,7 @@ public class AmountDetail {
   }
 
   /**
-   * Void amount. Contains two sub-fields:&lt;br&gt; 1. Value: Transaction amount, including the cents&lt;br&gt; 2. Currency: Currency code based on ISO&lt;br&gt; 
+   * Void amount. Contains two sub-fields:<br> 1. Value: Transaction amount, including the cents<br> 2. Currency: Currency code based on ISO<br> 
    * @return voidAmount
    */
   @javax.annotation.Nullable
@@ -144,7 +144,7 @@ public class AmountDetail {
   }
 
   /**
-   * Confirm amount. Contains two sub-fields:&lt;br&gt; 1. Value: Transaction amount, including the cents&lt;br&gt; 2. Currency: Currency code based on ISO&lt;br&gt; 
+   * Confirm amount. Contains two sub-fields:<br> 1. Value: Transaction amount, including the cents<br> 2. Currency: Currency code based on ISO<br> 
    * @return confirmAmount
    */
   @javax.annotation.Nullable
@@ -169,7 +169,7 @@ public class AmountDetail {
   }
 
   /**
-   * Refund amount. Contains two sub-fields:&lt;br&gt; 1. Value: Transaction amount, including the cents&lt;br&gt; 2. Currency: Currency code based on ISO&lt;br&gt; 
+   * Refund amount. Contains two sub-fields:<br> 1. Value: Transaction amount, including the cents<br> 2. Currency: Currency code based on ISO<br> 
    * @return refundAmount
    */
   @javax.annotation.Nullable
@@ -194,7 +194,7 @@ public class AmountDetail {
   }
 
   /**
-   * Chargeback amount. Contains two sub-fields:&lt;br&gt; 1. Value: Transaction amount, including the cents&lt;br&gt; 2. Currency: Currency code based on ISO&lt;br&gt; 
+   * Chargeback amount. Contains two sub-fields:<br> 1. Value: Transaction amount, including the cents<br> 2. Currency: Currency code based on ISO<br> 
    * @return chargebackAmount
    */
   @javax.annotation.Nullable
@@ -219,7 +219,7 @@ public class AmountDetail {
   }
 
   /**
-   * Charge amount. Contains two sub-fields:&lt;br&gt; 1. Value: Transaction amount, including the cents&lt;br&gt; 2. Currency: Currency code based on ISO&lt;br&gt; 
+   * Charge amount. Contains two sub-fields:<br> 1. Value: Transaction amount, including the cents<br> 2. Currency: Currency code based on ISO<br> 
    * @return chargeAmount
    */
   @javax.annotation.Nullable
@@ -287,4 +287,3 @@ public class AmountDetail {
   }
 
 }
-

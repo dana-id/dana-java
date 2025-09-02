@@ -125,7 +125,7 @@ public class QueryPaymentResponse {
   }
 
   /**
-   * Refer to response code list:&lt;br&gt; * 2005500 - Successful&lt;br&gt; * 4005500 - Bad Request - Retry request with proper parameter&lt;br&gt; * 4005501 - Invalid Field Format - Retry request with proper parameter&lt;br&gt; * 4005502 - Invalid Mandatory Field - Retry request with proper parameter&lt;br&gt; * 4015500 - Unauthorized. [reason] - Retry request with proper parameter&lt;br&gt; * 4015501 - Invalid Token (B2B) - Retry request with proper parameter&lt;br&gt; * 4045501 - Transaction Not Found - Try to create a new order&lt;br&gt; * 4295500 - Too Many Requests - Retry request periodically&lt;br&gt; * 5005500 - General Error - Retry request periodically&lt;br&gt; * 5005501 - Internal Server Error - Retry request periodically&lt;br&gt; 
+   * Refer to response code list:<br> * 2005500 - Successful<br> * 4005500 - Bad Request - Retry request with proper parameter<br> * 4005501 - Invalid Field Format - Retry request with proper parameter<br> * 4005502 - Invalid Mandatory Field - Retry request with proper parameter<br> * 4015500 - Unauthorized. [reason] - Retry request with proper parameter<br> * 4015501 - Invalid Token (B2B) - Retry request with proper parameter<br> * 4045501 - Transaction Not Found - Try to create a new order<br> * 4295500 - Too Many Requests - Retry request periodically<br> * 5005500 - General Error - Retry request periodically<br> * 5005501 - Internal Server Error - Retry request periodically<br> 
    * @return responseCode
    */
   @javax.annotation.Nonnull
@@ -250,7 +250,7 @@ public class QueryPaymentResponse {
   }
 
   /**
-   * Transaction type indicator:&lt;br&gt; - IPG Cashier Pay - SNAP: 54&lt;br&gt; - QRIS CPM (Acquirer) - SNAP: 60&lt;br&gt; - QRIS MPM (Acquirer) - SNAP: 47&lt;br&gt; - Payment Gateway: 54&lt;br&gt; 
+   * Transaction type indicator:<br> - IPG Cashier Pay - SNAP: 54<br> - QRIS CPM (Acquirer) - SNAP: 60<br> - QRIS MPM (Acquirer) - SNAP: 47<br> - Payment Gateway: 54<br> 
    * @return serviceCode
    */
   @javax.annotation.Nonnull
@@ -275,7 +275,7 @@ public class QueryPaymentResponse {
   }
 
   /**
-   * Status code:&lt;br&gt; - 00 &#x3D; Success. Order has been successfully in final state and paid&lt;br&gt; - 01 &#x3D; Initiated. Waiting for payment. Mark Payment as Pending&lt;br&gt; - 02 &#x3D; Paying. The order is in process, not in final state, payment is success. Mark Payment as Success&lt;br&gt; - 05 &#x3D; Cancelled. Order has been cancelled. Mark Payment as Failed&lt;br&gt; - 07 &#x3D; Not found. Order is not found. Mark Payment as Failed&lt;br&gt; 
+   * Status code:<br> - 00 = Success. Order has been successfully in final state and paid<br> - 01 = Initiated. Waiting for payment. Mark Payment as Pending<br> - 02 = Paying. The order is in process, not in final state, payment is success. Mark Payment as Success<br> - 05 = Cancelled. Order has been cancelled. Mark Payment as Failed<br> - 07 = Not found. Order is not found. Mark Payment as Failed<br> 
    * @return latestTransactionStatus
    */
   @javax.annotation.Nonnull
@@ -640,4 +640,3 @@ public class QueryPaymentResponse {
   }
 
 }
-

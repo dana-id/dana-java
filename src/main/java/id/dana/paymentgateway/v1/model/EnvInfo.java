@@ -69,8 +69,14 @@ public class EnvInfo {
    * The source platform is always independent payment gateway (IPG)
    */
   public enum SourcePlatformEnum {
+    /**
+     * The source platform is always independent payment gateway (IPG)
+     */
     IPG(String.valueOf("IPG")),
     
+    /**
+     * To handle empty string value
+     */
     UNSPECIFIED(String.valueOf(""));
 
     private String value;
@@ -99,7 +105,6 @@ public class EnvInfo {
       throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
   }
-
   public static final String JSON_PROPERTY_SOURCE_PLATFORM = "sourcePlatform";
   @javax.annotation.Nonnull
   private SourcePlatformEnum sourcePlatform;
@@ -113,17 +118,32 @@ public class EnvInfo {
   private String merchantAppVersion;
 
   /**
-   * Terminal type. The enums:&lt;br&gt; * APP - Mobile Application&lt;br&gt; * WEB - Browser Web&lt;br&gt; * WAP - Mobile Wap&lt;br&gt; * SYSTEM - System Call&lt;br&gt; 
+   * Terminal type. The enums:<br> * APP - Mobile Application<br> * WEB - Browser Web<br> * WAP - Mobile Wap<br> * SYSTEM - System Call<br> 
    */
   public enum TerminalTypeEnum {
+    /**
+     * Mobile Application
+     */
     APP(String.valueOf("APP")),
     
+    /**
+     * Browser Web
+     */
     WEB(String.valueOf("WEB")),
     
+    /**
+     * Mobile Wap
+     */
     WAP(String.valueOf("WAP")),
     
+    /**
+     * System Call
+     */
     SYSTEM(String.valueOf("SYSTEM")),
     
+    /**
+     * To handle empty string value
+     */
     UNSPECIFIED(String.valueOf(""));
 
     private String value;
@@ -152,23 +172,37 @@ public class EnvInfo {
       throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
   }
-
   public static final String JSON_PROPERTY_TERMINAL_TYPE = "terminalType";
   @javax.annotation.Nonnull
   private TerminalTypeEnum terminalType;
 
   /**
-   * Order terminal type. The enums:&lt;br&gt; * APP - Mobile Application&lt;br&gt; * WEB - Browser Web&lt;br&gt; * WAP - Mobile Wap&lt;br&gt; * SYSTEM - System Call&lt;br&gt; 
+   * Order terminal type. The enums:<br> * APP - Mobile Application<br> * WEB - Browser Web<br> * WAP - Mobile Wap<br> * SYSTEM - System Call<br> 
    */
   public enum OrderTerminalTypeEnum {
+    /**
+     * Mobile Application
+     */
     APP(String.valueOf("APP")),
     
+    /**
+     * Browser Web
+     */
     WEB(String.valueOf("WEB")),
     
+    /**
+     * Mobile Wap
+     */
     WAP(String.valueOf("WAP")),
     
+    /**
+     * System Call
+     */
     SYSTEM(String.valueOf("SYSTEM")),
     
+    /**
+     * To handle empty string value
+     */
     UNSPECIFIED(String.valueOf(""));
 
     private String value;
@@ -197,7 +231,6 @@ public class EnvInfo {
       throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
   }
-
   public static final String JSON_PROPERTY_ORDER_TERMINAL_TYPE = "orderTerminalType";
   @javax.annotation.Nullable
   private OrderTerminalTypeEnum orderTerminalType;
@@ -470,7 +503,7 @@ public class EnvInfo {
   }
 
   /**
-   * Terminal type. The enums:&lt;br&gt; * APP - Mobile Application&lt;br&gt; * WEB - Browser Web&lt;br&gt; * WAP - Mobile Wap&lt;br&gt; * SYSTEM - System Call&lt;br&gt; 
+   * Terminal type. The enums:<br> * APP - Mobile Application<br> * WEB - Browser Web<br> * WAP - Mobile Wap<br> * SYSTEM - System Call<br> 
    * @return terminalType
    */
   @javax.annotation.Nonnull
@@ -495,7 +528,7 @@ public class EnvInfo {
   }
 
   /**
-   * Order terminal type. The enums:&lt;br&gt; * APP - Mobile Application&lt;br&gt; * WEB - Browser Web&lt;br&gt; * WAP - Mobile Wap&lt;br&gt; * SYSTEM - System Call&lt;br&gt; 
+   * Order terminal type. The enums:<br> * APP - Mobile Application<br> * WEB - Browser Web<br> * WAP - Mobile Wap<br> * SYSTEM - System Call<br> 
    * @return orderTerminalType
    */
   @javax.annotation.Nullable
@@ -627,4 +660,3 @@ public class EnvInfo {
   }
 
 }
-

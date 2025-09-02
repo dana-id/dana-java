@@ -27,31 +27,67 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.12.0")
 public class RefundOptionBill {
   /**
-   * Payment method name. The enums:&lt;br&gt;   * BALANCE - Payment method with balance&lt;br&gt;   * COUPON - Payment method with coupon&lt;br&gt;   * NET_BANKING - Payment method with internet banking&lt;br&gt;   * CREDIT_CARD - Payment method with credit card&lt;br&gt;   * DEBIT_CARD - Payment method with debit card&lt;br&gt;   * VIRTUAL_ACCOUNT - Payment method with virtual account&lt;br&gt;   * OTC - Payment method with OTC&lt;br&gt;   * DIRECT_DEBIT_CREDIT_CARD - Payment method with direct debit of credit card&lt;br&gt;   * DIRECT_DEBIT_DEBIT_CARD - Payment method with direct debit of debit card&lt;br&gt;   * ONLINE_CREDIT - Payment method with online Credit&lt;br&gt;   * LOAN_CREDIT - Payment method with DANA Cicil&lt;br&gt; 
+   * Payment method name. The enums:<br>   * BALANCE - Payment method with balance<br>   * COUPON - Payment method with coupon<br>   * NET_BANKING - Payment method with internet banking<br>   * CREDIT_CARD - Payment method with credit card<br>   * DEBIT_CARD - Payment method with debit card<br>   * VIRTUAL_ACCOUNT - Payment method with virtual account<br>   * OTC - Payment method with OTC<br>   * DIRECT_DEBIT_CREDIT_CARD - Payment method with direct debit of credit card<br>   * DIRECT_DEBIT_DEBIT_CARD - Payment method with direct debit of debit card<br>   * ONLINE_CREDIT - Payment method with online Credit<br>   * LOAN_CREDIT - Payment method with DANA Cicil<br> 
    */
   public enum PayMethodEnum {
+    /**
+     * Payment method with balance
+     */
     BALANCE(String.valueOf("BALANCE")),
     
+    /**
+     * Payment method with coupon
+     */
     COUPON(String.valueOf("COUPON")),
     
+    /**
+     * Payment method with internet banking
+     */
     NET_BANKING(String.valueOf("NET_BANKING")),
     
+    /**
+     * Payment method with credit card
+     */
     CREDIT_CARD(String.valueOf("CREDIT_CARD")),
     
+    /**
+     * Payment method with debit card
+     */
     DEBIT_CARD(String.valueOf("DEBIT_CARD")),
     
+    /**
+     * Payment method with virtual account
+     */
     VIRTUAL_ACCOUNT(String.valueOf("VIRTUAL_ACCOUNT")),
     
+    /**
+     * Payment method with OTC
+     */
     OTC(String.valueOf("OTC")),
     
+    /**
+     * Payment method with direct debit of credit card
+     */
     DIRECT_DEBIT_CREDIT_CARD(String.valueOf("DIRECT_DEBIT_CREDIT_CARD")),
     
+    /**
+     * Payment method with direct debit of debit card
+     */
     DIRECT_DEBIT_DEBIT_CARD(String.valueOf("DIRECT_DEBIT_DEBIT_CARD")),
     
+    /**
+     * Payment method with online Credit
+     */
     ONLINE_CREDIT(String.valueOf("ONLINE_CREDIT")),
     
+    /**
+     * Payment method with DANA Cicil
+     */
     LOAN_CREDIT(String.valueOf("LOAN_CREDIT")),
     
+    /**
+     * To handle empty string value
+     */
     UNSPECIFIED(String.valueOf(""));
 
     private String value;
@@ -80,7 +116,6 @@ public class RefundOptionBill {
       throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
   }
-
   public static final String JSON_PROPERTY_PAY_METHOD = "payMethod";
   @javax.annotation.Nullable
   private PayMethodEnum payMethod;
@@ -99,7 +134,7 @@ public class RefundOptionBill {
   }
 
   /**
-   * Payment method name. The enums:&lt;br&gt;   * BALANCE - Payment method with balance&lt;br&gt;   * COUPON - Payment method with coupon&lt;br&gt;   * NET_BANKING - Payment method with internet banking&lt;br&gt;   * CREDIT_CARD - Payment method with credit card&lt;br&gt;   * DEBIT_CARD - Payment method with debit card&lt;br&gt;   * VIRTUAL_ACCOUNT - Payment method with virtual account&lt;br&gt;   * OTC - Payment method with OTC&lt;br&gt;   * DIRECT_DEBIT_CREDIT_CARD - Payment method with direct debit of credit card&lt;br&gt;   * DIRECT_DEBIT_DEBIT_CARD - Payment method with direct debit of debit card&lt;br&gt;   * ONLINE_CREDIT - Payment method with online Credit&lt;br&gt;   * LOAN_CREDIT - Payment method with DANA Cicil&lt;br&gt; 
+   * Payment method name. The enums:<br>   * BALANCE - Payment method with balance<br>   * COUPON - Payment method with coupon<br>   * NET_BANKING - Payment method with internet banking<br>   * CREDIT_CARD - Payment method with credit card<br>   * DEBIT_CARD - Payment method with debit card<br>   * VIRTUAL_ACCOUNT - Payment method with virtual account<br>   * OTC - Payment method with OTC<br>   * DIRECT_DEBIT_CREDIT_CARD - Payment method with direct debit of credit card<br>   * DIRECT_DEBIT_DEBIT_CARD - Payment method with direct debit of debit card<br>   * ONLINE_CREDIT - Payment method with online Credit<br>   * LOAN_CREDIT - Payment method with DANA Cicil<br> 
    * @return payMethod
    */
   @javax.annotation.Nullable
@@ -124,7 +159,7 @@ public class RefundOptionBill {
   }
 
   /**
-   * Trans amount. Contains two sub-fields:&lt;br&gt; 1. Value: Transaction amount, including the cents&lt;br&gt; 2. Currency: Currency code based on ISO&lt;br&gt; 
+   * Trans amount. Contains two sub-fields:<br> 1. Value: Transaction amount, including the cents<br> 2. Currency: Currency code based on ISO<br> 
    * @return transAmount
    */
   @javax.annotation.Nullable
@@ -182,4 +217,3 @@ public class RefundOptionBill {
   }
 
 }
-

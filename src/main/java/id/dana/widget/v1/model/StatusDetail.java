@@ -30,18 +30,39 @@ public class StatusDetail {
    * The status of acquirement
    */
   public enum AcquirementStatusEnum {
+    /**
+     * Order is created but not paid yet
+     */
     INIT(String.valueOf("INIT")),
     
+    /**
+     * Order is succeeded
+     */
     SUCCESS(String.valueOf("SUCCESS")),
     
+    /**
+     * Order is closed
+     */
     CLOSED(String.valueOf("CLOSED")),
     
+    /**
+     * Order is paid but not finish
+     */
     PAYING(String.valueOf("PAYING")),
     
+    /**
+     * Order is accepted by merchant after order is paid for PAY-CONFIRM
+     */
     MERCHANT_ACCEPT(String.valueOf("MERCHANT_ACCEPT")),
     
+    /**
+     * Order is cancelled
+     */
     CANCELLED(String.valueOf("CANCELLED")),
     
+    /**
+     * To handle empty string value
+     */
     UNSPECIFIED(String.valueOf(""));
 
     private String value;
@@ -70,7 +91,6 @@ public class StatusDetail {
       throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
   }
-
   public static final String JSON_PROPERTY_ACQUIREMENT_STATUS = "acquirementStatus";
   @javax.annotation.Nonnull
   private AcquirementStatusEnum acquirementStatus;
@@ -203,4 +223,3 @@ public class StatusDetail {
   }
 
 }
-

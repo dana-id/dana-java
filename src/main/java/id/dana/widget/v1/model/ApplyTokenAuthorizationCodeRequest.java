@@ -39,6 +39,9 @@ public class ApplyTokenAuthorizationCodeRequest implements ApplyTokenRequest {
   public enum GrantTypeEnum {
     AUTHORIZATION_CODE(String.valueOf("AUTHORIZATION_CODE")),
     
+    /**
+     * To handle empty string value
+     */
     UNSPECIFIED(String.valueOf(""));
 
     private String value;
@@ -67,7 +70,6 @@ public class ApplyTokenAuthorizationCodeRequest implements ApplyTokenRequest {
       throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
   }
-
   public static final String JSON_PROPERTY_GRANT_TYPE = "grantType";
   @javax.annotation.Nonnull
   private GrantTypeEnum grantType;
@@ -235,4 +237,3 @@ public class ApplyTokenAuthorizationCodeRequest implements ApplyTokenRequest {
   }
 
 }
-

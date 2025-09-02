@@ -214,7 +214,7 @@ public class RefundOrderResponse {
   }
 
   /**
-   * DANA&#39;s capture identifier. Use to refund the corresponding capture order
+   * DANA's capture identifier. Use to refund the corresponding capture order
    * @return originalCaptureNo
    */
   @javax.annotation.Nullable
@@ -415,4 +415,3 @@ public class RefundOrderResponse {
   }
 
 }
-

@@ -78,7 +78,7 @@ public class Buyer {
   }
 
   /**
-   * Nickname, user&#39;s nick name in DANA&#39;s
+   * Nickname, user's nick name in DANA's
    * @return nickname
    */
   @javax.annotation.Nullable
@@ -128,7 +128,7 @@ public class Buyer {
   }
 
   /**
-   * DANA&#39;s user identifier
+   * DANA's user identifier
    * @return userId
    */
   @javax.annotation.Nullable
@@ -190,4 +190,3 @@ public class Buyer {
   }
 
 }
-

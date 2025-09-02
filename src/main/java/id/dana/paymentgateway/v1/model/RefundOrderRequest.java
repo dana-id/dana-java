@@ -215,7 +215,7 @@ public class RefundOrderRequest {
   }
 
   /**
-   * DANA&#39;s capture identifier. Use to refund the corresponding capture order. Required if auth payment scenario
+   * DANA's capture identifier. Use to refund the corresponding capture order. Required if auth payment scenario
    * @return originalCaptureNo
    */
   @javax.annotation.Nullable
@@ -265,7 +265,7 @@ public class RefundOrderRequest {
   }
 
   /**
-   * Refund amount. Contains two sub-fields:&lt;br&gt; 1. Value: Transaction amount, including the cents&lt;br&gt; 2. Currency: Currency code based on ISO&lt;br&gt; 
+   * Refund amount. Contains two sub-fields:<br> 1. Value: Transaction amount, including the cents<br> 2. Currency: Currency code based on ISO<br> 
    * @return refundAmount
    */
   @javax.annotation.Nonnull
@@ -416,4 +416,3 @@ public class RefundOrderRequest {
   }
 
 }
-

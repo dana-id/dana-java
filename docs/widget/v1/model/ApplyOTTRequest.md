@@ -7,16 +7,27 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**userResources** | [**List&lt;UserResourcesEnum&gt;**](#List&lt;UserResourcesEnum&gt;) |  |  |
+|**userResources** | [**List<UserResourcesEnum>**](#List<UserResourcesEnum>) |  |  |
 |**additionalInfo** | [**ApplyOTTRequestAdditionalInfo**](ApplyOTTRequestAdditionalInfo.md) |  |  |
 
 
+<a name="List<UserResourcesEnum>"></a>
+## Enum: List<UserResourcesEnum>
 
-## Enum: List&lt;UserResourcesEnum&gt;
+| Name | Value | Description |
+| ---- | ----- | ----------- |
+| OTT | "OTT" | Value always One Time Token ( OTT) |
 
-| Name | Value |
-|---- | -----|
-| OTT | &quot;OTT&quot; |
+### Usage Example
+```java
+import id.dana.widget.v1.model.ApplyOTTRequest.List<UserResourcesEnum>;
+
+public class Example {
+    public static void main(String[] args) {
+        List<UserResourcesEnum> exampleEnum = List<UserResourcesEnum>.OTT;
+    }
+}
+```
 
 
 

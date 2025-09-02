@@ -14,7 +14,7 @@
 |**subMerchantId** | **String** | Information of sub merchant identifier |  [optional] |
 |**reason** | **String** | Cancellation reason |  [optional] |
 |**externalStoreId** | **String** | Store identifier to indicate to which store this payment belongs to |  [optional] |
-|**amount** | [**Money**](Money.md) | Amount. Contains two sub-fields:&lt;br&gt; 1. Value: Transaction amount, including the cents&lt;br&gt; 2. Currency: Currency code based on ISO&lt;br&gt;  |  [optional] |
+|**amount** | [**Money**](Money.md) | Amount. Contains two sub-fields:<br> 1. Value: Transaction amount, including the cents<br> 2. Currency: Currency code based on ISO<br>  |  [optional] |
 |**additionalInfo** | **Object** | Additional information |  [optional] |
 
 

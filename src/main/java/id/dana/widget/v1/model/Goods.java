@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Goods
  */
 @JsonPropertyOrder({
+  Goods.JSON_PROPERTY_NAME,
   Goods.JSON_PROPERTY_MERCHANT_GOODS_ID,
   Goods.JSON_PROPERTY_DESCRIPTION,
   Goods.JSON_PROPERTY_CATEGORY,
@@ -33,6 +34,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.12.0")
 public class Goods {
+  public static final String JSON_PROPERTY_NAME = "name";
+  @javax.annotation.Nonnull
+  private String name;
+
   public static final String JSON_PROPERTY_MERCHANT_GOODS_ID = "merchantGoodsId";
   @javax.annotation.Nonnull
   private String merchantGoodsId;
@@ -70,6 +75,31 @@ public class Goods {
   private String extendInfo;
 
   public Goods() {
+  }
+
+  public Goods name(@javax.annotation.Nonnull String name) {
+    
+    this.name = name;
+    return this;
+  }
+
+  /**
+   * Goods name
+   * @return name
+   */
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_NAME)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public String getName() {
+    return name;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_NAME)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setName(@javax.annotation.Nonnull String name) {
+    this.name = name;
   }
 
   public Goods merchantGoodsId(@javax.annotation.Nonnull String merchantGoodsId) {
@@ -154,7 +184,7 @@ public class Goods {
   }
 
   /**
-   * Goods price. Contains two sub-fields:&lt;br&gt; 1. Value: Transaction amount, including the cents&lt;br&gt; 2. Currency: Currency code based on ISO&lt;br&gt; 
+   * Goods price. Contains two sub-fields:<br> 1. Value: Transaction amount, including the cents<br> 2. Currency: Currency code based on ISO<br> 
    * @return price
    */
   @javax.annotation.Nonnull
@@ -254,7 +284,7 @@ public class Goods {
   }
 
   /**
-   * The URL of good&#39;s snapshot web page
+   * The URL of good's snapshot web page
    * @return snapshotUrl
    */
   @javax.annotation.Nullable
@@ -306,7 +336,8 @@ public class Goods {
       return false;
     }
     Goods goods = (Goods) o;
-    return Objects.equals(this.merchantGoodsId, goods.merchantGoodsId) &&
+    return Objects.equals(this.name, goods.name) &&
+        Objects.equals(this.merchantGoodsId, goods.merchantGoodsId) &&
         Objects.equals(this.description, goods.description) &&
         Objects.equals(this.category, goods.category) &&
         Objects.equals(this.price, goods.price) &&
@@ -319,13 +350,14 @@ public class Goods {
 
   @Override
   public int hashCode() {
-    return Objects.hash(merchantGoodsId, description, category, price, unit, quantity, merchantShippingId, snapshotUrl, extendInfo);
+    return Objects.hash(name, merchantGoodsId, description, category, price, unit, quantity, merchantShippingId, snapshotUrl, extendInfo);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Goods {\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    merchantGoodsId: ").append(toIndentedString(merchantGoodsId)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    category: ").append(toIndentedString(category)).append("\n");
@@ -351,4 +383,3 @@ public class Goods {
   }
 
 }
-

@@ -39,6 +39,9 @@ public class ApplyTokenRefreshTokenRequest implements ApplyTokenRequest {
   public enum GrantTypeEnum {
     REFRESH_TOKEN(String.valueOf("REFRESH_TOKEN")),
     
+    /**
+     * To handle empty string value
+     */
     UNSPECIFIED(String.valueOf(""));
 
     private String value;
@@ -67,7 +70,6 @@ public class ApplyTokenRefreshTokenRequest implements ApplyTokenRequest {
       throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
   }
-
   public static final String JSON_PROPERTY_GRANT_TYPE = "grantType";
   @javax.annotation.Nonnull
   private GrantTypeEnum grantType;
@@ -235,4 +237,3 @@ public class ApplyTokenRefreshTokenRequest implements ApplyTokenRequest {
   }
 
 }
-

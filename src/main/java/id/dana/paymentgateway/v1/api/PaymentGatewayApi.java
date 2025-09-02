@@ -35,7 +35,7 @@ interface PaymentGatewayApiService {
 
   /**
    * Cancel Order - Payment Gateway
-   * This API is used to cancel the order from merchant&#39;s platform to DANA
+   * This API is used to cancel the order from merchant's platform to DANA
    * @param cancelOrderRequest  (required)
    * @return Call&lt;CancelOrderResponse&gt;
    * 
@@ -86,7 +86,7 @@ interface PaymentGatewayApiService {
 
   /**
    * Query Payment - Payment Gateway
-   * This API is used to inquiry payment status and information from merchant&#39;s platform to DANA
+   * This API is used to inquiry payment status and information from merchant's platform to DANA
    * @param queryPaymentRequest  (required)
    * @return Call&lt;QueryPaymentResponse&gt;
    * 
@@ -103,7 +103,7 @@ interface PaymentGatewayApiService {
 
   /**
    * Refund Order - Payment Gateway
-   * This API is used to refund the order from merchant&#39;s platform to DANA
+   * This API is used to refund the order from merchant's platform to DANA
    * @param refundOrderRequest  (required)
    * @return Call&lt;RefundOrderResponse&gt;
    * 
@@ -132,7 +132,7 @@ public class PaymentGatewayApi {
 
   /**
    * Cancel Order - Payment Gateway
-   * This API is used to cancel the order from merchant&#39;s platform to DANA
+   * This API is used to cancel the order from merchant's platform to DANA
    * @param cancelOrderRequest  (required)
    * @return Call&lt;CancelOrderResponse&gt;
    * 
@@ -219,7 +219,7 @@ public class PaymentGatewayApi {
 
   /**
    * Query Payment - Payment Gateway
-   * This API is used to inquiry payment status and information from merchant&#39;s platform to DANA
+   * This API is used to inquiry payment status and information from merchant's platform to DANA
    * @param queryPaymentRequest  (required)
    * @return Call&lt;QueryPaymentResponse&gt;
    * 
@@ -248,7 +248,7 @@ public class PaymentGatewayApi {
 
   /**
    * Refund Order - Payment Gateway
-   * This API is used to refund the order from merchant&#39;s platform to DANA
+   * This API is used to refund the order from merchant's platform to DANA
    * @param refundOrderRequest  (required)
    * @return Call&lt;RefundOrderResponse&gt;
    * 

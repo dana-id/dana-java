@@ -52,18 +52,8 @@ public class ApiClient {
     this();
     for(String authName : authNames) {
       Interceptor auth = null;
-      if ("PRIVATE_KEY".equals(authName)) {
-        auth = new ApiKeyAuth("header", "privatekey");
-      } else if ("PRIVATE_KEY_PATH".equals(authName)) {
-        auth = new ApiKeyAuth("header", "privatekeypath");
-      } else if ("ENV".equals(authName)) {
-        auth = new ApiKeyAuth("header", "env");
-      } else if ("ORIGIN".equals(authName)) {
-        auth = new ApiKeyAuth("header", "ORIGIN");
-      } else if ("X_PARTNER_ID".equals(authName)) {
-        auth = new ApiKeyAuth("header", "X-PARTNER-ID");
-      } else if ("CHANNEL_ID".equals(authName)) {
-        auth = new ApiKeyAuth("header", "CHANNEL-ID");
+      if ("CLIENT_SECRET".equals(authName)) {
+        auth = new ApiKeyAuth("header", "clientSecret");
       } else {
         throw new RuntimeException("auth name \"" + authName + "\" not found in available auth names");
       }

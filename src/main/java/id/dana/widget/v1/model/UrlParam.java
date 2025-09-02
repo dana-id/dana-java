@@ -31,13 +31,22 @@ public class UrlParam {
   private String url;
 
   /**
-   * Url param. The enums:&lt;br&gt; * PAY_RETURN - When finish payment, DANA will notify to the URL that has been defined by&lt;br&gt; * NOTIFICATION - After the payment, the user will be redirected to merchant page, this is mandatory&lt;br&gt; 
+   * Url param. The enums:<br> * PAY_RETURN - When finish payment, DANA will notify to the URL that has been defined by<br> * NOTIFICATION - After the payment, the user will be redirected to merchant page, this is mandatory<br> 
    */
   public enum TypeEnum {
+    /**
+     * When finish payment, DANA will notify to the URL that has been defined by
+     */
     PAY_RETURN(String.valueOf("PAY_RETURN")),
     
+    /**
+     * After the payment, the user will be redirected to merchant page, this is mandatory
+     */
     NOTIFICATION(String.valueOf("NOTIFICATION")),
     
+    /**
+     * To handle empty string value
+     */
     UNSPECIFIED(String.valueOf(""));
 
     private String value;
@@ -66,7 +75,6 @@ public class UrlParam {
       throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
   }
-
   public static final String JSON_PROPERTY_TYPE = "type";
   @javax.annotation.Nonnull
   private TypeEnum type;
@@ -110,7 +118,7 @@ public class UrlParam {
   }
 
   /**
-   * Url param. The enums:&lt;br&gt; * PAY_RETURN - When finish payment, DANA will notify to the URL that has been defined by&lt;br&gt; * NOTIFICATION - After the payment, the user will be redirected to merchant page, this is mandatory&lt;br&gt; 
+   * Url param. The enums:<br> * PAY_RETURN - When finish payment, DANA will notify to the URL that has been defined by<br> * NOTIFICATION - After the payment, the user will be redirected to merchant page, this is mandatory<br> 
    * @return type
    */
   @javax.annotation.Nonnull
@@ -195,4 +203,3 @@ public class UrlParam {
   }
 
 }
-

@@ -33,8 +33,14 @@ public class ApplyOTTRequest {
    * Value always One Time Token ( OTT)
    */
   public enum UserResourcesEnum {
+    /**
+     * Value always One Time Token ( OTT)
+     */
     OTT(String.valueOf("OTT")),
     
+    /**
+     * To handle empty string value
+     */
     UNSPECIFIED(String.valueOf(""));
 
     private String value;
@@ -63,7 +69,6 @@ public class ApplyOTTRequest {
       throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
   }
-
   public static final String JSON_PROPERTY_USER_RESOURCES = "userResources";
   @javax.annotation.Nonnull
   private List<UserResourcesEnum> userResources = new ArrayList<>();
@@ -173,4 +178,3 @@ public class ApplyOTTRequest {
   }
 
 }
-

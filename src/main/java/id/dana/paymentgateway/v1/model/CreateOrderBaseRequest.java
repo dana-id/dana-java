@@ -153,7 +153,7 @@ public class CreateOrderBaseRequest {
   }
 
   /**
-   * Amount. Contains two sub-fields:&lt;br&gt; 1. Value: Transaction amount, including the cents&lt;br&gt; 2. Currency: Currency code based on ISO&lt;br&gt; 
+   * Amount. Contains two sub-fields:<br> 1. Value: Transaction amount, including the cents<br> 2. Currency: Currency code based on ISO<br> 
    * @return amount
    */
   @javax.annotation.Nonnull
@@ -203,7 +203,7 @@ public class CreateOrderBaseRequest {
   }
 
   /**
-   * The time when the payment will be automatically expired, in format YYYY-MM-DDTHH:mm:ss+07:00. Time must be in GMT+7 (Jakarta time)
+   * The time when the payment will be automatically expired, in format YYYY-MM-DDTHH:mm:ss+07:00. Time must be in GMT+7 (Jakarta time) and cannot be more than one week in the future.
    * @return validUpTo
    */
   @javax.annotation.Nullable
@@ -331,4 +331,3 @@ public class CreateOrderBaseRequest {
   }
 
 }
-

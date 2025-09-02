@@ -1,6 +1,7 @@
 package id.dana.invoker.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import id.dana.invoker.model.DanaConfig;
 import id.dana.invoker.model.constant.DanaHeader;
 import id.dana.invoker.model.context.SnapB2B2CContext;
@@ -30,6 +31,9 @@ public final class DanaHeaderUtil {
           break;
         case "SNAP_B2B2C":
           populateSnapB2B2CScenarioHeaders(request, requestBuilder);
+          break;
+        case "OPEN_API":
+          populateOpenApiScenarioHeaders(request, requestBuilder, request.header(DanaHeader.X_API_FUNCTION));
           break;
         case "SNAP_B2B":
         default:
@@ -83,14 +87,77 @@ public final class DanaHeaderUtil {
       requestBuilder.header(DanaHeader.ORIGIN, DanaConfig.getInstance().getOrigin());
       requestBuilder.header(DanaHeader.X_PARTNER_ID, partnerId);
       requestBuilder.header(DanaHeader.X_EXTERNAL_ID, UUID.randomUUID().toString());
-      requestBuilder.header(DanaHeader.X_IP_ADDRESS, additionalInfo.getEndUserIpAddress());
+      if (StringUtils.isNotEmpty(additionalInfo.getEndUserIpAddress())) {
+        requestBuilder.header(DanaHeader.X_IP_ADDRESS, additionalInfo.getEndUserIpAddress());
+      }
       requestBuilder.header(DanaHeader.X_DEVICE_ID, additionalInfo.getDeviceId());
-      requestBuilder.header(DanaHeader.X_LATITUDE, additionalInfo.getLatitude());
-      requestBuilder.header(DanaHeader.X_LONGITUDE, additionalInfo.getLongitude());
+      if (StringUtils.isNotEmpty(additionalInfo.getLatitude())) {
+        requestBuilder.header(DanaHeader.X_LATITUDE, additionalInfo.getLatitude());
+      }
+      if (StringUtils.isNotEmpty(additionalInfo.getLongitude())) {
+        requestBuilder.header(DanaHeader.X_LATITUDE, additionalInfo.getLongitude());
+      }
       requestBuilder.header(DanaHeader.CHANNEL_ID, partnerId + "-SERVER");
     } catch (IOException e) {
       throw new DanaException(e);
     }
   }
 
+  public static void populateOpenApiScenarioHeaders(Request request, Builder requestBuilder, String functionName) {
+    try {
+      String timestamp = DateTimeUtil.getFormattedCurrentDateTime();
+      String partnerId = DanaConfig.getInstance().getPartnerId();
+      String clientSecret = DanaConfig.getInstance().getClientSecret();
+      String privateKey = DanaConfig.getInstance().getPrivateKey();
+
+      // Get the request body as a JSON object
+      String requestBody = RequestUtil.peekRequestBody(request);
+      ObjectNode requestNode = objectMapper.readValue(requestBody, ObjectNode.class);
+      
+      // Create the head object
+      ObjectNode headNode = objectMapper.createObjectNode();
+      headNode.put("version", "2.0");
+      headNode.put("function", functionName);
+      headNode.put("clientId", partnerId);
+      headNode.put("clientSecret", clientSecret);
+      headNode.put("reqTime", timestamp);
+      headNode.put("reqMsgId", UUID.randomUUID().toString());
+      headNode.set("reserve", objectMapper.createObjectNode());
+      
+      // Create the new request object with head and body
+      ObjectNode newRequestNode = objectMapper.createObjectNode();
+      ObjectNode requestBodyNode = objectMapper.createObjectNode();
+      
+      // Check if the request has a body field, if not use the entire request as body
+      if (requestNode.has("request") && requestNode.get("request").has("body")) {
+        requestBodyNode.set("body", requestNode.get("request").get("body"));
+      } else {
+        requestBodyNode.set("body", requestNode);
+      }
+      
+      // Set the head and body in the request
+      requestBodyNode.set("head", headNode);
+      newRequestNode.set("request", requestBodyNode);
+      
+      // Generate signature for the request
+      String requestJson = requestBodyNode.toString();
+      String signature = DanaSignatureUtil.generateOpenApiScenarioSignature(requestJson, privateKey);
+      
+      // Add signature to the request
+      newRequestNode.put("signature", signature);
+      
+      // Update the request builder with the new body
+      requestBuilder.method(
+          request.method(),
+          okhttp3.RequestBody.create(
+              okhttp3.MediaType.parse("application/json; charset=utf-8"),
+              newRequestNode.toString()
+          )
+      );
+      
+      requestBuilder.removeHeader(DanaHeader.X_API_FUNCTION);
+    } catch (Exception e) {
+      throw new DanaException("Failed to populate OpenAPI scenario headers", e);
+    }
+  }
 }

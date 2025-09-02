@@ -50,19 +50,37 @@ public class RefundOrderRequestAdditionalInfo {
   private String refundAppliedTime;
 
   /**
-   * Additional information of actor type. The enums:&lt;br&gt; * USER - User&lt;br&gt; * MERCHANT - Merchant&lt;br&gt; * MERCHANT_OPERATOR - Merchant operator&lt;br&gt; * BACK_OFFICE - Back office&lt;br&gt; * SYSTEM - System&lt;br&gt; 
+   * Additional information of actor type. The enums:<br> * USER - User<br> * MERCHANT - Merchant<br> * MERCHANT_OPERATOR - Merchant operator<br> * BACK_OFFICE - Back office<br> * SYSTEM - System<br> 
    */
   public enum ActorTypeEnum {
+    /**
+     * User
+     */
     USER(String.valueOf("USER")),
     
+    /**
+     * Merchant
+     */
     MERCHANT(String.valueOf("MERCHANT")),
     
+    /**
+     * Merchant operator
+     */
     MERCHANT_OPERATOR(String.valueOf("MERCHANT_OPERATOR")),
     
+    /**
+     * Back office
+     */
     BACK_OFFICE(String.valueOf("BACK_OFFICE")),
     
+    /**
+     * System
+     */
     SYSTEM(String.valueOf("SYSTEM")),
     
+    /**
+     * To handle empty string value
+     */
     UNSPECIFIED(String.valueOf(""));
 
     private String value;
@@ -91,7 +109,6 @@ public class RefundOrderRequestAdditionalInfo {
       throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
   }
-
   public static final String JSON_PROPERTY_ACTOR_TYPE = "actorType";
   @javax.annotation.Nullable
   private ActorTypeEnum actorType;
@@ -188,7 +205,7 @@ public class RefundOrderRequestAdditionalInfo {
   }
 
   /**
-   * Additional information of actor type. The enums:&lt;br&gt; * USER - User&lt;br&gt; * MERCHANT - Merchant&lt;br&gt; * MERCHANT_OPERATOR - Merchant operator&lt;br&gt; * BACK_OFFICE - Back office&lt;br&gt; * SYSTEM - System&lt;br&gt; 
+   * Additional information of actor type. The enums:<br> * USER - User<br> * MERCHANT - Merchant<br> * MERCHANT_OPERATOR - Merchant operator<br> * BACK_OFFICE - Back office<br> * SYSTEM - System<br> 
    * @return actorType
    */
   @javax.annotation.Nullable
@@ -472,4 +489,3 @@ public class RefundOrderRequestAdditionalInfo {
   }
 
 }
-

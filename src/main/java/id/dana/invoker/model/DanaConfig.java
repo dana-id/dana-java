@@ -16,6 +16,7 @@ public class DanaConfig {
   private final String partnerId;
   private final String privateKey;
   private final String origin;
+  private final String clientSecret;
   private final DanaEnvironment env;
 
   private DanaConfig(Builder builder) {
@@ -23,6 +24,7 @@ public class DanaConfig {
     this.privateKey = builder.privateKey;
     this.origin = builder.origin;
     this.env = builder.env;
+    this.clientSecret = builder.clientSecret;
   }
 
   public static class Builder {
@@ -32,6 +34,7 @@ public class DanaConfig {
     private String origin = ConfigUtil.getConfig(EnvKey.ORIGIN, "");
     private DanaEnvironment env = DanaEnvironment.getByName(
         ConfigUtil.getConfig(EnvKey.ENV, "SANDBOX"));
+    private String clientSecret = ConfigUtil.getConfig(EnvKey.CLIENT_SECRET, "");
 
     public Builder partnerId(String partnerId) {
       this.partnerId = partnerId;
@@ -50,6 +53,11 @@ public class DanaConfig {
 
     public Builder env(DanaEnvironment env) {
       this.env = env;
+      return this;
+    }
+
+    public Builder clientSecret(String clientSecret) {
+      this.clientSecret = clientSecret;
       return this;
     }
 
@@ -121,6 +129,10 @@ public class DanaConfig {
 
   public DanaEnvironment getEnv() {
     return env;
+  }
+
+  public String getClientSecret() {
+    return clientSecret;
   }
 
 }

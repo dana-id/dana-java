@@ -48,6 +48,9 @@ public class PaymentPromoInfo {
     
     POINT(String.valueOf("POINT")),
     
+    /**
+     * To handle empty string value
+     */
     UNSPECIFIED(String.valueOf(""));
 
     private String value;
@@ -76,7 +79,6 @@ public class PaymentPromoInfo {
       throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
   }
-
   public static final String JSON_PROPERTY_PROMO_TYPE = "promoType";
   @javax.annotation.Nonnull
   private PromoTypeEnum promoType;
@@ -232,4 +234,3 @@ public class PaymentPromoInfo {
   }
 
 }
-

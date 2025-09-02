@@ -92,4 +92,8 @@ public final class DanaSignatureUtil {
     return Base64.getEncoder().encodeToString(sign(stringToSign, "RSA", "SHA256withRSA"));
   }
 
+  public static String generateOpenApiScenarioSignature(String requestBody, String privateKey)
+      throws NoSuchAlgorithmException, InvalidKeyException, SignatureException, InvalidKeySpecException {
+    return signSHA256withRSA(requestBody);
+  }
 }

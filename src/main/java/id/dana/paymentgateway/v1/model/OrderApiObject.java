@@ -74,8 +74,14 @@ public class OrderApiObject {
    * For Payment Gateway scenario, need to fill it as API
    */
   public enum ScenarioEnum {
+    /**
+     * For Payment Gateway scenario, need to fill it as API
+     */
     API(String.valueOf("API")),
     
+    /**
+     * To handle empty string value
+     */
     UNSPECIFIED(String.valueOf(""));
 
     private String value;
@@ -104,7 +110,6 @@ public class OrderApiObject {
       throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
   }
-
   public static final String JSON_PROPERTY_SCENARIO = "scenario";
   @javax.annotation.Nullable
   private ScenarioEnum scenario;
@@ -407,4 +412,3 @@ public class OrderApiObject {
   }
 
 }
-

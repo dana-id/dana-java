@@ -33,33 +33,77 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.12.0")
 public class PayOptionDetail {
   /**
-   * Payment method that used to payment. The enums:&lt;br&gt;   * BALANCE - Payment method with balance&lt;br&gt;   * COUPON - Payment method with coupon&lt;br&gt;   * NET_BANKING - Payment method with internet banking&lt;br&gt;   * CREDIT_CARD - Payment method with credit card&lt;br&gt;   * DEBIT_CARD - Payment method with debit card&lt;br&gt;   * VIRTUAL_ACCOUNT - Payment method with virtual account&lt;br&gt;   * OTC - Payment method with OTC&lt;br&gt;   * DIRECT_DEBIT_CREDIT_CARD - Payment method with direct debit of credit card&lt;br&gt;   * DIRECT_DEBIT_DEBIT_CARD - Payment method with direct debit of debit card&lt;br&gt;   * ONLINE_CREDIT - Payment method with online Credit&lt;br&gt;   * LOAN_CREDIT - Payment method with DANA Cicil&lt;br&gt;   * NETWORK_PAY - Payment method with e-wallet&lt;br&gt; 
+   * Payment method that used to payment. The enums:<br>   * BALANCE - Payment method with balance<br>   * COUPON - Payment method with coupon<br>   * NET_BANKING - Payment method with internet banking<br>   * CREDIT_CARD - Payment method with credit card<br>   * DEBIT_CARD - Payment method with debit card<br>   * VIRTUAL_ACCOUNT - Payment method with virtual account<br>   * OTC - Payment method with OTC<br>   * DIRECT_DEBIT_CREDIT_CARD - Payment method with direct debit of credit card<br>   * DIRECT_DEBIT_DEBIT_CARD - Payment method with direct debit of debit card<br>   * ONLINE_CREDIT - Payment method with online Credit<br>   * LOAN_CREDIT - Payment method with DANA Cicil<br>   * NETWORK_PAY - Payment method with e-wallet<br>   * CARD - Payment method with card<br> 
    */
   public enum PayMethodEnum {
+    /**
+     * Payment method with balance
+     */
     BALANCE(String.valueOf("BALANCE")),
     
+    /**
+     * Payment method with coupon
+     */
     COUPON(String.valueOf("COUPON")),
     
+    /**
+     * Payment method with internet banking
+     */
     NET_BANKING(String.valueOf("NET_BANKING")),
     
+    /**
+     * Payment method with credit card
+     */
     CREDIT_CARD(String.valueOf("CREDIT_CARD")),
     
+    /**
+     * Payment method with debit card
+     */
     DEBIT_CARD(String.valueOf("DEBIT_CARD")),
     
+    /**
+     * Payment method with virtual account
+     */
     VIRTUAL_ACCOUNT(String.valueOf("VIRTUAL_ACCOUNT")),
     
+    /**
+     * Payment method with OTC
+     */
     OTC(String.valueOf("OTC")),
     
+    /**
+     * Payment method with direct debit of credit card
+     */
     DIRECT_DEBIT_CREDIT_CARD(String.valueOf("DIRECT_DEBIT_CREDIT_CARD")),
     
+    /**
+     * Payment method with direct debit of debit card
+     */
     DIRECT_DEBIT_DEBIT_CARD(String.valueOf("DIRECT_DEBIT_DEBIT_CARD")),
     
+    /**
+     * Payment method with online Credit
+     */
     ONLINE_CREDIT(String.valueOf("ONLINE_CREDIT")),
     
+    /**
+     * Payment method with DANA Cicil
+     */
     LOAN_CREDIT(String.valueOf("LOAN_CREDIT")),
     
+    /**
+     * Payment method with e-wallet
+     */
     NETWORK_PAY(String.valueOf("NETWORK_PAY")),
     
+    /**
+     * Payment method with card
+     */
+    CARD(String.valueOf("CARD")),
+    
+    /**
+     * To handle empty string value
+     */
     UNSPECIFIED(String.valueOf(""));
 
     private String value;
@@ -88,41 +132,82 @@ public class PayOptionDetail {
       throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
   }
-
   public static final String JSON_PROPERTY_PAY_METHOD = "payMethod";
   @javax.annotation.Nonnull
   private PayMethodEnum payMethod;
 
   /**
-   * Payment option that available to used to payment, depends on the payment method. The enums:&lt;br&gt;   * NETWORK_PAY_PG_SPAY - Payment method with ShopeePay e-wallet&lt;br&gt;   * NETWORK_PAY_PG_OVO - Payment method with OVO e-wallet&lt;br&gt;   * NETWORK_PAY_PG_GOPAY - Payment method with GoPay e-wallet&lt;br&gt;   * NETWORK_PAY_PG_LINKAJA - Payment method with LinkAja e-wallet&lt;br&gt;   * NETWORK_PAY_PG_CARD - Payment method with Card&lt;br&gt;   * NETWORK_PAY_PG_QRIS - Payment method with QRIS&lt;br&gt;   * VIRTUAL_ACCOUNT_BCA - Payment method with BCA virtual account&lt;br&gt;   * VIRTUAL_ACCOUNT_BNI - Payment method with BNI virtual account&lt;br&gt;   * VIRTUAL_ACCOUNT_MANDIRI - Payment method with Mandiri virtual account&lt;br&gt;   * VIRTUAL_ACCOUNT_BRI - Payment method with BRI virtual account&lt;br&gt;   * VIRTUAL_ACCOUNT_BTPN - Payment method with BTPN virtual account&lt;br&gt;   * VIRTUAL_ACCOUNT_CIMB - Payment method with CIMB virtual account&lt;br&gt;   * VIRTUAL_ACCOUNT_PERMATA - Payment method with Permata virtual account&lt;br&gt; 
+   * Payment option that available to used to payment, depends on the payment method. The enums:<br>   * NETWORK_PAY_PG_SPAY - Payment method with ShopeePay e-wallet<br>   * NETWORK_PAY_PG_OVO - Payment method with OVO e-wallet<br>   * NETWORK_PAY_PG_GOPAY - Payment method with GoPay e-wallet<br>   * NETWORK_PAY_PG_LINKAJA - Payment method with LinkAja e-wallet<br>   * NETWORK_PAY_PG_CARD - Payment method with Card<br>   * NETWORK_PAY_PG_QRIS - Payment method with QRIS<br>   * VIRTUAL_ACCOUNT_BCA - Payment method with BCA virtual account<br>   * VIRTUAL_ACCOUNT_BNI - Payment method with BNI virtual account<br>   * VIRTUAL_ACCOUNT_MANDIRI - Payment method with Mandiri virtual account<br>   * VIRTUAL_ACCOUNT_BRI - Payment method with BRI virtual account<br>   * VIRTUAL_ACCOUNT_BTPN - Payment method with BTPN virtual account<br>   * VIRTUAL_ACCOUNT_CIMB - Payment method with CIMB virtual account<br>   * VIRTUAL_ACCOUNT_PERMATA - Payment method with Permata virtual account<br> 
    */
   public enum PayOptionEnum {
+    /**
+     * Payment method with ShopeePay e-wallet
+     */
     NETWORK_PAY_PG_SPAY(String.valueOf("NETWORK_PAY_PG_SPAY")),
     
+    /**
+     * Payment method with OVO e-wallet
+     */
     NETWORK_PAY_PG_OVO(String.valueOf("NETWORK_PAY_PG_OVO")),
     
+    /**
+     * Payment method with GoPay e-wallet
+     */
     NETWORK_PAY_PG_GOPAY(String.valueOf("NETWORK_PAY_PG_GOPAY")),
     
+    /**
+     * Payment method with LinkAja e-wallet
+     */
     NETWORK_PAY_PG_LINKAJA(String.valueOf("NETWORK_PAY_PG_LINKAJA")),
     
+    /**
+     * Payment method with Card
+     */
     NETWORK_PAY_PG_CARD(String.valueOf("NETWORK_PAY_PG_CARD")),
     
+    /**
+     * Payment method with QRIS
+     */
     NETWORK_PAY_PG_QRIS(String.valueOf("NETWORK_PAY_PG_QRIS")),
     
+    /**
+     * Payment method with BCA virtual account
+     */
     VIRTUAL_ACCOUNT_BCA(String.valueOf("VIRTUAL_ACCOUNT_BCA")),
     
+    /**
+     * Payment method with BNI virtual account
+     */
     VIRTUAL_ACCOUNT_BNI(String.valueOf("VIRTUAL_ACCOUNT_BNI")),
     
+    /**
+     * Payment method with Mandiri virtual account
+     */
     VIRTUAL_ACCOUNT_MANDIRI(String.valueOf("VIRTUAL_ACCOUNT_MANDIRI")),
     
+    /**
+     * Payment method with BRI virtual account
+     */
     VIRTUAL_ACCOUNT_BRI(String.valueOf("VIRTUAL_ACCOUNT_BRI")),
     
+    /**
+     * Payment method with BTPN virtual account
+     */
     VIRTUAL_ACCOUNT_BTPN(String.valueOf("VIRTUAL_ACCOUNT_BTPN")),
     
+    /**
+     * Payment method with CIMB virtual account
+     */
     VIRTUAL_ACCOUNT_CIMB(String.valueOf("VIRTUAL_ACCOUNT_CIMB")),
     
+    /**
+     * Payment method with Permata virtual account
+     */
     VIRTUAL_ACCOUNT_PERMATA(String.valueOf("VIRTUAL_ACCOUNT_PERMATA")),
     
+    /**
+     * To handle empty string value
+     */
     UNSPECIFIED(String.valueOf(""));
 
     private String value;
@@ -151,7 +236,6 @@ public class PayOptionDetail {
       throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
   }
-
   public static final String JSON_PROPERTY_PAY_OPTION = "payOption";
   @javax.annotation.Nonnull
   private PayOptionEnum payOption;
@@ -186,7 +270,7 @@ public class PayOptionDetail {
   }
 
   /**
-   * Payment method that used to payment. The enums:&lt;br&gt;   * BALANCE - Payment method with balance&lt;br&gt;   * COUPON - Payment method with coupon&lt;br&gt;   * NET_BANKING - Payment method with internet banking&lt;br&gt;   * CREDIT_CARD - Payment method with credit card&lt;br&gt;   * DEBIT_CARD - Payment method with debit card&lt;br&gt;   * VIRTUAL_ACCOUNT - Payment method with virtual account&lt;br&gt;   * OTC - Payment method with OTC&lt;br&gt;   * DIRECT_DEBIT_CREDIT_CARD - Payment method with direct debit of credit card&lt;br&gt;   * DIRECT_DEBIT_DEBIT_CARD - Payment method with direct debit of debit card&lt;br&gt;   * ONLINE_CREDIT - Payment method with online Credit&lt;br&gt;   * LOAN_CREDIT - Payment method with DANA Cicil&lt;br&gt;   * NETWORK_PAY - Payment method with e-wallet&lt;br&gt; 
+   * Payment method that used to payment. The enums:<br>   * BALANCE - Payment method with balance<br>   * COUPON - Payment method with coupon<br>   * NET_BANKING - Payment method with internet banking<br>   * CREDIT_CARD - Payment method with credit card<br>   * DEBIT_CARD - Payment method with debit card<br>   * VIRTUAL_ACCOUNT - Payment method with virtual account<br>   * OTC - Payment method with OTC<br>   * DIRECT_DEBIT_CREDIT_CARD - Payment method with direct debit of credit card<br>   * DIRECT_DEBIT_DEBIT_CARD - Payment method with direct debit of debit card<br>   * ONLINE_CREDIT - Payment method with online Credit<br>   * LOAN_CREDIT - Payment method with DANA Cicil<br>   * NETWORK_PAY - Payment method with e-wallet<br>   * CARD - Payment method with card<br> 
    * @return payMethod
    */
   @javax.annotation.Nonnull
@@ -211,7 +295,7 @@ public class PayOptionDetail {
   }
 
   /**
-   * Payment option that available to used to payment, depends on the payment method. The enums:&lt;br&gt;   * NETWORK_PAY_PG_SPAY - Payment method with ShopeePay e-wallet&lt;br&gt;   * NETWORK_PAY_PG_OVO - Payment method with OVO e-wallet&lt;br&gt;   * NETWORK_PAY_PG_GOPAY - Payment method with GoPay e-wallet&lt;br&gt;   * NETWORK_PAY_PG_LINKAJA - Payment method with LinkAja e-wallet&lt;br&gt;   * NETWORK_PAY_PG_CARD - Payment method with Card&lt;br&gt;   * NETWORK_PAY_PG_QRIS - Payment method with QRIS&lt;br&gt;   * VIRTUAL_ACCOUNT_BCA - Payment method with BCA virtual account&lt;br&gt;   * VIRTUAL_ACCOUNT_BNI - Payment method with BNI virtual account&lt;br&gt;   * VIRTUAL_ACCOUNT_MANDIRI - Payment method with Mandiri virtual account&lt;br&gt;   * VIRTUAL_ACCOUNT_BRI - Payment method with BRI virtual account&lt;br&gt;   * VIRTUAL_ACCOUNT_BTPN - Payment method with BTPN virtual account&lt;br&gt;   * VIRTUAL_ACCOUNT_CIMB - Payment method with CIMB virtual account&lt;br&gt;   * VIRTUAL_ACCOUNT_PERMATA - Payment method with Permata virtual account&lt;br&gt; 
+   * Payment option that available to used to payment, depends on the payment method. The enums:<br>   * NETWORK_PAY_PG_SPAY - Payment method with ShopeePay e-wallet<br>   * NETWORK_PAY_PG_OVO - Payment method with OVO e-wallet<br>   * NETWORK_PAY_PG_GOPAY - Payment method with GoPay e-wallet<br>   * NETWORK_PAY_PG_LINKAJA - Payment method with LinkAja e-wallet<br>   * NETWORK_PAY_PG_CARD - Payment method with Card<br>   * NETWORK_PAY_PG_QRIS - Payment method with QRIS<br>   * VIRTUAL_ACCOUNT_BCA - Payment method with BCA virtual account<br>   * VIRTUAL_ACCOUNT_BNI - Payment method with BNI virtual account<br>   * VIRTUAL_ACCOUNT_MANDIRI - Payment method with Mandiri virtual account<br>   * VIRTUAL_ACCOUNT_BRI - Payment method with BRI virtual account<br>   * VIRTUAL_ACCOUNT_BTPN - Payment method with BTPN virtual account<br>   * VIRTUAL_ACCOUNT_CIMB - Payment method with CIMB virtual account<br>   * VIRTUAL_ACCOUNT_PERMATA - Payment method with Permata virtual account<br> 
    * @return payOption
    */
   @javax.annotation.Nonnull
@@ -404,4 +488,3 @@ public class PayOptionDetail {
   }
 
 }
-

@@ -34,6 +34,9 @@ public class ServiceInfo {
     
     INVESTMENT(String.valueOf("INVESTMENT")),
     
+    /**
+     * To handle empty string value
+     */
     UNSPECIFIED(String.valueOf(""));
 
     private String value;
@@ -62,7 +65,6 @@ public class ServiceInfo {
       throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
   }
-
   public static final String JSON_PROPERTY_SERVICE_TYPE = "serviceType";
   @javax.annotation.Nullable
   private ServiceTypeEnum serviceType;
@@ -77,6 +79,9 @@ public class ServiceInfo {
     
     EMAS_PURCHASE(String.valueOf("EMAS_PURCHASE")),
     
+    /**
+     * To handle empty string value
+     */
     UNSPECIFIED(String.valueOf(""));
 
     private String value;
@@ -105,7 +110,6 @@ public class ServiceInfo {
       throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
   }
-
   public static final String JSON_PROPERTY_SERVICE_SCENARIO = "serviceScenario";
   @javax.annotation.Nullable
   private ServiceScenarioEnum serviceScenario;
@@ -234,4 +238,3 @@ public class ServiceInfo {
   }
 
 }
-

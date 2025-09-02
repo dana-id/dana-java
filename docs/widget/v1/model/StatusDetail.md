@@ -12,17 +12,28 @@
 |**cancelled** | **String** | Whether the cancelled is true or not |  [optional] |
 
 
-
+<a name="AcquirementStatusEnum"></a>
 ## Enum: AcquirementStatusEnum
 
-| Name | Value |
-|---- | -----|
-| INIT | &quot;INIT&quot; |
-| SUCCESS | &quot;SUCCESS&quot; |
-| CLOSED | &quot;CLOSED&quot; |
-| PAYING | &quot;PAYING&quot; |
-| MERCHANT_ACCEPT | &quot;MERCHANT_ACCEPT&quot; |
-| CANCELLED | &quot;CANCELLED&quot; |
+| Name | Value | Description |
+| ---- | ----- | ----------- |
+| INIT | "INIT" | Order is created but not paid yet |
+| SUCCESS | "SUCCESS" | Order is succeeded |
+| CLOSED | "CLOSED" | Order is closed |
+| PAYING | "PAYING" | Order is paid but not finish |
+| MERCHANT_ACCEPT | "MERCHANT_ACCEPT" | Order is accepted by merchant after order is paid for PAY-CONFIRM |
+| CANCELLED | "CANCELLED" | Order is cancelled |
+
+### Usage Example
+```java
+import id.dana.widget.v1.model.StatusDetail.AcquirementStatusEnum;
+
+public class Example {
+    public static void main(String[] args) {
+        AcquirementStatusEnum exampleEnum = AcquirementStatusEnum.INIT;
+    }
+}
+```
 
 
 
