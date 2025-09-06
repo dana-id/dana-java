@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**orderTitle** | **String** | Additional information of order title |  |
 |**merchantTransType** | **String** | Additional information of merchant transaction type |  [optional] |
 |**buyer** | [**Buyer**](Buyer.md) | Additional information of buyer |  [optional] |
@@ -22,8 +22,8 @@
 ## Enum: ScenarioEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| API | "API" | For Payment Gateway scenario, need to fill it as API |
+| - | - | - |
+| `API` | "API" | For Payment Gateway scenario, need to fill it as API |
 
 ### Usage Example
 ```java

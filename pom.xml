@@ -5,7 +5,7 @@
     <artifactId>dana-java</artifactId>
     <packaging>jar</packaging>
     <name>dana-java</name>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <url>https://github.com/dana-id/dana-java</url>
     <description>The official DANA Java SDK provides a simple and convenient way to call DANA's REST API in applications written in Java.</description>
     <scm>

@@ -50,27 +50,24 @@ To install the SDK to your Maven project, simply add the following dependency to
 <dependency>
     <groupId>id.dana</groupId>
     <artifactId>dana-java</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
 </dependency>
 ```
 
 ## Environment Variables
+
 Before using the SDK, please make sure to set the following environment variables (In .env):
 
-- `DANA_ENV`
-- `MERCHANT_ID`
-- `X_PARTNER_ID`
-- `PRIVATE_KEY`
-- `PRIVATE_KEY_PATH`
-- `ORIGIN`
-- `DANA_PUBLIC_KEY`
-- `DANA_PUBLIC_KEY_PATH`
-- `CLIENT_SECRET`
-
-Notes:
-- By default, the SDK will use the [DANA Production URL](https://api.saas.dana.id) to make API requests. You can set `DANA_ENV` to either `PRODUCTION` or `SANDBOX` to override the environment.
-- `PRIVATE_KEY_PATH` and `DANA_PUBLIC_KEY_PATH` are paths to the private key and public key files, respectively. You can set either `PRIVATE_KEY` or `PRIVATE_KEY_PATH`. If you set both, `PRIVATE_KEY` will be ignored. The same goes for `DANA_PUBLIC_KEY` and `DANA_PUBLIC_KEY_PATH`.
-- Please check the [DANA API Docs](https://dashboard.dana.id/api-docs/read/45) for a guide on generating the keys
+| Name                   | Description                                                                             | Example Value                                                                   |
+| ---------------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `ENV` or `DANA_ENV`    | Defines which environment the SDK will use. Possible values: `SANDBOX` or `PRODUCTION`. | `SANDBOX`                                                                       |
+| `X_PARTNER_ID`         | Unique identifier for partner, provided by DANA, also known as `clientId`.              | 1970010100000000000000                                                          |
+| `CLIENT_SECRET`        | Secret key of client. Assigned client secret during registration.                       | your_client_secret                                                              |
+| `DANA_PUBLIC_KEY`      | DANA public key string.                                                                 | `-----BEGIN PUBLIC KEY-----MIIBIjANBgkq...Do/QIDAQAB-----END PUBLIC KEY-----`   |
+| `DANA_PUBLIC_KEY_PATH` | Path to DANA public key file. If both are set, `DANA_PUBLIC_KEY_PATH` is used.          | /path/to/dana_public_key.pem                                                    |
+| `PRIVATE_KEY`          | Your private key string.                                                                | `-----BEGIN PRIVATE KEY-----MIIBVgIBADANBg...LsvTqw==-----END PRIVATE KEY-----` |
+| `PRIVATE_KEY_PATH`     | Path to your private key file. If both are set, `PRIVATE_KEY_PATH` is used.             | /path/to/your_private_key.pem                                                   |
+| `ORIGIN`               | Origin domain.                                                                          | https://yourdomain.com                                                          |
 
 ## Usage
 
@@ -112,11 +109,20 @@ public class Example {
 
 ## Documentation
 
-Find detailed API information and examples for each of our products by clicking the links below:
+### API
+
+Find detailed API information and usage examples for each of our products by clicking the links below:
+
 * [PaymentGatewayApi](docs/paymentgateway/v1/api/PaymentGatewayApi.md)
 * [WidgetApi](docs/widget/v1/api/WidgetApi.md)
 * [DisbursementApi](docs/disbursement/v1/api/DisbursementApi.md)
 * [MerchantManagementApi](docs/merchantmanagement/v1/api/MerchantManagementApi.md)
+
+### Util
+
+Find detailed util information and usage examples by clicking the links below:
+
+* [WebhookUtil](docs/webhook/v1/util/WebhookUtil.md)
 
 ## Further Reading
 

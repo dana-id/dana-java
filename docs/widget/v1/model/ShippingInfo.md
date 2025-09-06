@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**merchantShippingId** | **String** | Merchant shipping identifier |  |
 |**trackingNo** | **String** | Number of tracking |  [optional] |
 |**carrier** | **String** | Information of carrier |  [optional] |

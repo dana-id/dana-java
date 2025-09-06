@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**version** | **String** | API version |  [optional] |
 |**function** | [**FunctionEnum**](#FunctionEnum) | API interface |  [optional] |
 |**clientId** | **String** | Client ID provided by DANA, used to identify partner and application system |  [optional] |
@@ -20,8 +20,8 @@
 ## Enum: FunctionEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| DANA_MERCHANT_DIVISION_UPDATE_DIVISION | "dana.merchant.division.updateDivision" |  |
+| - | - | - |
+| `DANA_MERCHANT_DIVISION_UPDATE_DIVISION` | "dana.merchant.division.updateDivision" |  |
 
 ### Usage Example
 ```java

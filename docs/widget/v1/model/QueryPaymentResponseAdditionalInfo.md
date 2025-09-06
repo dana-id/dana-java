@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**merchantId** | **String** | Merchant identifier |  [optional] |
 |**buyer** | [**Buyer**](Buyer.md) |  |  [optional] |
 |**seller** | [**Seller**](Seller.md) |  |  [optional] |

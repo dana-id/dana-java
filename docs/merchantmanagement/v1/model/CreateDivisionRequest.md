@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**apiVersion** | **String** | API Version. As per the respective API reference. Must be > 2 |  |
 |**merchantId** | **String** | Merchant identifier |  |
 |**parentDivisionId** | **String** | Parent division identifier. Required when parentRoleType is DIVISION or EXTERNAL_DIVISION. Length depends on parentRoleType - DIVISION (21 max), EXTERNAL_DIVISION (64 max) |  [optional] |
@@ -36,10 +36,10 @@
 ## Enum: ParentRoleTypeEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| MERCHANT | "MERCHANT" |  |
-| DIVISION | "DIVISION" |  |
-| EXTERNAL_DIVISION | "EXTERNAL_DIVISION" |  |
+| - | - | - |
+| `MERCHANT` | "MERCHANT" |  |
+| `DIVISION` | "DIVISION" |  |
+| `EXTERNAL_DIVISION` | "EXTERNAL_DIVISION" |  |
 
 ### Usage Example
 ```java
@@ -57,18 +57,18 @@ public class Example {
 ## Enum: DivisionTypeEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| REGION | "REGION" |  |
-| AREA | "AREA" |  |
-| BRANCH | "BRANCH" |  |
-| OUTLET | "OUTLET" |  |
-| STORE | "STORE" |  |
-| KIOSK | "KIOSK" |  |
-| STALL | "STALL" |  |
-| COUNTER | "COUNTER" |  |
-| BOOTH | "BOOTH" |  |
-| POINT_OF_SALE | "POINT_OF_SALE" |  |
-| VENDING_MACHINE | "VENDING_MACHINE" |  |
+| - | - | - |
+| `REGION` | "REGION" |  |
+| `AREA` | "AREA" |  |
+| `BRANCH` | "BRANCH" |  |
+| `OUTLET` | "OUTLET" |  |
+| `STORE` | "STORE" |  |
+| `KIOSK` | "KIOSK" |  |
+| `STALL` | "STALL" |  |
+| `COUNTER` | "COUNTER" |  |
+| `BOOTH` | "BOOTH" |  |
+| `POINT_OF_SALE` | "POINT_OF_SALE" |  |
+| `VENDING_MACHINE` | "VENDING_MACHINE" |  |
 
 ### Usage Example
 ```java
@@ -86,13 +86,13 @@ public class Example {
 ## Enum: BusinessEntityEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| PT | "pt" |  |
-| CV | "cv" |  |
-| INDIVIDU | "individu" |  |
-| USAHA_DAGANG | "usaha_dagang" |  |
-| YAYASAN | "yayasan" |  |
-| KOPERASI | "koperasi" |  |
+| - | - | - |
+| `PT` | "pt" |  |
+| `CV` | "cv" |  |
+| `INDIVIDU` | "individu" |  |
+| `USAHA_DAGANG` | "usaha_dagang" |  |
+| `YAYASAN` | "yayasan" |  |
+| `KOPERASI` | "koperasi" |  |
 
 ### Usage Example
 ```java
@@ -110,12 +110,12 @@ public class Example {
 ## Enum: OwnerIdTypeEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| KTP | "KTP" |  |
-| SIM | "SIM" |  |
-| PASSPORT | "PASSPORT" |  |
-| SIUP | "SIUP" |  |
-| NIB | "NIB" |  |
+| - | - | - |
+| `KTP` | "KTP" |  |
+| `SIM` | "SIM" |  |
+| `PASSPORT` | "PASSPORT" |  |
+| `SIUP` | "SIUP" |  |
+| `NIB` | "NIB" |  |
 
 ### Usage Example
 ```java
@@ -133,12 +133,12 @@ public class Example {
 ## Enum: SizeTypeEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| UMI | "UMI" |  |
-| UKE | "UKE" |  |
-| UME | "UME" |  |
-| UBE | "UBE" |  |
-| URE | "URE" |  |
+| - | - | - |
+| `UMI` | "UMI" |  |
+| `UKE` | "UKE" |  |
+| `UME` | "UME" |  |
+| `UBE` | "UBE" |  |
+| `URE` | "URE" |  |
 
 ### Usage Example
 ```java
@@ -156,9 +156,9 @@ public class Example {
 ## Enum: PgDivisionFlagEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| TRUE | "true" |  |
-| FALSE | "false" |  |
+| - | - | - |
+| `TRUE` | "true" |  |
+| `FALSE` | "false" |  |
 
 ### Usage Example
 ```java

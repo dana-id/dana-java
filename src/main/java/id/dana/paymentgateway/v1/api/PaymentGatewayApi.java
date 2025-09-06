@@ -37,7 +37,7 @@ interface PaymentGatewayApiService {
    * Cancel Order - Payment Gateway
    * This API is used to cancel the order from merchant's platform to DANA
    * @param cancelOrderRequest  (required)
-   * @return Call&lt;CancelOrderResponse&gt;
+   * @return Call<CancelOrderResponse>
    * 
    * @see <a href="https://dashboard.dana.id/api-docs/read/117">Cancel Order - Payment Gateway Documentation</a>
    */
@@ -54,7 +54,7 @@ interface PaymentGatewayApiService {
    * Consult Pay - Payment Gateway
    * This API is used to consult the list of payment methods or payment channels that user has and used in certain transactions or orders
    * @param consultPayRequest  (required)
-   * @return Call&lt;ConsultPayResponse&gt;
+   * @return Call<ConsultPayResponse>
    * 
    * @see <a href="https://dashboard.dana.id/api-docs/read/237">Consult Pay - Payment Gateway Documentation</a>
    */
@@ -71,7 +71,7 @@ interface PaymentGatewayApiService {
    * Create Order - Payment Gateway
    * This API is used for merchant to create order in DANA side
    * @param createOrderRequest  (required)
-   * @return Call&lt;CreateOrderResponse&gt;
+   * @return Call<CreateOrderResponse>
    * 
    * @see <a href="https://dashboard.dana.id/api-docs/read/243">Create Order - Payment Gateway Documentation</a>
    */
@@ -88,7 +88,7 @@ interface PaymentGatewayApiService {
    * Query Payment - Payment Gateway
    * This API is used to inquiry payment status and information from merchant's platform to DANA
    * @param queryPaymentRequest  (required)
-   * @return Call&lt;QueryPaymentResponse&gt;
+   * @return Call<QueryPaymentResponse>
    * 
    * @see <a href="https://dashboard.dana.id/api-docs/read/126">Query Payment - Payment Gateway Documentation</a>
    */
@@ -105,7 +105,7 @@ interface PaymentGatewayApiService {
    * Refund Order - Payment Gateway
    * This API is used to refund the order from merchant's platform to DANA
    * @param refundOrderRequest  (required)
-   * @return Call&lt;RefundOrderResponse&gt;
+   * @return Call<RefundOrderResponse>
    * 
    * @see <a href="https://dashboard.dana.id/api-docs/read/127">Refund Order - Payment Gateway Documentation</a>
    */
@@ -134,7 +134,7 @@ public class PaymentGatewayApi {
    * Cancel Order - Payment Gateway
    * This API is used to cancel the order from merchant's platform to DANA
    * @param cancelOrderRequest  (required)
-   * @return Call&lt;CancelOrderResponse&gt;
+   * @return CancelOrderResponse
    * 
    * @see <a href="https://dashboard.dana.id/api-docs/read/117">Cancel Order - Payment Gateway Documentation</a>
    */
@@ -163,7 +163,7 @@ public class PaymentGatewayApi {
    * Consult Pay - Payment Gateway
    * This API is used to consult the list of payment methods or payment channels that user has and used in certain transactions or orders
    * @param consultPayRequest  (required)
-   * @return Call&lt;ConsultPayResponse&gt;
+   * @return ConsultPayResponse
    * 
    * @see <a href="https://dashboard.dana.id/api-docs/read/237">Consult Pay - Payment Gateway Documentation</a>
    */
@@ -192,7 +192,7 @@ public class PaymentGatewayApi {
    * Create Order - Payment Gateway
    * This API is used for merchant to create order in DANA side
    * @param createOrderRequest  (required)
-   * @return Call&lt;CreateOrderResponse&gt;
+   * @return CreateOrderResponse
    * 
    * @see <a href="https://dashboard.dana.id/api-docs/read/243">Create Order - Payment Gateway Documentation</a>
    */
@@ -221,7 +221,7 @@ public class PaymentGatewayApi {
    * Query Payment - Payment Gateway
    * This API is used to inquiry payment status and information from merchant's platform to DANA
    * @param queryPaymentRequest  (required)
-   * @return Call&lt;QueryPaymentResponse&gt;
+   * @return QueryPaymentResponse
    * 
    * @see <a href="https://dashboard.dana.id/api-docs/read/126">Query Payment - Payment Gateway Documentation</a>
    */
@@ -250,7 +250,7 @@ public class PaymentGatewayApi {
    * Refund Order - Payment Gateway
    * This API is used to refund the order from merchant's platform to DANA
    * @param refundOrderRequest  (required)
-   * @return Call&lt;RefundOrderResponse&gt;
+   * @return RefundOrderResponse
    * 
    * @see <a href="https://dashboard.dana.id/api-docs/read/127">Refund Order - Payment Gateway Documentation</a>
    */

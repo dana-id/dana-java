@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**resourceType** | [**ResourceTypeEnum**](#ResourceTypeEnum) | Type of user resource |  |
 |**value** | **String** | Resource value |  |
 
@@ -15,13 +15,13 @@
 ## Enum: ResourceTypeEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| BALANCE | "BALANCE" |  |
-| TRANSACTION_URL | "TRANSACTION_URL" |  |
-| MASK_DANA_ID | "MASK_DANA_ID" |  |
-| TOPUP_URL | "TOPUP_URL" |  |
-| OTT | "OTT" |  |
-| USER_KYC | "USER_KYC" |  |
+| - | - | - |
+| `BALANCE` | "BALANCE" |  |
+| `TRANSACTION_URL` | "TRANSACTION_URL" |  |
+| `MASK_DANA_ID` | "MASK_DANA_ID" |  |
+| `TOPUP_URL` | "TOPUP_URL" |  |
+| `OTT` | "OTT" |  |
+| `USER_KYC` | "USER_KYC" |  |
 
 ### Usage Example
 ```java

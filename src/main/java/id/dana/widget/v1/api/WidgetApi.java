@@ -45,7 +45,7 @@ interface WidgetApiService {
    * Account unbinding - Binding
    * This API is used to reverses the account binding process by revoking the accessToken and refreshToken
    * @param accountUnbindingRequest  (required)
-   * @return Call&lt;AccountUnbindingResponse&gt;
+   * @return Call<AccountUnbindingResponse>
    * 
    * @see <a href="https://dashboard.dana.id/api-docs/read/108">Account unbinding - Binding Documentation</a>
    */
@@ -62,7 +62,7 @@ interface WidgetApiService {
    * Apply OTT - Widget
    * This API is used to get one time token that will be used as authorization parameter upon redirecting to DANA
    * @param applyOTTRequest  (required)
-   * @return Call&lt;ApplyOTTResponse&gt;
+   * @return Call<ApplyOTTResponse>
    * 
    * @see <a href="https://dashboard.dana.id/api-docs/read/109">Apply OTT - Widget Documentation</a>
    */
@@ -79,7 +79,7 @@ interface WidgetApiService {
    * Apply Token, required by Apply OTT - Binding
    * This API is used to finalized account binding process by exchanging the authCode into accessToken that can be used as user authorization
    * @param applyTokenRequest  (required)
-   * @return Call&lt;ApplyTokenResponse&gt;
+   * @return Call<ApplyTokenResponse>
    * 
    * @see <a href="https://dashboard.dana.id/api-docs/read/110">Apply Token, required by Apply OTT - Binding Documentation</a>
    */
@@ -96,7 +96,7 @@ interface WidgetApiService {
    * Balance Inquiry
    * This API is used to query user's DANA account balance via merchant
    * @param balanceInquiryRequest  (required)
-   * @return Call&lt;BalanceInquiryResponse&gt;
+   * @return Call<BalanceInquiryResponse>
    */
   @Headers({
     "Content-Type:application/json",
@@ -111,7 +111,7 @@ interface WidgetApiService {
    * Cancel Order - Widget
    * This API is used to cancel the order from merchant's platform to DANA
    * @param cancelOrderRequest  (required)
-   * @return Call&lt;CancelOrderResponse&gt;
+   * @return Call<CancelOrderResponse>
    * 
    * @see <a href="https://dashboard.dana.id/api-docs/read/117">Cancel Order - Widget Documentation</a>
    */
@@ -128,7 +128,7 @@ interface WidgetApiService {
    * Query Payment - Widget
    * This API is used to inquiry payment status and information from merchant's platform to DANA
    * @param queryPaymentRequest  (required)
-   * @return Call&lt;QueryPaymentResponse&gt;
+   * @return Call<QueryPaymentResponse>
    * 
    * @see <a href="https://dashboard.dana.id/api-docs/read/126">Query Payment - Widget Documentation</a>
    */
@@ -145,11 +145,12 @@ interface WidgetApiService {
    * Query User Profile
    * The API is used to query user profile such as DANA balance (unit in IDR), masked DANA phone number, KYC or OTT (one time token) between merchant server and DANA's server
    * @param queryUserProfileRequest  (required)
-   * @return Call&lt;QueryUserProfileResponse&gt;
+   * @return Call<QueryUserProfileResponse>
    */
   @Headers({
     "Content-Type:application/json",
     "X-API-TYPE:OPEN_API",
+    "X-API-VERSION:2.0",
     "X-API-FUNCTION:dana.member.query.queryUserProfile"
   })
   @POST("dana/member/query/queryUserProfile.htm")
@@ -161,7 +162,7 @@ interface WidgetApiService {
    * Refund Order - Widget
    * This API is used to refund the order from merchant's platform to DANA
    * @param refundOrderRequest  (required)
-   * @return Call&lt;RefundOrderResponse&gt;
+   * @return Call<RefundOrderResponse>
    * 
    * @see <a href="https://dashboard.dana.id/api-docs/read/127">Refund Order - Widget Documentation</a>
    */
@@ -178,7 +179,7 @@ interface WidgetApiService {
    * Widget Payment - Widget
    * This API is used to initiate payment from merchant's platform to DANA
    * @param widgetPaymentRequest  (required)
-   * @return Call&lt;WidgetPaymentResponse&gt;
+   * @return Call<WidgetPaymentResponse>
    * 
    * @see <a href="https://dashboard.dana.id/api-docs/read/122">Widget Payment - Widget Documentation</a>
    */
@@ -207,7 +208,7 @@ public class WidgetApi {
    * Account unbinding - Binding
    * This API is used to reverses the account binding process by revoking the accessToken and refreshToken
    * @param accountUnbindingRequest  (required)
-   * @return Call&lt;AccountUnbindingResponse&gt;
+   * @return AccountUnbindingResponse
    * 
    * @see <a href="https://dashboard.dana.id/api-docs/read/108">Account unbinding - Binding Documentation</a>
    */
@@ -236,7 +237,7 @@ public class WidgetApi {
    * Apply OTT - Widget
    * This API is used to get one time token that will be used as authorization parameter upon redirecting to DANA
    * @param applyOTTRequest  (required)
-   * @return Call&lt;ApplyOTTResponse&gt;
+   * @return ApplyOTTResponse
    * 
    * @see <a href="https://dashboard.dana.id/api-docs/read/109">Apply OTT - Widget Documentation</a>
    */
@@ -265,7 +266,7 @@ public class WidgetApi {
    * Apply Token, required by Apply OTT - Binding
    * This API is used to finalized account binding process by exchanging the authCode into accessToken that can be used as user authorization
    * @param applyTokenRequest  (required)
-   * @return Call&lt;ApplyTokenResponse&gt;
+   * @return ApplyTokenResponse
    * 
    * @see <a href="https://dashboard.dana.id/api-docs/read/110">Apply Token, required by Apply OTT - Binding Documentation</a>
    */
@@ -294,7 +295,7 @@ public class WidgetApi {
    * Balance Inquiry
    * This API is used to query user's DANA account balance via merchant
    * @param balanceInquiryRequest  (required)
-   * @return Call&lt;BalanceInquiryResponse&gt;
+   * @return BalanceInquiryResponse
    */
   public BalanceInquiryResponse balanceInquiry(
     @retrofit2.http.Body BalanceInquiryRequest balanceInquiryRequest
@@ -321,7 +322,7 @@ public class WidgetApi {
    * Cancel Order - Widget
    * This API is used to cancel the order from merchant's platform to DANA
    * @param cancelOrderRequest  (required)
-   * @return Call&lt;CancelOrderResponse&gt;
+   * @return CancelOrderResponse
    * 
    * @see <a href="https://dashboard.dana.id/api-docs/read/117">Cancel Order - Widget Documentation</a>
    */
@@ -350,7 +351,7 @@ public class WidgetApi {
    * Query Payment - Widget
    * This API is used to inquiry payment status and information from merchant's platform to DANA
    * @param queryPaymentRequest  (required)
-   * @return Call&lt;QueryPaymentResponse&gt;
+   * @return QueryPaymentResponse
    * 
    * @see <a href="https://dashboard.dana.id/api-docs/read/126">Query Payment - Widget Documentation</a>
    */
@@ -379,7 +380,7 @@ public class WidgetApi {
    * Query User Profile
    * The API is used to query user profile such as DANA balance (unit in IDR), masked DANA phone number, KYC or OTT (one time token) between merchant server and DANA's server
    * @param queryUserProfileRequest  (required)
-   * @return Call&lt;QueryUserProfileResponse&gt;
+   * @return QueryUserProfileResponse
    */
   public QueryUserProfileResponse queryUserProfile(
     @retrofit2.http.Body QueryUserProfileRequest queryUserProfileRequest
@@ -406,7 +407,7 @@ public class WidgetApi {
    * Refund Order - Widget
    * This API is used to refund the order from merchant's platform to DANA
    * @param refundOrderRequest  (required)
-   * @return Call&lt;RefundOrderResponse&gt;
+   * @return RefundOrderResponse
    * 
    * @see <a href="https://dashboard.dana.id/api-docs/read/127">Refund Order - Widget Documentation</a>
    */
@@ -435,7 +436,7 @@ public class WidgetApi {
    * Widget Payment - Widget
    * This API is used to initiate payment from merchant's platform to DANA
    * @param widgetPaymentRequest  (required)
-   * @return Call&lt;WidgetPaymentResponse&gt;
+   * @return WidgetPaymentResponse
    * 
    * @see <a href="https://dashboard.dana.id/api-docs/read/122">Widget Payment - Widget Documentation</a>
    */

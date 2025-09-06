@@ -7,7 +7,7 @@ Data needed to construct Oauth2Url
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**externalId** | **String** | Identifier from merchant |  |
 |**merchantId** | **String** | Merchant identifier that is unique per each merchant |  |
 |**subMerchantId** | **String** | Information of sub merchant identifier |  [optional] |
@@ -24,9 +24,9 @@ Data needed to construct Oauth2Url
 ## Enum: ModeEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| API | "API" |  |
-| DEEPLINK | "DEEPLINK" |  |
+| - | - | - |
+| `API` | "API" |  |
+| `DEEPLINK` | "DEEPLINK" |  |
 
 ### Usage Example
 ```java

@@ -19,6 +19,7 @@ public final class DanaHeader {
   public static final String X_DEVICE_ID = "X-DEVICE-ID";
   public static final String X_LATITUDE = "X-LATITUDE";
   public static final String X_LONGITUDE = "X-LONGITUDE";
+  public static final String X_API_VERSION = "X-API-VERSION";
   public static final String X_API_FUNCTION = "X-API-FUNCTION";
 
 }

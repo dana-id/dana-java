@@ -9,8 +9,10 @@ import id.dana.invoker.model.context.SnapB2B2CContext.SnapB2B2CContextAdditional
 import id.dana.invoker.model.exception.DanaException;
 import java.io.IOException;
 import java.util.UUID;
+import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.Request.Builder;
+import okhttp3.RequestBody;
 import org.apache.commons.lang3.StringUtils;
 
 public final class DanaHeaderUtil {
@@ -33,7 +35,7 @@ public final class DanaHeaderUtil {
           populateSnapB2B2CScenarioHeaders(request, requestBuilder);
           break;
         case "OPEN_API":
-          populateOpenApiScenarioHeaders(request, requestBuilder, request.header(DanaHeader.X_API_FUNCTION));
+          populateOpenApiScenarioHeaders(request, requestBuilder);
           break;
         case "SNAP_B2B":
         default:
@@ -95,7 +97,7 @@ public final class DanaHeaderUtil {
         requestBuilder.header(DanaHeader.X_LATITUDE, additionalInfo.getLatitude());
       }
       if (StringUtils.isNotEmpty(additionalInfo.getLongitude())) {
-        requestBuilder.header(DanaHeader.X_LATITUDE, additionalInfo.getLongitude());
+        requestBuilder.header(DanaHeader.X_LONGITUDE, additionalInfo.getLongitude());
       }
       requestBuilder.header(DanaHeader.CHANNEL_ID, partnerId + "-SERVER");
     } catch (IOException e) {
@@ -103,61 +105,51 @@ public final class DanaHeaderUtil {
     }
   }
 
-  public static void populateOpenApiScenarioHeaders(Request request, Builder requestBuilder, String functionName) {
+  public static void populateOpenApiScenarioHeaders(Request request, Builder requestBuilder) {
     try {
-      String timestamp = DateTimeUtil.getFormattedCurrentDateTime();
+      String version = request.header(DanaHeader.X_API_VERSION);
+      String function = request.header(DanaHeader.X_API_FUNCTION);
       String partnerId = DanaConfig.getInstance().getPartnerId();
       String clientSecret = DanaConfig.getInstance().getClientSecret();
-      String privateKey = DanaConfig.getInstance().getPrivateKey();
+      String timestamp = DateTimeUtil.getFormattedCurrentDateTime();
 
-      // Get the request body as a JSON object
-      String requestBody = RequestUtil.peekRequestBody(request);
-      ObjectNode requestNode = objectMapper.readValue(requestBody, ObjectNode.class);
-      
-      // Create the head object
       ObjectNode headNode = objectMapper.createObjectNode();
-      headNode.put("version", "2.0");
-      headNode.put("function", functionName);
+      headNode.put("version", version);
+      headNode.put("function", function);
       headNode.put("clientId", partnerId);
       headNode.put("clientSecret", clientSecret);
       headNode.put("reqTime", timestamp);
       headNode.put("reqMsgId", UUID.randomUUID().toString());
       headNode.set("reserve", objectMapper.createObjectNode());
-      
-      // Create the new request object with head and body
-      ObjectNode newRequestNode = objectMapper.createObjectNode();
-      ObjectNode requestBodyNode = objectMapper.createObjectNode();
-      
-      // Check if the request has a body field, if not use the entire request as body
-      if (requestNode.has("request") && requestNode.get("request").has("body")) {
-        requestBodyNode.set("body", requestNode.get("request").get("body"));
+
+      String requestBody = RequestUtil.peekRequestBody(request);
+      ObjectNode requestBodyNode = objectMapper.readValue(requestBody, ObjectNode.class);
+
+      ObjectNode newRequestBodyNode = objectMapper.createObjectNode();
+      newRequestBodyNode.set("head", headNode);
+
+      if (requestBodyNode.has("request") && requestBodyNode.get("request").has("body")) {
+        newRequestBodyNode.set("body", requestBodyNode.get("request").get("body"));
       } else {
-        requestBodyNode.set("body", requestNode);
+        newRequestBodyNode.set("body", requestBodyNode);
       }
-      
-      // Set the head and body in the request
-      requestBodyNode.set("head", headNode);
-      newRequestNode.set("request", requestBodyNode);
-      
-      // Generate signature for the request
-      String requestJson = requestBodyNode.toString();
-      String signature = DanaSignatureUtil.generateOpenApiScenarioSignature(requestJson, privateKey);
-      
-      // Add signature to the request
+
+      String signature = DanaSignatureUtil.generateOpenApiScenarioSignature(
+          newRequestBodyNode.toString());
+
+      ObjectNode newRequestNode = objectMapper.createObjectNode();
+      newRequestNode.set("request", newRequestBodyNode);
       newRequestNode.put("signature", signature);
-      
-      // Update the request builder with the new body
-      requestBuilder.method(
-          request.method(),
-          okhttp3.RequestBody.create(
-              okhttp3.MediaType.parse("application/json; charset=utf-8"),
-              newRequestNode.toString()
-          )
-      );
-      
+
+      requestBuilder.method(request.method(),
+          RequestBody.create(MediaType.parse("application/json; charset=utf-8"),
+              newRequestNode.toString()));
+
+      requestBuilder.removeHeader(DanaHeader.X_API_VERSION);
       requestBuilder.removeHeader(DanaHeader.X_API_FUNCTION);
-    } catch (Exception e) {
-      throw new DanaException("Failed to populate OpenAPI scenario headers", e);
+    } catch (IOException e) {
+      throw new DanaException(e);
     }
   }
+
 }

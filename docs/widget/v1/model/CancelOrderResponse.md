@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**responseCode** | **String** | Refer to response code list |  |
 |**responseMessage** | **String** | Refer to response code list |  |
 |**originalReferenceNo** | **String** | Original transaction identifier on DANA system |  [optional] |

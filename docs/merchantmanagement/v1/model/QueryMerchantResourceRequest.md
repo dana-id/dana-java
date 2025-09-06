@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**requestMerchantId** | **String** | This is a merchantId of DANA |  |
 |**merchantResourceInfoList** | [**List<MerchantResourceInfoListEnum>**](#List<MerchantResourceInfoListEnum>) | This is a constant merchant resource info request, currently available for value of constant these: MERCHANT_DEPOSIT_BALANCE MERCHANT_AVAILABLE_BALANCE MERCHANT_TOTAL_BALANCE value for this request can't be empty or wrong constant info  |  |
 
@@ -15,10 +15,10 @@
 ## Enum: List<MerchantResourceInfoListEnum>
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| MERCHANT_DEPOSIT_BALANCE | "MERCHANT_DEPOSIT_BALANCE" |  |
-| MERCHANT_AVAILABLE_BALANCE | "MERCHANT_AVAILABLE_BALANCE" |  |
-| MERCHANT_TOTAL_BALANCE | "MERCHANT_TOTAL_BALANCE" |  |
+| - | - | - |
+| `MERCHANT_DEPOSIT_BALANCE` | "MERCHANT_DEPOSIT_BALANCE" |  |
+| `MERCHANT_AVAILABLE_BALANCE` | "MERCHANT_AVAILABLE_BALANCE" |  |
+| `MERCHANT_TOTAL_BALANCE` | "MERCHANT_TOTAL_BALANCE" |  |
 
 ### Usage Example
 ```java

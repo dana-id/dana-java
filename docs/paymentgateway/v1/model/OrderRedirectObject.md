@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**orderTitle** | **String** | Additional information of order title |  |
 |**merchantTransType** | **String** | Additional information of merchant transaction type |  [optional] |
 |**buyer** | [**Buyer**](Buyer.md) | Additional information of buyer |  [optional] |
@@ -22,8 +22,8 @@
 ## Enum: ScenarioEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| REDIRECT | "REDIRECT" | For Payment Gateway Drop-in scenario, need to fill it as REDIRECT |
+| - | - | - |
+| `REDIRECT` | "REDIRECT" | For Payment Gateway Drop-in scenario, need to fill it as REDIRECT |
 
 ### Usage Example
 ```java

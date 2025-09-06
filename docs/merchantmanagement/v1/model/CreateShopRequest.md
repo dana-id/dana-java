@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**merchantId** | **String** | Merchant id |  |
 |**parentDivisionId** | **String** | Parent division ID. Required when shopParentType is DIVISION or EXTERNAL_DIVISION |  [optional] |
 |**shopParentType** | [**ShopParentTypeEnum**](#ShopParentTypeEnum) | Parent type for the shop |  |
@@ -44,10 +44,10 @@
 ## Enum: ShopParentTypeEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| MERCHANT | "MERCHANT" |  |
-| DIVISION | "DIVISION" |  |
-| EXTERNAL_DIVISION | "EXTERNAL_DIVISION" |  |
+| - | - | - |
+| `MERCHANT` | "MERCHANT" |  |
+| `DIVISION` | "DIVISION" |  |
+| `EXTERNAL_DIVISION` | "EXTERNAL_DIVISION" |  |
 
 ### Usage Example
 ```java
@@ -65,11 +65,11 @@ public class Example {
 ## Enum: SizeTypeEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| UMI | "UMI" |  |
-| UKE | "UKE" |  |
-| UME | "UME" |  |
-| UBE | "UBE" |  |
+| - | - | - |
+| `UMI` | "UMI" |  |
+| `UKE` | "UKE" |  |
+| `UME` | "UME" |  |
+| `UBE` | "UBE" |  |
 
 ### Usage Example
 ```java
@@ -87,9 +87,9 @@ public class Example {
 ## Enum: LoyaltyEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| TRUE | "true" |  |
-| FALSE | "false" |  |
+| - | - | - |
+| `TRUE` | "true" |  |
+| `FALSE` | "false" |  |
 
 ### Usage Example
 ```java
@@ -107,13 +107,13 @@ public class Example {
 ## Enum: BusinessEntityEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| PT | "pt" |  |
-| CV | "cv" |  |
-| INDIVIDU | "individu" |  |
-| USAHA_DAGANG | "usaha_dagang" |  |
-| YAYASAN | "yayasan" |  |
-| KOPERASI | "koperasi" |  |
+| - | - | - |
+| `PT` | "pt" |  |
+| `CV` | "cv" |  |
+| `INDIVIDU` | "individu" |  |
+| `USAHA_DAGANG` | "usaha_dagang" |  |
+| `YAYASAN` | "yayasan" |  |
+| `KOPERASI` | "koperasi" |  |
 
 ### Usage Example
 ```java
@@ -131,12 +131,12 @@ public class Example {
 ## Enum: OwnerIdTypeEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| KTP | "KTP" |  |
-| SIM | "SIM" |  |
-| PASSPORT | "PASSPORT" |  |
-| SIUP | "SIUP" |  |
-| NIB | "NIB" |  |
+| - | - | - |
+| `KTP` | "KTP" |  |
+| `SIM` | "SIM" |  |
+| `PASSPORT` | "PASSPORT" |  |
+| `SIUP` | "SIUP" |  |
+| `NIB` | "NIB" |  |
 
 ### Usage Example
 ```java
@@ -154,9 +154,9 @@ public class Example {
 ## Enum: ShopOwningEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| DIRECT_OWNED | "DIRECT_OWNED" |  |
-| FRANCHISED | "FRANCHISED" |  |
+| - | - | - |
+| `DIRECT_OWNED` | "DIRECT_OWNED" |  |
+| `FRANCHISED` | "FRANCHISED" |  |
 
 ### Usage Example
 ```java

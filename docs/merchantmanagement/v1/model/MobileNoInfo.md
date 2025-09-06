@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**mobileNo** | **String** | Mobile number. Accepted formats: 0xxxxxxxx, 62xxxxxxx, 62-xxxxxxx, +62xxxxxx |  [optional] |
 |**mobileId** | **String** | Mobile ID |  [optional] |
 |**verified** | [**VerifiedEnum**](#VerifiedEnum) | Verification status |  [optional] |
@@ -16,9 +16,9 @@
 ## Enum: VerifiedEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| TRUE | "true" |  |
-| FALSE | "false" |  |
+| - | - | - |
+| `TRUE` | "true" |  |
+| `FALSE` | "false" |  |
 
 ### Usage Example
 ```java

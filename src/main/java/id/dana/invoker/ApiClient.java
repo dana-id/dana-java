@@ -51,15 +51,7 @@ public class ApiClient {
   public ApiClient(String[] authNames) {
     this();
     for(String authName : authNames) {
-      Interceptor auth = null;
-      if ("CLIENT_SECRET".equals(authName)) {
-        auth = new ApiKeyAuth("header", "clientSecret");
-      } else {
-        throw new RuntimeException("auth name \"" + authName + "\" not found in available auth names");
-      }
-      if (auth != null) {
-        addAuthorization(authName, auth);
-      }
+      throw new RuntimeException("auth name \"" + authName + "\" not found in available auth names");
     }
   }
 

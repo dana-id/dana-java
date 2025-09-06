@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**responseCode** | **String** | Refer to response code list |  |
 |**responseMessage** | **String** | Refer to response code list |  |
 |**originalPartnerReferenceNo** | **String** | Original transaction identifier on partner system |  [optional] |
@@ -23,15 +23,15 @@
 ## Enum: LatestTransactionStatusEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| _00 | "00" | Success |
-| _01 | "01" | Initiated |
-| _02 | "02" | Paying |
-| _03 | "03" | Pending |
-| _04 | "04" | Refunded |
-| _05 | "05" | Cancelled |
-| _06 | "06" | Failed |
-| _07 | "07" | Not found |
+| - | - | - |
+| `_00` | "00" | Success |
+| `_01` | "01" | Initiated |
+| `_02` | "02" | Paying |
+| `_03` | "03" | Pending |
+| `_04` | "04" | Refunded |
+| `_05` | "05" | Cancelled |
+| `_06` | "06" | Failed |
+| `_07` | "07" | Not found |
 
 ### Usage Example
 ```java

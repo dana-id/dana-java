@@ -17,7 +17,7 @@ public class Example {
 All URIs are relative to *https://api.saas.dana.id*, except if the operation defines another base path (For sandbox it is http://api.sandbox.dana.id).
 
 | Method | HTTP request | Description |
-| ------------- | ------------- | ------------- |
+| - | - | - |
 | [**accountUnbinding**](WidgetApi.md#accountUnbinding) | **POST** v1.0/registration-account-unbinding.htm | This API is used to reverses the account binding process by revoking the accessToken and refreshToken |
 | [**applyOTT**](WidgetApi.md#applyOTT) | **POST** rest/v1.1/qr/apply-ott | This API is used to get one time token that will be used as authorization parameter upon redirecting to DANA |
 | [**applyToken**](WidgetApi.md#applyToken) | **POST** v1.0/access-token/b2b2c.htm | This API is used to finalized account binding process by exchanging the authCode into accessToken that can be used as user authorization |
@@ -34,10 +34,10 @@ All URIs are relative to *https://api.saas.dana.id*, except if the operation def
 
 ### Function Signature
 | Name | Value |
-| ------------- | ------------- |
-| Function Name | `accountUnbinding` |
-| Payload | [**AccountUnbindingRequest**](../model/AccountUnbindingRequest.md) |
-| Return Type | [**AccountUnbindingResponse**](../model/AccountUnbindingResponse.md) |
+| - | - |
+| **Function Name** | `accountUnbinding` |
+| **Payload** | [**AccountUnbindingRequest**](../model/AccountUnbindingRequest.md) |
+| **Return Type** | [**AccountUnbindingResponse**](../model/AccountUnbindingResponse.md) |
 
 ### Usage Example
 ```java
@@ -69,10 +69,10 @@ public class Example {
 
 ### Function Signature
 | Name | Value |
-| ------------- | ------------- |
-| Function Name | `applyOTT` |
-| Payload | [**ApplyOTTRequest**](../model/ApplyOTTRequest.md) |
-| Return Type | [**ApplyOTTResponse**](../model/ApplyOTTResponse.md) |
+| - | - |
+| **Function Name** | `applyOTT` |
+| **Payload** | [**ApplyOTTRequest**](../model/ApplyOTTRequest.md) |
+| **Return Type** | [**ApplyOTTResponse**](../model/ApplyOTTResponse.md) |
 
 ### Usage Example
 ```java
@@ -104,10 +104,10 @@ public class Example {
 
 ### Function Signature
 | Name | Value |
-| ------------- | ------------- |
-| Function Name | `applyToken` |
-| Payload | [**ApplyTokenRequest**](../model/ApplyTokenRequest.md) |
-| Return Type | [**ApplyTokenResponse**](../model/ApplyTokenResponse.md) |
+| - | - |
+| **Function Name** | `applyToken` |
+| **Payload** | [**ApplyTokenRequest**](../model/ApplyTokenRequest.md) |
+| **Return Type** | [**ApplyTokenResponse**](../model/ApplyTokenResponse.md) |
 
 ### Usage Example
 ```java
@@ -139,10 +139,10 @@ public class Example {
 
 ### Function Signature
 | Name | Value |
-| ------------- | ------------- |
-| Function Name | `balanceInquiry` |
-| Payload | [**BalanceInquiryRequest**](../model/BalanceInquiryRequest.md) |
-| Return Type | [**BalanceInquiryResponse**](../model/BalanceInquiryResponse.md) |
+| - | - |
+| **Function Name** | `balanceInquiry` |
+| **Payload** | [**BalanceInquiryRequest**](../model/BalanceInquiryRequest.md) |
+| **Return Type** | [**BalanceInquiryResponse**](../model/BalanceInquiryResponse.md) |
 
 ### Usage Example
 ```java
@@ -174,10 +174,10 @@ public class Example {
 
 ### Function Signature
 | Name | Value |
-| ------------- | ------------- |
-| Function Name | `cancelOrder` |
-| Payload | [**CancelOrderRequest**](../model/CancelOrderRequest.md) |
-| Return Type | [**CancelOrderResponse**](../model/CancelOrderResponse.md) |
+| - | - |
+| **Function Name** | `cancelOrder` |
+| **Payload** | [**CancelOrderRequest**](../model/CancelOrderRequest.md) |
+| **Return Type** | [**CancelOrderResponse**](../model/CancelOrderResponse.md) |
 
 ### Usage Example
 ```java
@@ -209,10 +209,10 @@ public class Example {
 
 ### Function Signature
 | Name | Value |
-| ------------- | ------------- |
-| Function Name | `queryPayment` |
-| Payload | [**QueryPaymentRequest**](../model/QueryPaymentRequest.md) |
-| Return Type | [**QueryPaymentResponse**](../model/QueryPaymentResponse.md) |
+| - | - |
+| **Function Name** | `queryPayment` |
+| **Payload** | [**QueryPaymentRequest**](../model/QueryPaymentRequest.md) |
+| **Return Type** | [**QueryPaymentResponse**](../model/QueryPaymentResponse.md) |
 
 ### Usage Example
 ```java
@@ -244,10 +244,10 @@ public class Example {
 
 ### Function Signature
 | Name | Value |
-| ------------- | ------------- |
-| Function Name | `queryUserProfile` |
-| Payload | [**QueryUserProfileRequest**](../model/QueryUserProfileRequest.md) |
-| Return Type | [**QueryUserProfileResponse**](../model/QueryUserProfileResponse.md) |
+| - | - |
+| **Function Name** | `queryUserProfile` |
+| **Payload** | [**QueryUserProfileRequest**](../model/QueryUserProfileRequest.md) |
+| **Return Type** | [**QueryUserProfileResponse**](../model/QueryUserProfileResponse.md) |
 
 ### Usage Example
 ```java
@@ -279,10 +279,10 @@ public class Example {
 
 ### Function Signature
 | Name | Value |
-| ------------- | ------------- |
-| Function Name | `refundOrder` |
-| Payload | [**RefundOrderRequest**](../model/RefundOrderRequest.md) |
-| Return Type | [**RefundOrderResponse**](../model/RefundOrderResponse.md) |
+| - | - |
+| **Function Name** | `refundOrder` |
+| **Payload** | [**RefundOrderRequest**](../model/RefundOrderRequest.md) |
+| **Return Type** | [**RefundOrderResponse**](../model/RefundOrderResponse.md) |
 
 ### Usage Example
 ```java
@@ -314,10 +314,10 @@ public class Example {
 
 ### Function Signature
 | Name | Value |
-| ------------- | ------------- |
-| Function Name | `widgetPayment` |
-| Payload | [**WidgetPaymentRequest**](../model/WidgetPaymentRequest.md) |
-| Return Type | [**WidgetPaymentResponse**](../model/WidgetPaymentResponse.md) |
+| - | - |
+| **Function Name** | `widgetPayment` |
+| **Payload** | [**WidgetPaymentRequest**](../model/WidgetPaymentRequest.md) |
+| **Return Type** | [**WidgetPaymentResponse**](../model/WidgetPaymentResponse.md) |
 
 ### Usage Example
 ```java

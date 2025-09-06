@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**serviceType** | [**ServiceTypeEnum**](#ServiceTypeEnum) |  |  [optional] |
 |**serviceScenario** | [**ServiceScenarioEnum**](#ServiceScenarioEnum) |  |  [optional] |
 |**extendInfo** | **String** | Extend information |  [optional] |
@@ -16,9 +16,9 @@
 ## Enum: ServiceTypeEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| PARKING | "PARKING" |  |
-| INVESTMENT | "INVESTMENT" |  |
+| - | - | - |
+| `PARKING` | "PARKING" |  |
+| `INVESTMENT` | "INVESTMENT" |  |
 
 ### Usage Example
 ```java
@@ -36,10 +36,10 @@ public class Example {
 ## Enum: ServiceScenarioEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| SCAN_AND_PAY | "SCAN_AND_PAY" |  |
-| EXIT_AND_PAY | "EXIT_AND_PAY" |  |
-| EMAS_PURCHASE | "EMAS_PURCHASE" |  |
+| - | - | - |
+| `SCAN_AND_PAY` | "SCAN_AND_PAY" |  |
+| `EXIT_AND_PAY` | "EXIT_AND_PAY" |  |
+| `EMAS_PURCHASE` | "EMAS_PURCHASE" |  |
 
 ### Usage Example
 ```java

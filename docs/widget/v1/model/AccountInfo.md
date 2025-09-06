@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**balanceType** | **String** | Account information of balance type to specify which balance type expected to be returned. Will return all available balance type if this parameter empty |  [optional] |
 |**amount** | [**Money**](Money.md) | Account information of amount which include the net active amount. Contains two sub-fields:<br> 1. Value: Amount, including the cents<br> 2. Currency: Currency code based on ISO  |  [optional] |
 |**floatAmount** | [**Money**](Money.md) | Account information of float amount which include the inactive amount due to cut off period. Contains two sub-fields:<br> 1. Value: Amount, including the cents<br> 2. Currency: Currency code based on ISO  |  [optional] |

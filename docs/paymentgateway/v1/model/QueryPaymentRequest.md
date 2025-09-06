@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**originalPartnerReferenceNo** | **String** | Original transaction identifier on partner system. Required if originalReferenceNo is not filled |  [optional] |
 |**originalReferenceNo** | **String** | Original transaction identifier on DANA system. Required if originalPartnerReferenceNo is not filled |  [optional] |
 |**originalExternalId** | **String** | Original external identifier on header message |  [optional] |

@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**userResources** | [**List<UserResourcesEnum>**](#List<UserResourcesEnum>) |  |  |
 |**additionalInfo** | [**ApplyOTTRequestAdditionalInfo**](ApplyOTTRequestAdditionalInfo.md) |  |  |
 
@@ -15,8 +15,8 @@
 ## Enum: List<UserResourcesEnum>
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| OTT | "OTT" | Value always One Time Token ( OTT) |
+| - | - | - |
+| `OTT` | "OTT" | Value always One Time Token ( OTT) |
 
 ### Usage Example
 ```java

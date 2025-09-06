@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**merchantId** | **String** | Merchant identifier |  |
 |**divisionId** | **String** | Division identifier. Required when divisionIdType is INNER_ID |  [optional] |
 |**divisionName** | **String** | Division name |  |
@@ -38,18 +38,18 @@
 ## Enum: DivisionTypeEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| REGION | "REGION" |  |
-| AREA | "AREA" |  |
-| BRANCH | "BRANCH" |  |
-| OUTLET | "OUTLET" |  |
-| STORE | "STORE" |  |
-| KIOSK | "KIOSK" |  |
-| STALL | "STALL" |  |
-| COUNTER | "COUNTER" |  |
-| BOOTH | "BOOTH" |  |
-| POINT_OF_SALE | "POINT_OF_SALE" |  |
-| VENDING_MACHINE | "VENDING_MACHINE" |  |
+| - | - | - |
+| `REGION` | "REGION" |  |
+| `AREA` | "AREA" |  |
+| `BRANCH` | "BRANCH" |  |
+| `OUTLET` | "OUTLET" |  |
+| `STORE` | "STORE" |  |
+| `KIOSK` | "KIOSK" |  |
+| `STALL` | "STALL" |  |
+| `COUNTER` | "COUNTER" |  |
+| `BOOTH` | "BOOTH" |  |
+| `POINT_OF_SALE` | "POINT_OF_SALE" |  |
+| `VENDING_MACHINE` | "VENDING_MACHINE" |  |
 
 ### Usage Example
 ```java
@@ -67,9 +67,9 @@ public class Example {
 ## Enum: DivisionIdTypeEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| INNER_ID | "INNER_ID" |  |
-| EXTERNAL_ID | "EXTERNAL_ID" |  |
+| - | - | - |
+| `INNER_ID` | "INNER_ID" |  |
+| `EXTERNAL_ID` | "EXTERNAL_ID" |  |
 
 ### Usage Example
 ```java
@@ -87,13 +87,13 @@ public class Example {
 ## Enum: BusinessEntityEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| PT | "pt" |  |
-| CV | "cv" |  |
-| INDIVIDU | "individu" |  |
-| USAHA_DAGANG | "usaha_dagang" |  |
-| YAYASAN | "yayasan" |  |
-| KOPERASI | "koperasi" |  |
+| - | - | - |
+| `PT` | "pt" |  |
+| `CV` | "cv" |  |
+| `INDIVIDU` | "individu" |  |
+| `USAHA_DAGANG` | "usaha_dagang" |  |
+| `YAYASAN` | "yayasan" |  |
+| `KOPERASI` | "koperasi" |  |
 
 ### Usage Example
 ```java
@@ -111,12 +111,12 @@ public class Example {
 ## Enum: OwnerIdTypeEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| KTP | "KTP" |  |
-| SIM | "SIM" |  |
-| PASSPORT | "PASSPORT" |  |
-| SIUP | "SIUP" |  |
-| NIB | "NIB" |  |
+| - | - | - |
+| `KTP` | "KTP" |  |
+| `SIM` | "SIM" |  |
+| `PASSPORT` | "PASSPORT" |  |
+| `SIUP` | "SIUP" |  |
+| `NIB` | "NIB" |  |
 
 ### Usage Example
 ```java
@@ -134,12 +134,12 @@ public class Example {
 ## Enum: SizeTypeEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| UMI | "UMI" |  |
-| UKE | "UKE" |  |
-| UME | "UME" |  |
-| UBE | "UBE" |  |
-| URE | "URE" |  |
+| - | - | - |
+| `UMI` | "UMI" |  |
+| `UKE` | "UKE" |  |
+| `UME` | "UME" |  |
+| `UBE` | "UBE" |  |
+| `URE` | "URE" |  |
 
 ### Usage Example
 ```java
@@ -157,9 +157,9 @@ public class Example {
 ## Enum: PgDivisionFlagEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| TRUE | "true" |  |
-| FALSE | "false" |  |
+| - | - | - |
+| `TRUE` | "true" |  |
+| `FALSE` | "false" |  |
 
 ### Usage Example
 ```java

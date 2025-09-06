@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**merchantId** | **String** | Merchant identifier |  [optional] |
 |**parentDivisionId** | **String** | Parent division identifier |  [optional] |
 |**parentRoleType** | **String** | Parent role type |  [optional] |

@@ -7,7 +7,7 @@ Extended information
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**PIC_EMAIL** | **String** | PIC email address |  [optional] |
 |**PIC_PHONENUMBER** | **String** | PIC phone number |  [optional] |
 |**SUBMITTER_EMAIL** | **String** | Submitter email address |  [optional] |
@@ -24,9 +24,9 @@ Extended information
 ## Enum: GOODSSOLDTYPEEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| DIGITAL | "DIGITAL" |  |
-| PHYSICAL | "PHYSICAL" |  |
+| - | - | - |
+| `DIGITAL` | "DIGITAL" |  |
+| `PHYSICAL` | "PHYSICAL" |  |
 
 ### Usage Example
 ```java
@@ -44,9 +44,9 @@ public class Example {
 ## Enum: USERPROFILINGEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| B2_B | "B2B" |  |
-| B2_C | "B2C" |  |
+| - | - | - |
+| `B2_B` | "B2B" |  |
+| `B2_C` | "B2C" |  |
 
 ### Usage Example
 ```java

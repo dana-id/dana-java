@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**partnerReferenceNo** | **String** | Unique transaction identifier on partner system which assigned to each transaction<br> Notes:<br> If the partner receives a timeout or an unexpected response from DANA and partner expects to perform retry request to DANA, please use the partnerReferenceNo that is the same as the one used in the transaction request process before  |  [optional] |
 |**balanceTypes** | **List&lt;String&gt;** | Information of balance types to specify which balance type expected to be returned. Will return all available balance type if this parameter empty |  [optional] |
 |**additionalInfo** | [**BalanceInquiryRequestAdditionalInfo**](BalanceInquiryRequestAdditionalInfo.md) | Additional information |  |

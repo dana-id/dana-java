@@ -39,7 +39,7 @@ interface DisbursementApiService {
    * Transfer to Bank Account Inquiry
    * This API is used for merchant to do inquiry Bank account info via DANA
    * @param bankAccountInquiryRequest  (required)
-   * @return Call&lt;BankAccountInquiryResponse&gt;
+   * @return Call<BankAccountInquiryResponse>
    */
   @Headers({
     "Content-Type:application/json",
@@ -54,7 +54,7 @@ interface DisbursementApiService {
    * DANA Account Inquiry
    * This API is used for merchant to do account inquiry to DANA
    * @param danaAccountInquiryRequest  (required)
-   * @return Call&lt;DanaAccountInquiryResponse&gt;
+   * @return Call<DanaAccountInquiryResponse>
    */
   @Headers({
     "Content-Type:application/json",
@@ -69,7 +69,7 @@ interface DisbursementApiService {
    * Transfer to Bank
    * This API is used for merchant to do transfer to Bank request via DANA
    * @param transferToBankRequest  (required)
-   * @return Call&lt;TransferToBankResponse&gt;
+   * @return Call<TransferToBankResponse>
    */
   @Headers({
     "Content-Type:application/json",
@@ -84,7 +84,7 @@ interface DisbursementApiService {
    * Transfer to Bank Inquiry Status
    * This API is used for merchant to do inquiry status transfer to Bank transaction to DANA
    * @param transferToBankInquiryStatusRequest  (required)
-   * @return Call&lt;TransferToBankInquiryStatusResponse&gt;
+   * @return Call<TransferToBankInquiryStatusResponse>
    */
   @Headers({
     "Content-Type:application/json",
@@ -99,7 +99,7 @@ interface DisbursementApiService {
    * Transfer to DANA
    * This API is used for merchant to do top up request to DANA
    * @param transferToDanaRequest  (required)
-   * @return Call&lt;TransferToDanaResponse&gt;
+   * @return Call<TransferToDanaResponse>
    */
   @Headers({
     "Content-Type:application/json",
@@ -114,7 +114,7 @@ interface DisbursementApiService {
    * Transfer to DANA Inquiry Status
    * This API is used for merchant to do inquiry status top up transaction to DANA
    * @param transferToDanaInquiryStatusRequest  (required)
-   * @return Call&lt;TransferToDanaInquiryStatusResponse&gt;
+   * @return Call<TransferToDanaInquiryStatusResponse>
    */
   @Headers({
     "Content-Type:application/json",
@@ -141,7 +141,7 @@ public class DisbursementApi {
    * Transfer to Bank Account Inquiry
    * This API is used for merchant to do inquiry Bank account info via DANA
    * @param bankAccountInquiryRequest  (required)
-   * @return Call&lt;BankAccountInquiryResponse&gt;
+   * @return BankAccountInquiryResponse
    */
   public BankAccountInquiryResponse bankAccountInquiry(
     @retrofit2.http.Body BankAccountInquiryRequest bankAccountInquiryRequest
@@ -168,7 +168,7 @@ public class DisbursementApi {
    * DANA Account Inquiry
    * This API is used for merchant to do account inquiry to DANA
    * @param danaAccountInquiryRequest  (required)
-   * @return Call&lt;DanaAccountInquiryResponse&gt;
+   * @return DanaAccountInquiryResponse
    */
   public DanaAccountInquiryResponse danaAccountInquiry(
     @retrofit2.http.Body DanaAccountInquiryRequest danaAccountInquiryRequest
@@ -195,7 +195,7 @@ public class DisbursementApi {
    * Transfer to Bank
    * This API is used for merchant to do transfer to Bank request via DANA
    * @param transferToBankRequest  (required)
-   * @return Call&lt;TransferToBankResponse&gt;
+   * @return TransferToBankResponse
    */
   public TransferToBankResponse transferToBank(
     @retrofit2.http.Body TransferToBankRequest transferToBankRequest
@@ -222,7 +222,7 @@ public class DisbursementApi {
    * Transfer to Bank Inquiry Status
    * This API is used for merchant to do inquiry status transfer to Bank transaction to DANA
    * @param transferToBankInquiryStatusRequest  (required)
-   * @return Call&lt;TransferToBankInquiryStatusResponse&gt;
+   * @return TransferToBankInquiryStatusResponse
    */
   public TransferToBankInquiryStatusResponse transferToBankInquiryStatus(
     @retrofit2.http.Body TransferToBankInquiryStatusRequest transferToBankInquiryStatusRequest
@@ -249,7 +249,7 @@ public class DisbursementApi {
    * Transfer to DANA
    * This API is used for merchant to do top up request to DANA
    * @param transferToDanaRequest  (required)
-   * @return Call&lt;TransferToDanaResponse&gt;
+   * @return TransferToDanaResponse
    */
   public TransferToDanaResponse transferToDana(
     @retrofit2.http.Body TransferToDanaRequest transferToDanaRequest
@@ -276,7 +276,7 @@ public class DisbursementApi {
    * Transfer to DANA Inquiry Status
    * This API is used for merchant to do inquiry status top up transaction to DANA
    * @param transferToDanaInquiryStatusRequest  (required)
-   * @return Call&lt;TransferToDanaInquiryStatusResponse&gt;
+   * @return TransferToDanaInquiryStatusResponse
    */
   public TransferToDanaInquiryStatusResponse transferToDanaInquiryStatus(
     @retrofit2.http.Body TransferToDanaInquiryStatusRequest transferToDanaInquiryStatusRequest

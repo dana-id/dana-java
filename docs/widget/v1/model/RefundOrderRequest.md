@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**merchantId** | **String** | Merchant identifier that is unique per each merchant |  |
 |**subMerchantId** | **String** | Information of sub merchant identifier |  [optional] |
 |**originalReferenceNo** | **String** | Original transaction identifier on DANA system |  [optional] |

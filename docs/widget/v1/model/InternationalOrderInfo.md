@@ -7,7 +7,7 @@ Additional information for international orders (non-IDR currency transactions)
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**originOrderAmount** | [**Money**](Money.md) | Origin order amount in the original currency. Contains value (amount including cents) and currency (code based on ISO) |  [optional] |
 |**exchangeRate** | [**InternationalOrderInfoExchangeRate**](InternationalOrderInfoExchangeRate.md) |  |  [optional] |
 |**totalAmount** | [**Money**](Money.md) | Total amount after conversion. Contains value (amount including cents) and currency (code based on ISO) |  [optional] |

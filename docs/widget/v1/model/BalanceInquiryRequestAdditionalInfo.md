@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**accessToken** | **String** | Contains customer token, which has been obtained from binding process |  |
 |**endUserIpAddress** | **String** | IP address of the end user (customer) using IPv4 format |  [optional] |
 |**deviceId** | **String** | Device identification on which the API services is currently being accessed by the end user (customer) |  |

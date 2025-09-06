@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**payOptionDetails** | [**List&lt;PayOptionDetail&gt;**](PayOptionDetail.md) |  |  |
 |**additionalInfo** | [**CreateOrderByApiAdditionalInfo**](CreateOrderByApiAdditionalInfo.md) |  |  [optional] |
 |**partnerReferenceNo** | **String** | Transaction identifier on partner system |  |

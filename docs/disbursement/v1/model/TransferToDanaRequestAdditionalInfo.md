@@ -7,7 +7,7 @@ Additional information
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**extendInfo** | **String** | Additional information of extend |  [optional] |
 |**accountType** | **String** | Additional information of account type |  [optional] |
 |**fundType** | **String** | Additional information of transfer to DANA fund type, i.e.<br> AGENT_TOPUP_FOR_USER_SETTLE  |  |
@@ -21,9 +21,9 @@ Additional information
 ## Enum: ChargeTargetEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| DIVISION | "DIVISION" |  |
-| MERCHANT | "MERCHANT" |  |
+| - | - | - |
+| `DIVISION` | "DIVISION" |  |
+| `MERCHANT` | "MERCHANT" |  |
 
 ### Usage Example
 ```java

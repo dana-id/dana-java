@@ -17,7 +17,7 @@ public class Example {
 All URIs are relative to *https://api.saas.dana.id*, except if the operation defines another base path (For sandbox it is http://api.sandbox.dana.id).
 
 | Method | HTTP request | Description |
-| ------------- | ------------- | ------------- |
+| - | - | - |
 | [**createDivision**](MerchantManagementApi.md#createDivision) | **POST** dana/merchant/division/createDivision.htm | This API is used to create a new division |
 | [**createShop**](MerchantManagementApi.md#createShop) | **POST** dana/merchant/shop/createShop.htm | Create shop under merchant or division |
 | [**queryDivision**](MerchantManagementApi.md#queryDivision) | **POST** dana/merchant/division/queryDivision.htm | This API is used to obtain information of division |
@@ -32,10 +32,10 @@ All URIs are relative to *https://api.saas.dana.id*, except if the operation def
 
 ### Function Signature
 | Name | Value |
-| ------------- | ------------- |
-| Function Name | `createDivision` |
-| Payload | [**CreateDivisionRequest**](../model/CreateDivisionRequest.md) |
-| Return Type | [**CreateDivisionResponse**](../model/CreateDivisionResponse.md) |
+| - | - |
+| **Function Name** | `createDivision` |
+| **Payload** | [**CreateDivisionRequest**](../model/CreateDivisionRequest.md) |
+| **Return Type** | [**CreateDivisionResponse**](../model/CreateDivisionResponse.md) |
 
 ### Usage Example
 ```java
@@ -67,10 +67,10 @@ public class Example {
 
 ### Function Signature
 | Name | Value |
-| ------------- | ------------- |
-| Function Name | `createShop` |
-| Payload | [**CreateShopRequest**](../model/CreateShopRequest.md) |
-| Return Type | [**CreateShopResponse**](../model/CreateShopResponse.md) |
+| - | - |
+| **Function Name** | `createShop` |
+| **Payload** | [**CreateShopRequest**](../model/CreateShopRequest.md) |
+| **Return Type** | [**CreateShopResponse**](../model/CreateShopResponse.md) |
 
 ### Usage Example
 ```java
@@ -102,10 +102,10 @@ public class Example {
 
 ### Function Signature
 | Name | Value |
-| ------------- | ------------- |
-| Function Name | `queryDivision` |
-| Payload | [**QueryDivisionRequest**](../model/QueryDivisionRequest.md) |
-| Return Type | [**QueryDivisionResponse**](../model/QueryDivisionResponse.md) |
+| - | - |
+| **Function Name** | `queryDivision` |
+| **Payload** | [**QueryDivisionRequest**](../model/QueryDivisionRequest.md) |
+| **Return Type** | [**QueryDivisionResponse**](../model/QueryDivisionResponse.md) |
 
 ### Usage Example
 ```java
@@ -137,10 +137,10 @@ public class Example {
 
 ### Function Signature
 | Name | Value |
-| ------------- | ------------- |
-| Function Name | `queryMerchantResource` |
-| Payload | [**QueryMerchantResourceRequest**](../model/QueryMerchantResourceRequest.md) |
-| Return Type | [**QueryMerchantResourceResponse**](../model/QueryMerchantResourceResponse.md) |
+| - | - |
+| **Function Name** | `queryMerchantResource` |
+| **Payload** | [**QueryMerchantResourceRequest**](../model/QueryMerchantResourceRequest.md) |
+| **Return Type** | [**QueryMerchantResourceResponse**](../model/QueryMerchantResourceResponse.md) |
 
 ### Usage Example
 ```java
@@ -172,10 +172,10 @@ public class Example {
 
 ### Function Signature
 | Name | Value |
-| ------------- | ------------- |
-| Function Name | `queryShop` |
-| Payload | [**QueryShopRequest**](../model/QueryShopRequest.md) |
-| Return Type | [**QueryShopResponse**](../model/QueryShopResponse.md) |
+| - | - |
+| **Function Name** | `queryShop` |
+| **Payload** | [**QueryShopRequest**](../model/QueryShopRequest.md) |
+| **Return Type** | [**QueryShopResponse**](../model/QueryShopResponse.md) |
 
 ### Usage Example
 ```java
@@ -207,10 +207,10 @@ public class Example {
 
 ### Function Signature
 | Name | Value |
-| ------------- | ------------- |
-| Function Name | `updateDivision` |
-| Payload | [**UpdateDivisionRequest**](../model/UpdateDivisionRequest.md) |
-| Return Type | [**UpdateDivisionResponse**](../model/UpdateDivisionResponse.md) |
+| - | - |
+| **Function Name** | `updateDivision` |
+| **Payload** | [**UpdateDivisionRequest**](../model/UpdateDivisionRequest.md) |
+| **Return Type** | [**UpdateDivisionResponse**](../model/UpdateDivisionResponse.md) |
 
 ### Usage Example
 ```java
@@ -242,10 +242,10 @@ public class Example {
 
 ### Function Signature
 | Name | Value |
-| ------------- | ------------- |
-| Function Name | `updateShop` |
-| Payload | [**UpdateShopRequest**](../model/UpdateShopRequest.md) |
-| Return Type | [**UpdateShopResponse**](../model/UpdateShopResponse.md) |
+| - | - |
+| **Function Name** | `updateShop` |
+| **Payload** | [**UpdateShopRequest**](../model/UpdateShopRequest.md) |
+| **Return Type** | [**UpdateShopResponse**](../model/UpdateShopResponse.md) |
 
 ### Usage Example
 ```java

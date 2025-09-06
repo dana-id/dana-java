@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**partnerReferenceNo** | **String** | Unique transaction identifier on partner system which assigned to each transaction |  |
 |**merchantId** | **String** | Merchant identifier that is unique per each merchant |  |
 |**subMerchantId** | **String** |  |  [optional] |

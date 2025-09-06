@@ -41,11 +41,12 @@ interface MerchantManagementApiService {
    * Create Division
    * This API is used to create a new division
    * @param createDivisionRequest  (required)
-   * @return Call&lt;CreateDivisionResponse&gt;
+   * @return Call<CreateDivisionResponse>
    */
   @Headers({
     "Content-Type:application/json",
     "X-API-TYPE:OPEN_API",
+    "X-API-VERSION:2.0",
     "X-API-FUNCTION:dana.merchant.division.createDivision"
   })
   @POST("dana/merchant/division/createDivision.htm")
@@ -57,11 +58,12 @@ interface MerchantManagementApiService {
    * Member – Create Shop
    * Create shop under merchant or division
    * @param createShopRequest  (required)
-   * @return Call&lt;CreateShopResponse&gt;
+   * @return Call<CreateShopResponse>
    */
   @Headers({
     "Content-Type:application/json",
     "X-API-TYPE:OPEN_API",
+    "X-API-VERSION:2.0",
     "X-API-FUNCTION:dana.merchant.shop.createShop"
   })
   @POST("dana/merchant/shop/createShop.htm")
@@ -73,11 +75,12 @@ interface MerchantManagementApiService {
    * Query Division
    * This API is used to obtain information of division
    * @param queryDivisionRequest  (required)
-   * @return Call&lt;QueryDivisionResponse&gt;
+   * @return Call<QueryDivisionResponse>
    */
   @Headers({
     "Content-Type:application/json",
     "X-API-TYPE:OPEN_API",
+    "X-API-VERSION:2.0",
     "X-API-FUNCTION:dana.merchant.division.queryDivision"
   })
   @POST("dana/merchant/division/queryDivision.htm")
@@ -89,11 +92,12 @@ interface MerchantManagementApiService {
    * Member – Merchant Open API Check Disbursement Account
    * The interface is check merchant resource info (account balance merchant)
    * @param queryMerchantResourceRequest  (required)
-   * @return Call&lt;QueryMerchantResourceResponse&gt;
+   * @return Call<QueryMerchantResourceResponse>
    */
   @Headers({
     "Content-Type:application/json",
     "X-API-TYPE:OPEN_API",
+    "X-API-VERSION:2.0",
     "X-API-FUNCTION:dana.merchant.queryMerchantResource"
   })
   @POST("dana/merchant/queryMerchantResource.htm")
@@ -105,11 +109,12 @@ interface MerchantManagementApiService {
    * Member – Query Shop
    * This API is used to obtain information of shop information
    * @param queryShopRequest  (required)
-   * @return Call&lt;QueryShopResponse&gt;
+   * @return Call<QueryShopResponse>
    */
   @Headers({
     "Content-Type:application/json",
     "X-API-TYPE:OPEN_API",
+    "X-API-VERSION:2.0",
     "X-API-FUNCTION:dana.merchant.shop.queryShop"
   })
   @POST("dana/merchant/shop/queryShop.htm")
@@ -121,11 +126,12 @@ interface MerchantManagementApiService {
    * Update Division
    * This API is used to update the division information
    * @param updateDivisionRequest  (required)
-   * @return Call&lt;UpdateDivisionResponse&gt;
+   * @return Call<UpdateDivisionResponse>
    */
   @Headers({
     "Content-Type:application/json",
     "X-API-TYPE:OPEN_API",
+    "X-API-VERSION:2.0",
     "X-API-FUNCTION:dana.merchant.division.updateDivision"
   })
   @POST("dana/merchant/division/updateDivision.htm")
@@ -137,11 +143,12 @@ interface MerchantManagementApiService {
    * Update Shop
    * This API is used to update the shop information
    * @param updateShopRequest  (required)
-   * @return Call&lt;UpdateShopResponse&gt;
+   * @return Call<UpdateShopResponse>
    */
   @Headers({
     "Content-Type:application/json",
     "X-API-TYPE:OPEN_API",
+    "X-API-VERSION:2.0",
     "X-API-FUNCTION:dana.merchant.shop.updateShop"
   })
   @POST("dana/merchant/shop/updateShop.htm")
@@ -165,7 +172,7 @@ public class MerchantManagementApi {
    * Create Division
    * This API is used to create a new division
    * @param createDivisionRequest  (required)
-   * @return Call&lt;CreateDivisionResponse&gt;
+   * @return CreateDivisionResponse
    */
   public CreateDivisionResponse createDivision(
     @retrofit2.http.Body CreateDivisionRequest createDivisionRequest
@@ -192,7 +199,7 @@ public class MerchantManagementApi {
    * Member – Create Shop
    * Create shop under merchant or division
    * @param createShopRequest  (required)
-   * @return Call&lt;CreateShopResponse&gt;
+   * @return CreateShopResponse
    */
   public CreateShopResponse createShop(
     @retrofit2.http.Body CreateShopRequest createShopRequest
@@ -219,7 +226,7 @@ public class MerchantManagementApi {
    * Query Division
    * This API is used to obtain information of division
    * @param queryDivisionRequest  (required)
-   * @return Call&lt;QueryDivisionResponse&gt;
+   * @return QueryDivisionResponse
    */
   public QueryDivisionResponse queryDivision(
     @retrofit2.http.Body QueryDivisionRequest queryDivisionRequest
@@ -246,7 +253,7 @@ public class MerchantManagementApi {
    * Member – Merchant Open API Check Disbursement Account
    * The interface is check merchant resource info (account balance merchant)
    * @param queryMerchantResourceRequest  (required)
-   * @return Call&lt;QueryMerchantResourceResponse&gt;
+   * @return QueryMerchantResourceResponse
    */
   public QueryMerchantResourceResponse queryMerchantResource(
     @retrofit2.http.Body QueryMerchantResourceRequest queryMerchantResourceRequest
@@ -273,7 +280,7 @@ public class MerchantManagementApi {
    * Member – Query Shop
    * This API is used to obtain information of shop information
    * @param queryShopRequest  (required)
-   * @return Call&lt;QueryShopResponse&gt;
+   * @return QueryShopResponse
    */
   public QueryShopResponse queryShop(
     @retrofit2.http.Body QueryShopRequest queryShopRequest
@@ -300,7 +307,7 @@ public class MerchantManagementApi {
    * Update Division
    * This API is used to update the division information
    * @param updateDivisionRequest  (required)
-   * @return Call&lt;UpdateDivisionResponse&gt;
+   * @return UpdateDivisionResponse
    */
   public UpdateDivisionResponse updateDivision(
     @retrofit2.http.Body UpdateDivisionRequest updateDivisionRequest
@@ -327,7 +334,7 @@ public class MerchantManagementApi {
    * Update Shop
    * This API is used to update the shop information
    * @param updateShopRequest  (required)
-   * @return Call&lt;UpdateShopResponse&gt;
+   * @return UpdateShopResponse
    */
   public UpdateShopResponse updateShop(
     @retrofit2.http.Body UpdateShopRequest updateShopRequest

@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**originalPartnerReferenceNo** | **String** | Original transaction identifier on partner system<br> Notes:<br> Required to be filled using the partnerReferenceNo that is the same as the one used in Transfer to Bank  |  [optional] |
 |**originalReferenceNo** | **String** | Original transaction identifier on DANA system |  [optional] |
 |**originalExternalId** | **String** | Original external identifier on header message |  [optional] |

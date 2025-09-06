@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**orderTitle** | **String** | Additional information of order title |  |
 |**merchantTransType** | **String** | Additional information of merchant transaction type |  [optional] |
 |**buyer** | [**Buyer**](Buyer.md) | Additional information of buyer |  [optional] |

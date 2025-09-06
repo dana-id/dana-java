@@ -17,7 +17,7 @@ public class Example {
 All URIs are relative to *https://api.saas.dana.id*, except if the operation defines another base path (For sandbox it is http://api.sandbox.dana.id).
 
 | Method | HTTP request | Description |
-| ------------- | ------------- | ------------- |
+| - | - | - |
 | [**cancelOrder**](PaymentGatewayApi.md#cancelOrder) | **POST** payment-gateway/v1.0/debit/cancel.htm | This API is used to cancel the order from merchant's platform to DANA |
 | [**consultPay**](PaymentGatewayApi.md#consultPay) | **POST** v1.0/payment-gateway/consult-pay.htm | This API is used to consult the list of payment methods or payment channels that user has and used in certain transactions or orders |
 | [**createOrder**](PaymentGatewayApi.md#createOrder) | **POST** payment-gateway/v1.0/debit/payment-host-to-host.htm | This API is used for merchant to create order in DANA side |
@@ -30,10 +30,10 @@ All URIs are relative to *https://api.saas.dana.id*, except if the operation def
 
 ### Function Signature
 | Name | Value |
-| ------------- | ------------- |
-| Function Name | `cancelOrder` |
-| Payload | [**CancelOrderRequest**](../model/CancelOrderRequest.md) |
-| Return Type | [**CancelOrderResponse**](../model/CancelOrderResponse.md) |
+| - | - |
+| **Function Name** | `cancelOrder` |
+| **Payload** | [**CancelOrderRequest**](../model/CancelOrderRequest.md) |
+| **Return Type** | [**CancelOrderResponse**](../model/CancelOrderResponse.md) |
 
 ### Usage Example
 ```java
@@ -65,10 +65,10 @@ public class Example {
 
 ### Function Signature
 | Name | Value |
-| ------------- | ------------- |
-| Function Name | `consultPay` |
-| Payload | [**ConsultPayRequest**](../model/ConsultPayRequest.md) |
-| Return Type | [**ConsultPayResponse**](../model/ConsultPayResponse.md) |
+| - | - |
+| **Function Name** | `consultPay` |
+| **Payload** | [**ConsultPayRequest**](../model/ConsultPayRequest.md) |
+| **Return Type** | [**ConsultPayResponse**](../model/ConsultPayResponse.md) |
 
 ### Usage Example
 ```java
@@ -100,10 +100,10 @@ public class Example {
 
 ### Function Signature
 | Name | Value |
-| ------------- | ------------- |
-| Function Name | `createOrder` |
-| Payload | [**CreateOrderRequest**](../model/CreateOrderRequest.md) |
-| Return Type | [**CreateOrderResponse**](../model/CreateOrderResponse.md) |
+| - | - |
+| **Function Name** | `createOrder` |
+| **Payload** | [**CreateOrderRequest**](../model/CreateOrderRequest.md) |
+| **Return Type** | [**CreateOrderResponse**](../model/CreateOrderResponse.md) |
 
 ### Usage Example
 ```java
@@ -135,10 +135,10 @@ public class Example {
 
 ### Function Signature
 | Name | Value |
-| ------------- | ------------- |
-| Function Name | `queryPayment` |
-| Payload | [**QueryPaymentRequest**](../model/QueryPaymentRequest.md) |
-| Return Type | [**QueryPaymentResponse**](../model/QueryPaymentResponse.md) |
+| - | - |
+| **Function Name** | `queryPayment` |
+| **Payload** | [**QueryPaymentRequest**](../model/QueryPaymentRequest.md) |
+| **Return Type** | [**QueryPaymentResponse**](../model/QueryPaymentResponse.md) |
 
 ### Usage Example
 ```java
@@ -170,10 +170,10 @@ public class Example {
 
 ### Function Signature
 | Name | Value |
-| ------------- | ------------- |
-| Function Name | `refundOrder` |
-| Payload | [**RefundOrderRequest**](../model/RefundOrderRequest.md) |
-| Return Type | [**RefundOrderResponse**](../model/RefundOrderResponse.md) |
+| - | - |
+| **Function Name** | `refundOrder` |
+| **Payload** | [**RefundOrderRequest**](../model/RefundOrderRequest.md) |
+| **Return Type** | [**RefundOrderResponse**](../model/RefundOrderResponse.md) |
 
 ### Usage Example
 ```java

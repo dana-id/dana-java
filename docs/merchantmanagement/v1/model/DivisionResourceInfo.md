@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**divisionId** | **String** | Division identifier |  [optional] |
 |**merchantId** | **String** | Merchant identifier |  [optional] |
 |**parentRoleType** | [**ParentRoleTypeEnum**](#ParentRoleTypeEnum) | Parent role type |  [optional] |
@@ -22,10 +22,10 @@
 ## Enum: ParentRoleTypeEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| MERCHANT | "MERCHANT" |  |
-| DIVISION | "DIVISION" |  |
-| EXTERNAL_DIVISION | "EXTERNAL_DIVISION" |  |
+| - | - | - |
+| `MERCHANT` | "MERCHANT" |  |
+| `DIVISION` | "DIVISION" |  |
+| `EXTERNAL_DIVISION` | "EXTERNAL_DIVISION" |  |
 
 ### Usage Example
 ```java
@@ -43,18 +43,18 @@ public class Example {
 ## Enum: DivisionTypeEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| REGION | "REGION" |  |
-| AREA | "AREA" |  |
-| BRANCH | "BRANCH" |  |
-| OUTLET | "OUTLET" |  |
-| STORE | "STORE" |  |
-| KIOSK | "KIOSK" |  |
-| STALL | "STALL" |  |
-| COUNTER | "COUNTER" |  |
-| BOOTH | "BOOTH" |  |
-| POINT_OF_SALE | "POINT_OF_SALE" |  |
-| VENDING_MACHINE | "VENDING_MACHINE" |  |
+| - | - | - |
+| `REGION` | "REGION" |  |
+| `AREA` | "AREA" |  |
+| `BRANCH` | "BRANCH" |  |
+| `OUTLET` | "OUTLET" |  |
+| `STORE` | "STORE" |  |
+| `KIOSK` | "KIOSK" |  |
+| `STALL` | "STALL" |  |
+| `COUNTER` | "COUNTER" |  |
+| `BOOTH` | "BOOTH" |  |
+| `POINT_OF_SALE` | "POINT_OF_SALE" |  |
+| `VENDING_MACHINE` | "VENDING_MACHINE" |  |
 
 ### Usage Example
 ```java
@@ -72,9 +72,9 @@ public class Example {
 ## Enum: PgDivisionFlagEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| TRUE | "true" |  |
-| FALSE | "false" |  |
+| - | - | - |
+| `TRUE` | "true" |  |
+| `FALSE` | "false" |  |
 
 ### Usage Example
 ```java

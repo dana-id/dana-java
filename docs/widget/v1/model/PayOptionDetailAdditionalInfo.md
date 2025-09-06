@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**topupAndPay** | **Boolean** | Top up and pay |  [optional] |
 |**payerAccountNo** | **String** | Number account of payer |  [optional] |
 |**saveCardAfterPay** | **Boolean** | Information save card after payment process |  [optional] |

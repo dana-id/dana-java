@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**additionalInfo** | **Map&lt;String, Object&gt;** | Additional information |  [optional] |
 |**grantType** | [**GrantTypeEnum**](#GrantTypeEnum) | Apply token request type. The value is REFRESH_TOKEN |  |
 |**authCode** | **String** | Authorization code. Please refer to https://dashboard.dana.id/api-docs/read/125. Required if grantType is AUTHORIZATION_CODE |  [optional] |
@@ -17,8 +17,8 @@
 ## Enum: GrantTypeEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| REFRESH_TOKEN | "REFRESH_TOKEN" |  |
+| - | - | - |
+| `REFRESH_TOKEN` | "REFRESH_TOKEN" |  |
 
 ### Usage Example
 ```java

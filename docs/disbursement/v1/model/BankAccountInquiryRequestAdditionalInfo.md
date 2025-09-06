@@ -7,7 +7,7 @@ Additional information
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**fundType** | **String** | Additional information of withdraw fund type, i.e.<br> MERCHANT_WITHDRAW_FOR_CORPORATE  |  |
 |**externalDivisionId** | **String** | Additional information of external division identifier. (fundType: MERCHANT_WITHDRAW_FOR_CORPORATE)<br> Notes: The required of this parameter is Optional, but if \"additionalInfo.chargeTarget\" has value DIVISION then the required of this parameter will be changed to Mandatory  |  [optional] |
 |**chargeTarget** | [**ChargeTargetEnum**](#ChargeTargetEnum) | Additional information of charge target. The values are:<br> • null<br> • DIVISION<br> • MERCHANT<br> Notes: If the value is DIVISION, externalDivisionId will be Mandatory  |  [optional] |
@@ -21,9 +21,9 @@ Additional information
 ## Enum: ChargeTargetEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| DIVISION | "DIVISION" |  |
-| MERCHANT | "MERCHANT" |  |
+| - | - | - |
+| `DIVISION` | "DIVISION" |  |
+| `MERCHANT` | "MERCHANT" |  |
 
 ### Usage Example
 ```java

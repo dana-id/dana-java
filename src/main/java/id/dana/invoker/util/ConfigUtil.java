@@ -20,8 +20,7 @@ public final class ConfigUtil {
     if (StringUtils.isNotEmpty(value)) {
       return removeQuotes(value);
     }
-    value = System.getProperty(key);
-    value = StringUtils.defaultIfEmpty(value, defaultValue);
+    value = StringUtils.defaultIfEmpty(System.getProperty(key), defaultValue);
     return removeQuotes(value);
   }
 

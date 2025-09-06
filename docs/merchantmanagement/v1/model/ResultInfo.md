@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**resultStatus** | [**ResultStatusEnum**](#ResultStatusEnum) | Result status (S=Success, F=Failure, U=Unknown) |  |
 |**resultCodeId** | **String** | Result code identifier |  |
 |**resultCode** | **String** | Result code |  |
@@ -17,10 +17,10 @@
 ## Enum: ResultStatusEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| S | "S" | Success |
-| F | "F" | Failure |
-| U | "U" | Unknown |
+| - | - | - |
+| `S` | "S" | Success |
+| `F` | "F" | Failure |
+| `U` | "U" | Unknown |
 
 ### Usage Example
 ```java

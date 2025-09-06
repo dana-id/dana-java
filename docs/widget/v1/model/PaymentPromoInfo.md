@@ -7,7 +7,7 @@ Information about the payment promotion that was applied
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**promoId** | **String** | Promotion identifier |  |
 |**promoName** | **String** | Promotion name |  |
 |**promoType** | [**PromoTypeEnum**](#PromoTypeEnum) | Type of promotion |  |
@@ -18,11 +18,11 @@ Information about the payment promotion that was applied
 ## Enum: PromoTypeEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| CASH_BACK | "CASH_BACK" |  |
-| DISCOUNT | "DISCOUNT" |  |
-| VOUCHER | "VOUCHER" |  |
-| POINT | "POINT" |  |
+| - | - | - |
+| `CASH_BACK` | "CASH_BACK" |  |
+| `DISCOUNT` | "DISCOUNT" |  |
+| `VOUCHER` | "VOUCHER" |  |
+| `POINT` | "POINT" |  |
 
 ### Usage Example
 ```java

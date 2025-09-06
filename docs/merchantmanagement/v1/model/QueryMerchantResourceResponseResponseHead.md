@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**version** | **String** | API version |  [optional] |
 |**function** | [**FunctionEnum**](#FunctionEnum) | API interface |  [optional] |
 |**clientId** | **String** | Client ID provided by DANA, used to identify partner and application system |  [optional] |
@@ -18,8 +18,8 @@
 ## Enum: FunctionEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| DANA_MERCHANT_QUERY_MERCHANT_RESOURCE | "dana.merchant.queryMerchantResource" |  |
+| - | - | - |
+| `DANA_MERCHANT_QUERY_MERCHANT_RESOURCE` | "dana.merchant.queryMerchantResource" |  |
 
 ### Usage Example
 ```java

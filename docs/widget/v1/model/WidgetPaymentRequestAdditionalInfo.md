@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**supportDeepLinkCheckoutUrl** | **String** | Additional information of deeplink checkout URL. For Mini Program, DANA will treat as false |  [optional] |
 |**phoneNumber** | **String** | Additional information of user's phone number |  [optional] |
 |**publicUserId** | **String** | Additional information of public user's identifier |  [optional] |

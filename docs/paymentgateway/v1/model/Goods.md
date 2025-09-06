@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**name** | **String** | Goods name |  |
 |**merchantGoodsId** | **String** | Goods identifier provided by merchant |  |
 |**description** | **String** | Goods description |  |

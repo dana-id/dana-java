@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**sessionId** | **String** | Session identifier |  [optional] |
 |**tokenId** | **String** | Token identifier |  [optional] |
 |**websiteLanguage** | **String** | Website language |  [optional] |
@@ -27,8 +27,8 @@
 ## Enum: SourcePlatformEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| IPG | "IPG" | The source platform is always independent payment gateway (IPG) |
+| - | - | - |
+| `IPG` | "IPG" | The source platform is always independent payment gateway (IPG) |
 
 ### Usage Example
 ```java
@@ -46,11 +46,11 @@ public class Example {
 ## Enum: TerminalTypeEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| APP | "APP" | Mobile Application |
-| WEB | "WEB" | Browser Web |
-| WAP | "WAP" | Mobile Wap |
-| SYSTEM | "SYSTEM" | System Call |
+| - | - | - |
+| `APP` | "APP" | Mobile Application |
+| `WEB` | "WEB" | Browser Web |
+| `WAP` | "WAP" | Mobile Wap |
+| `SYSTEM` | "SYSTEM" | System Call |
 
 ### Usage Example
 ```java
@@ -68,11 +68,11 @@ public class Example {
 ## Enum: OrderTerminalTypeEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| APP | "APP" | Mobile Application |
-| WEB | "WEB" | Browser Web |
-| WAP | "WAP" | Mobile Wap |
-| SYSTEM | "SYSTEM" | System Call |
+| - | - | - |
+| `APP` | "APP" | Mobile Application |
+| `WEB` | "WEB" | Browser Web |
+| `WAP` | "WAP" | Mobile Wap |
+| `SYSTEM` | "SYSTEM" | System Call |
 
 ### Usage Example
 ```java

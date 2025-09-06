@@ -7,7 +7,7 @@ Additional information
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**fundType** | **String** | Additional information of top up fund type, i.e.<br> AGENT_TOPUP_FOR_  |  |
 |**externalDivisionId** | **String** | Additional information of external division identifier. This parameter only used for Top Up Disbursement subMerchant (fundType : AGENT_TOPUP_FOR_USER_SETTLE)<br> Notes:<br> The required of this parameter is Optional, but if \"additionalInfo.chargeTarget\" has value DIVISION then the required of this parameter will be changed to Mandatory  |  [optional] |
 |**chargeTarget** | [**ChargeTargetEnum**](#ChargeTargetEnum) | Additional information of charge target. This parameter only used for Top Up Disbursement subMerchant. The value are:<br> • null<br> • DIVISION<br> • MERCHANT<br> if the value is DIVISION, externalDivisionId will be Mandatory  |  [optional] |
@@ -19,9 +19,9 @@ Additional information
 ## Enum: ChargeTargetEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| DIVISION | "DIVISION" |  |
-| MERCHANT | "MERCHANT" |  |
+| - | - | - |
+| `DIVISION` | "DIVISION" |  |
+| `MERCHANT` | "MERCHANT" |  |
 
 ### Usage Example
 ```java

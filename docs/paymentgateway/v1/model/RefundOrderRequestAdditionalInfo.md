@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**payoutAccountNo** | **String** | Additional information of payout account number. This param need to be filled if want to refund to specific payout account not that specified by DANA |  [optional] |
 |**refundAppliedTime** | **String** | Additional information of refund applied time, in format YYYY-MM-DDTHH:mm:ss+07:00. Time must be in GMT+7 (Jakarta time) |  [optional] |
 |**actorType** | [**ActorTypeEnum**](#ActorTypeEnum) | Additional information of actor type. The enums:<br> * USER - User<br> * MERCHANT - Merchant<br> * MERCHANT_OPERATOR - Merchant operator<br> * BACK_OFFICE - Back office<br> * SYSTEM - System<br>  |  [optional] |
@@ -24,12 +24,12 @@
 ## Enum: ActorTypeEnum
 
 | Name | Value | Description |
-| ---- | ----- | ----------- |
-| USER | "USER" | User |
-| MERCHANT | "MERCHANT" | Merchant |
-| MERCHANT_OPERATOR | "MERCHANT_OPERATOR" | Merchant operator |
-| BACK_OFFICE | "BACK_OFFICE" | Back office |
-| SYSTEM | "SYSTEM" | System |
+| - | - | - |
+| `USER` | "USER" | User |
+| `MERCHANT` | "MERCHANT" | Merchant |
+| `MERCHANT_OPERATOR` | "MERCHANT_OPERATOR" | Merchant operator |
+| `BACK_OFFICE` | "BACK_OFFICE" | Back office |
+| `SYSTEM` | "SYSTEM" | System |
 
 ### Usage Example
 ```java

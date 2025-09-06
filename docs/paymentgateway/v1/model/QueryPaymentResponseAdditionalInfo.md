@@ -6,7 +6,7 @@
 ## Properties
 
 | Name | Type | Description | Notes |
-|------------ | ------------- | ------------- | -------------|
+| - | - | - | - |
 |**buyer** | [**Buyer**](Buyer.md) | Additional information of buyer |  [optional] |
 |**seller** | [**Seller**](Seller.md) | Additional information of seller |  [optional] |
 |**amountDetail** | [**AmountDetail**](AmountDetail.md) | Additional information of amount detail. Present if transaction found |  [optional] |
