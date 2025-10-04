@@ -56,7 +56,7 @@ public final class DanaHeaderUtil {
     requestBuilder.header(DanaHeader.X_SIGNATURE, signature);
     requestBuilder.header(DanaHeader.ORIGIN, DanaConfig.getInstance().getOrigin());
     requestBuilder.header(DanaHeader.X_PARTNER_ID, partnerId);
-    requestBuilder.header(DanaHeader.X_EXTERNAL_ID, UUID.randomUUID().toString());
+    requestBuilder.header(DanaHeader.X_EXTERNAL_ID, "sdk" + UUID.randomUUID().toString().substring(3));
     requestBuilder.header(DanaHeader.CHANNEL_ID, partnerId + "-SERVER");
   }
 
@@ -88,7 +88,7 @@ public final class DanaHeaderUtil {
       requestBuilder.header(DanaHeader.X_SIGNATURE, signature);
       requestBuilder.header(DanaHeader.ORIGIN, DanaConfig.getInstance().getOrigin());
       requestBuilder.header(DanaHeader.X_PARTNER_ID, partnerId);
-      requestBuilder.header(DanaHeader.X_EXTERNAL_ID, UUID.randomUUID().toString());
+      requestBuilder.header(DanaHeader.X_EXTERNAL_ID, "sdk" + UUID.randomUUID().toString().substring(3));
       if (StringUtils.isNotEmpty(additionalInfo.getEndUserIpAddress())) {
         requestBuilder.header(DanaHeader.X_IP_ADDRESS, additionalInfo.getEndUserIpAddress());
       }
@@ -119,7 +119,7 @@ public final class DanaHeaderUtil {
       headNode.put("clientId", partnerId);
       headNode.put("clientSecret", clientSecret);
       headNode.put("reqTime", timestamp);
-      headNode.put("reqMsgId", UUID.randomUUID().toString());
+      headNode.put("reqMsgId", "sdk" + UUID.randomUUID().toString().substring(3));
       headNode.set("reserve", objectMapper.createObjectNode());
 
       String requestBody = RequestUtil.peekRequestBody(request);

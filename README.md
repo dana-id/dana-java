@@ -1,6 +1,6 @@
 # dana-java
 
-The official DANA Java SDK provides a simple and convenient way to call DANA's REST API in applications written in Java.
+The official DANA Java SDK provides a simple and convenient way to call DANA's REST API in applications written in Java (based on https://dashboard.dana.id/api-docs-v2/).
 
 ## ⚠️ Run This First - Save Days of Debugging
 
@@ -50,7 +50,7 @@ To install the SDK to your Maven project, simply add the following dependency to
 <dependency>
     <groupId>id.dana</groupId>
     <artifactId>dana-java</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
 </dependency>
 ```
 
@@ -58,16 +58,18 @@ To install the SDK to your Maven project, simply add the following dependency to
 
 Before using the SDK, please make sure to set the following environment variables (In .env):
 
-| Name                   | Description                                                                             | Example Value                                                                   |
-| ---------------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| `ENV` or `DANA_ENV`    | Defines which environment the SDK will use. Possible values: `SANDBOX` or `PRODUCTION`. | `SANDBOX`                                                                       |
-| `X_PARTNER_ID`         | Unique identifier for partner, provided by DANA, also known as `clientId`.              | 1970010100000000000000                                                          |
-| `CLIENT_SECRET`        | Secret key of client. Assigned client secret during registration.                       | your_client_secret                                                              |
-| `DANA_PUBLIC_KEY`      | DANA public key string.                                                                 | `-----BEGIN PUBLIC KEY-----MIIBIjANBgkq...Do/QIDAQAB-----END PUBLIC KEY-----`   |
-| `DANA_PUBLIC_KEY_PATH` | Path to DANA public key file. If both are set, `DANA_PUBLIC_KEY_PATH` is used.          | /path/to/dana_public_key.pem                                                    |
-| `PRIVATE_KEY`          | Your private key string.                                                                | `-----BEGIN PRIVATE KEY-----MIIBVgIBADANBg...LsvTqw==-----END PRIVATE KEY-----` |
-| `PRIVATE_KEY_PATH`     | Path to your private key file. If both are set, `PRIVATE_KEY_PATH` is used.             | /path/to/your_private_key.pem                                                   |
-| `ORIGIN`               | Origin domain.                                                                          | https://yourdomain.com                                                          |
+| Name                   | Description                                                                                   | Example Value                                                                   |
+| ---------------------- | ---------------------------------------------------------------------------------------       | ------------------------------------------------------------------------------- |
+| `ENV` or `DANA_ENV`    | Defines which environment the SDK will use. Possible values: `SANDBOX` or `PRODUCTION`.       | `SANDBOX`                                                                       |
+| `X_PARTNER_ID`         | Unique identifier for partner, provided by DANA, also known as `clientId`.                    | 1970010100000000000000                                                          |
+| `PRIVATE_KEY`          | Your private key string.                                                                      | `-----BEGIN PRIVATE KEY-----MIIBVgIBADANBg...LsvTqw==-----END PRIVATE KEY-----` |
+| `PRIVATE_KEY_PATH`     | Path to your private key file. If both are set, `PRIVATE_KEY_PATH` is used.                   | /path/to/your_private_key.pem                                                   |
+| `DANA_PUBLIC_KEY`      | DANA public key string for parsing webhook.                                                   | `-----BEGIN PUBLIC KEY-----MIIBIjANBgkq...Do/QIDAQAB-----END PUBLIC KEY-----`   |
+| `DANA_PUBLIC_KEY_PATH` | Path to DANA public key file for parsing webhook. If both set, `DANA_PUBLIC_KEY_PATH is used. | /path/to/dana_public_key.pem                                                    |
+| `ORIGIN`               | Origin domain.                                                                                | https://yourdomain.com                                                          |
+| `CLIENT_SECRET`        | Assigned client secret during registration. Must be set for DisbursementApi                   | your_client_secret                                                              |
+
+You can see these variables in .env.example, fill it, and change the file name to .env (remove the .example extension)
 
 ## Usage
 
@@ -126,4 +128,4 @@ Find detailed util information and usage examples by clicking the links below:
 
 ## Further Reading
 
-* [DANA API Reference](https://dashboard.dana.id/api-docs)
+* [DANA API Reference](https://dashboard.dana.id/api-docs-v2/)

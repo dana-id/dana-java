@@ -33,11 +33,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.12.0")
 public class FinishNotifyPaymentInfo {
   public static final String JSON_PROPERTY_CASHIER_REQUEST_ID = "cashierRequestId";
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   private String cashierRequestId;
 
   public static final String JSON_PROPERTY_PAID_TIME = "paidTime";
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   private String paidTime;
 
   public static final String JSON_PROPERTY_PAY_OPTION_INFOS = "payOptionInfos";
@@ -55,7 +55,7 @@ public class FinishNotifyPaymentInfo {
   public FinishNotifyPaymentInfo() {
   }
 
-  public FinishNotifyPaymentInfo cashierRequestId(@javax.annotation.Nonnull String cashierRequestId) {
+  public FinishNotifyPaymentInfo cashierRequestId(@javax.annotation.Nullable String cashierRequestId) {
     
     this.cashierRequestId = cashierRequestId;
     return this;
@@ -65,9 +65,9 @@ public class FinishNotifyPaymentInfo {
    * Cashier request identifier
    * @return cashierRequestId
    */
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   @JsonProperty(JSON_PROPERTY_CASHIER_REQUEST_ID)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public String getCashierRequestId() {
     return cashierRequestId;
@@ -75,12 +75,12 @@ public class FinishNotifyPaymentInfo {
 
 
   @JsonProperty(JSON_PROPERTY_CASHIER_REQUEST_ID)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setCashierRequestId(@javax.annotation.Nonnull String cashierRequestId) {
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setCashierRequestId(@javax.annotation.Nullable String cashierRequestId) {
     this.cashierRequestId = cashierRequestId;
   }
 
-  public FinishNotifyPaymentInfo paidTime(@javax.annotation.Nonnull String paidTime) {
+  public FinishNotifyPaymentInfo paidTime(@javax.annotation.Nullable String paidTime) {
     
     this.paidTime = paidTime;
     return this;
@@ -90,9 +90,9 @@ public class FinishNotifyPaymentInfo {
    * Information of paid time, in format YYYY-MM-DDTHH:mm:ss+07:00. Time must be in GMT+7 (Jakarta time)
    * @return paidTime
    */
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   @JsonProperty(JSON_PROPERTY_PAID_TIME)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public String getPaidTime() {
     return paidTime;
@@ -100,8 +100,8 @@ public class FinishNotifyPaymentInfo {
 
 
   @JsonProperty(JSON_PROPERTY_PAID_TIME)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setPaidTime(@javax.annotation.Nonnull String paidTime) {
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setPaidTime(@javax.annotation.Nullable String paidTime) {
     this.paidTime = paidTime;
   }
 

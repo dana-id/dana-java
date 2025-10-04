@@ -1,17 +1,27 @@
 package id.dana.webhook.v1.util;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import id.dana.invoker.model.constant.DanaHeader;
 import id.dana.invoker.model.exception.DanaException;
 import id.dana.invoker.util.DanaSignatureUtil;
 import id.dana.webhook.v1.model.FinishNotifyRequest;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 public final class WebhookUtil {
 
-  private static final ObjectMapper objectMapper = new ObjectMapper();
+  private static final ObjectMapper objectMapper;
+  
+  static {
+    objectMapper = new ObjectMapper();
+    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    objectMapper.configure(DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES, false);
+    objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
+    objectMapper.configure(DeserializationFeature.FAIL_ON_MISSING_EXTERNAL_TYPE_ID_PROPERTY, false);
+  }
 
   public WebhookUtil() {
 
@@ -30,10 +40,14 @@ public final class WebhookUtil {
    */
   public static FinishNotifyRequest parseWebhook(String httpMethod, String relativePathUrl,
       Map<String, String> headers, String body) {
-    String timestamp = headers.getOrDefault(DanaHeader.X_TIMESTAMP,
-        headers.get(DanaHeader.X_TIMESTAMP.toLowerCase()));
-    String signatureToVerify = headers.getOrDefault(DanaHeader.X_SIGNATURE,
-        headers.get(DanaHeader.X_SIGNATURE.toLowerCase()));
+    Map<String, String> normalizedHeaders = new HashMap<>();
+    for (Map.Entry<String, String> entry : headers.entrySet()) {
+      normalizedHeaders.put(entry.getKey().toUpperCase(), entry.getValue());
+    }
+    
+    String timestamp = normalizedHeaders.get("X-TIMESTAMP");
+    String signatureToVerify = normalizedHeaders.get("X-SIGNATURE");
+    
     if (StringUtils.isEmpty(timestamp) || StringUtils.isEmpty(signatureToVerify)) {
       throw new DanaException(String.format("Missing %s or %s headers", DanaHeader.X_SIGNATURE,
           DanaHeader.X_TIMESTAMP));

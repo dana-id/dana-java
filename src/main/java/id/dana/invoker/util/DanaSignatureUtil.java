@@ -92,19 +92,30 @@ public final class DanaSignatureUtil {
 
   public static String signSHA256withRSA(String stringToSign)
       throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, SignatureException {
-    return Base64.getEncoder().encodeToString(sign(stringToSign, "RSA", "SHA256withRSA"));
+    return signSHA256withRSA(stringToSign, null);
+  }
+
+  public static String signSHA256withRSA(String stringToSign, String privateKey)
+      throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, SignatureException {
+    return Base64.getEncoder().encodeToString(sign(stringToSign, "RSA", "SHA256withRSA", privateKey));
   }
 
   public static byte[] sign(String stringToSign, String keyAlgorithm, String signatureAlgorithm)
       throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, SignatureException {
-    byte[] keyBytes = Base64.getDecoder().decode(DanaConfig.getInstance().getPrivateKey());
+    return sign(stringToSign, keyAlgorithm, signatureAlgorithm, null);
+  }
+
+  public static byte[] sign(String stringToSign, String keyAlgorithm, String signatureAlgorithm, String privateKey)
+      throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, SignatureException {
+    String keyToUse = privateKey != null ? privateKey : DanaConfig.getInstance().getPrivateKey();
+    byte[] keyBytes = Base64.getDecoder().decode(keyToUse);
 
     PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
     KeyFactory keyFactory = KeyFactory.getInstance(keyAlgorithm);
-    PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
+    PrivateKey pk = keyFactory.generatePrivate(keySpec);
 
     Signature signature = Signature.getInstance(signatureAlgorithm);
-    signature.initSign(privateKey);
+    signature.initSign(pk);
     signature.update(stringToSign.getBytes(StandardCharsets.UTF_8));
 
     return signature.sign();
@@ -117,6 +128,9 @@ public final class DanaSignatureUtil {
       requestBody = objectMapper.writeValueAsString(mappedRequestBody);
       String stringToVerify = String.format("%s:%s:%s:%s", httpMethod, relativePathUrl,
           DigestUtils.sha256Hex(requestBody), timestamp);
+
+      System.out.println("String to verify: " + stringToVerify);
+      System.out.println("Signature to verify: " + signatureToVerify);
       return verifySHA256withRSA(stringToVerify, signatureToVerify);
     } catch (JsonProcessingException | NoSuchAlgorithmException | InvalidKeySpecException |
              InvalidKeyException | SignatureException e) {

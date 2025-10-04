@@ -25,7 +25,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
   FinishNotifyRequestAdditionalInfo.JSON_PROPERTY_PAYMENT_INFO,
   FinishNotifyRequestAdditionalInfo.JSON_PROPERTY_SHOP_INFO,
   FinishNotifyRequestAdditionalInfo.JSON_PROPERTY_EXTEND_INFO,
-  FinishNotifyRequestAdditionalInfo.JSON_PROPERTY_EXTEND_INFO_CLOSED_REASON
+  FinishNotifyRequestAdditionalInfo.JSON_PROPERTY_EXTEND_INFO_CLOSED_REASON,
+  FinishNotifyRequestAdditionalInfo.JSON_PROPERTY_PAID_TIME
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.12.0")
 public class FinishNotifyRequestAdditionalInfo {
@@ -44,6 +45,10 @@ public class FinishNotifyRequestAdditionalInfo {
   public static final String JSON_PROPERTY_EXTEND_INFO_CLOSED_REASON = "extendInfoClosedReason";
   @javax.annotation.Nullable
   private String extendInfoClosedReason;
+
+  public static final String JSON_PROPERTY_PAID_TIME = "paidTime";
+  @javax.annotation.Nullable
+  private String paidTime;
 
   public FinishNotifyRequestAdditionalInfo() {
   }
@@ -148,6 +153,31 @@ public class FinishNotifyRequestAdditionalInfo {
     this.extendInfoClosedReason = extendInfoClosedReason;
   }
 
+  public FinishNotifyRequestAdditionalInfo paidTime(@javax.annotation.Nullable String paidTime) {
+    
+    this.paidTime = paidTime;
+    return this;
+  }
+
+  /**
+   * Information of paid time, in format YYYY-MM-DDTHH:mm:ss+07:00. Time must be in GMT+7 (Jakarta time)
+   * @return paidTime
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_PAID_TIME)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getPaidTime() {
+    return paidTime;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_PAID_TIME)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setPaidTime(@javax.annotation.Nullable String paidTime) {
+    this.paidTime = paidTime;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -160,12 +190,13 @@ public class FinishNotifyRequestAdditionalInfo {
     return Objects.equals(this.paymentInfo, finishNotifyRequestAdditionalInfo.paymentInfo) &&
         Objects.equals(this.shopInfo, finishNotifyRequestAdditionalInfo.shopInfo) &&
         Objects.equals(this.extendInfo, finishNotifyRequestAdditionalInfo.extendInfo) &&
-        Objects.equals(this.extendInfoClosedReason, finishNotifyRequestAdditionalInfo.extendInfoClosedReason);
+        Objects.equals(this.extendInfoClosedReason, finishNotifyRequestAdditionalInfo.extendInfoClosedReason) &&
+        Objects.equals(this.paidTime, finishNotifyRequestAdditionalInfo.paidTime);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(paymentInfo, shopInfo, extendInfo, extendInfoClosedReason);
+    return Objects.hash(paymentInfo, shopInfo, extendInfo, extendInfoClosedReason, paidTime);
   }
 
   @Override
@@ -176,6 +207,7 @@ public class FinishNotifyRequestAdditionalInfo {
     sb.append("    shopInfo: ").append(toIndentedString(shopInfo)).append("\n");
     sb.append("    extendInfo: ").append(toIndentedString(extendInfo)).append("\n");
     sb.append("    extendInfoClosedReason: ").append(toIndentedString(extendInfoClosedReason)).append("\n");
+    sb.append("    paidTime: ").append(toIndentedString(paidTime)).append("\n");
     sb.append("}");
     return sb.toString();
   }
