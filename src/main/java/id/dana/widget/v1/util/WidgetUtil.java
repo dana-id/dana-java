@@ -78,9 +78,9 @@ public class WidgetUtil {
             }
         } else { // Mode.API
             if (env.equals(Env.PRODUCTION)) {
-                baseUrl = "https://m.dana.id/n/ipg/oauth";
+                baseUrl = "https://m.dana.id/v1.0/get-auth-code";
             } else {
-                baseUrl = "https://m.sandbox.dana.id/n/ipg/oauth";
+                baseUrl = "https://m.sandbox.dana.id/v1.0/get-auth-code";
             }
         }
         
