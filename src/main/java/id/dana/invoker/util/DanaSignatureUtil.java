@@ -16,6 +16,8 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import okhttp3.Request;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
@@ -121,18 +123,50 @@ public final class DanaSignatureUtil {
     return signature.sign();
   }
 
+  /**
+   * Handles nested JSON fields with proper quote escaping
+   */
+  private static String ensureMinifiedJSON(String json) {
+    try {
+      json = json.replace("\\\\\"", "\"");
+      
+      boolean isMinified = !json.contains(": ") && !json.contains(",\n") && !json.contains("{\n");
+      
+      if (!isMinified) {
+        Object mappedJson = objectMapper.readValue(json, Object.class);
+        json = objectMapper.writeValueAsString(mappedJson);
+      }
+      
+      Pattern pattern = Pattern.compile("\"(\\w+)\":\"(\\{.*?\\})\"");
+      Matcher matcher = pattern.matcher(json);
+      
+      StringBuffer result = new StringBuffer();
+      while (matcher.find()) {
+        String fieldName = matcher.group(1);
+        String jsonValue = matcher.group(2);
+        
+        String escapedValue = jsonValue.replace("\"", "\\\"");
+        matcher.appendReplacement(result, "\"" + fieldName + "\":\"" + escapedValue + "\"");
+      }
+      matcher.appendTail(result);
+      
+      return result.toString();
+    } catch (JsonProcessingException e) {
+      log.warn("Failed to process JSON minification, using original: {}", e.getMessage());
+      return json;
+    }
+  }
+
   public static boolean verifySnapB2BScenarioSignature(String httpMethod, String relativePathUrl,
       String requestBody, String timestamp, String signatureToVerify) {
     try {
-      Object mappedRequestBody = objectMapper.readValue(requestBody, Object.class);
-      requestBody = objectMapper.writeValueAsString(mappedRequestBody);
-      String stringToVerify = String.format("%s:%s:%s:%s", httpMethod, relativePathUrl,
-          DigestUtils.sha256Hex(requestBody), timestamp);
+      String processedBody = ensureMinifiedJSON(requestBody);
+      String bodyHash = DigestUtils.sha256Hex(processedBody);
+      String stringToVerify = String.format("%s:%s:%s:%s", httpMethod, relativePathUrl, bodyHash, timestamp);
 
-      System.out.println("String to verify: " + stringToVerify);
-      System.out.println("Signature to verify: " + signatureToVerify);
+
       return verifySHA256withRSA(stringToVerify, signatureToVerify);
-    } catch (JsonProcessingException | NoSuchAlgorithmException | InvalidKeySpecException |
+    } catch (NoSuchAlgorithmException | InvalidKeySpecException |
              InvalidKeyException | SignatureException e) {
       log.error("Failed to verify SNAP B2B scenario signature: {}", e.getMessage());
       return false;
