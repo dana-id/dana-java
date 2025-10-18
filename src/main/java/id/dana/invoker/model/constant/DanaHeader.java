@@ -21,5 +21,5 @@ public final class DanaHeader {
   public static final String X_LONGITUDE = "X-LONGITUDE";
   public static final String X_API_VERSION = "X-API-VERSION";
   public static final String X_API_FUNCTION = "X-API-FUNCTION";
-
+  public static final String X_DEBUG = "X-Debug-Mode";
 }

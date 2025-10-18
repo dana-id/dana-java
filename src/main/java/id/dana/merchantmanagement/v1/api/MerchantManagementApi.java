@@ -184,7 +184,12 @@ public class MerchantManagementApi {
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
-            return objectMapper.readValue(errorBody.string(), CreateDivisionResponse.class);
+            String errorBodyString = errorBody.string();
+            try {
+              return objectMapper.readValue(errorBodyString, CreateDivisionResponse.class);
+            } catch (Exception jsonException) {
+              throw new DanaException("API Error: " + errorBodyString);
+            }
           } else {
             throw new DanaException("Empty error body");
           }
@@ -211,7 +216,12 @@ public class MerchantManagementApi {
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
-            return objectMapper.readValue(errorBody.string(), CreateShopResponse.class);
+            String errorBodyString = errorBody.string();
+            try {
+              return objectMapper.readValue(errorBodyString, CreateShopResponse.class);
+            } catch (Exception jsonException) {
+              throw new DanaException("API Error: " + errorBodyString);
+            }
           } else {
             throw new DanaException("Empty error body");
           }
@@ -238,7 +248,12 @@ public class MerchantManagementApi {
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
-            return objectMapper.readValue(errorBody.string(), QueryDivisionResponse.class);
+            String errorBodyString = errorBody.string();
+            try {
+              return objectMapper.readValue(errorBodyString, QueryDivisionResponse.class);
+            } catch (Exception jsonException) {
+              throw new DanaException("API Error: " + errorBodyString);
+            }
           } else {
             throw new DanaException("Empty error body");
           }
@@ -265,7 +280,12 @@ public class MerchantManagementApi {
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
-            return objectMapper.readValue(errorBody.string(), QueryMerchantResourceResponse.class);
+            String errorBodyString = errorBody.string();
+            try {
+              return objectMapper.readValue(errorBodyString, QueryMerchantResourceResponse.class);
+            } catch (Exception jsonException) {
+              throw new DanaException("API Error: " + errorBodyString);
+            }
           } else {
             throw new DanaException("Empty error body");
           }
@@ -292,7 +312,12 @@ public class MerchantManagementApi {
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
-            return objectMapper.readValue(errorBody.string(), QueryShopResponse.class);
+            String errorBodyString = errorBody.string();
+            try {
+              return objectMapper.readValue(errorBodyString, QueryShopResponse.class);
+            } catch (Exception jsonException) {
+              throw new DanaException("API Error: " + errorBodyString);
+            }
           } else {
             throw new DanaException("Empty error body");
           }
@@ -319,7 +344,12 @@ public class MerchantManagementApi {
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
-            return objectMapper.readValue(errorBody.string(), UpdateDivisionResponse.class);
+            String errorBodyString = errorBody.string();
+            try {
+              return objectMapper.readValue(errorBodyString, UpdateDivisionResponse.class);
+            } catch (Exception jsonException) {
+              throw new DanaException("API Error: " + errorBodyString);
+            }
           } else {
             throw new DanaException("Empty error body");
           }
@@ -346,7 +376,12 @@ public class MerchantManagementApi {
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
-            return objectMapper.readValue(errorBody.string(), UpdateShopResponse.class);
+            String errorBodyString = errorBody.string();
+            try {
+              return objectMapper.readValue(errorBodyString, UpdateShopResponse.class);
+            } catch (Exception jsonException) {
+              throw new DanaException("API Error: " + errorBodyString);
+            }
           } else {
             throw new DanaException("Empty error body");
           }

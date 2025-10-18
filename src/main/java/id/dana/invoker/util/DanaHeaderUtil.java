@@ -7,6 +7,7 @@ import id.dana.invoker.model.constant.DanaHeader;
 import id.dana.invoker.model.context.SnapB2B2CContext;
 import id.dana.invoker.model.context.SnapB2B2CContext.SnapB2B2CContextAdditionalInfo;
 import id.dana.invoker.model.exception.DanaException;
+import id.dana.invoker.model.enumeration.DanaEnvironment;
 import java.io.IOException;
 import java.util.UUID;
 import okhttp3.MediaType;
@@ -58,6 +59,10 @@ public final class DanaHeaderUtil {
     requestBuilder.header(DanaHeader.X_PARTNER_ID, partnerId);
     requestBuilder.header(DanaHeader.X_EXTERNAL_ID, "sdk" + UUID.randomUUID().toString().substring(3));
     requestBuilder.header(DanaHeader.CHANNEL_ID, partnerId + "-SERVER");
+
+    if (DanaConfig.getInstance().isDebugMode() && DanaConfig.getInstance().getEnv().name().toLowerCase().equals("sandbox")) {
+      requestBuilder.header(DanaHeader.X_DEBUG, "true");
+    }
   }
 
   public static void populateSnapApplyTokenScenarioHeaders(Builder requestBuilder) {

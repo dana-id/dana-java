@@ -50,7 +50,7 @@ To install the SDK to your Maven project, simply add the following dependency to
 <dependency>
     <groupId>id.dana</groupId>
     <artifactId>dana-java</artifactId>
-    <version>1.1.4</version>
+    <version>1.1.5</version>
 </dependency>
 ```
 

@@ -222,7 +222,12 @@ public class WidgetApi {
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
-            return objectMapper.readValue(errorBody.string(), AccountUnbindingResponse.class);
+            String errorBodyString = errorBody.string();
+            try {
+              return objectMapper.readValue(errorBodyString, AccountUnbindingResponse.class);
+            } catch (Exception jsonException) {
+              throw new DanaException("API Error: " + errorBodyString);
+            }
           } else {
             throw new DanaException("Empty error body");
           }
@@ -251,7 +256,12 @@ public class WidgetApi {
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
-            return objectMapper.readValue(errorBody.string(), ApplyOTTResponse.class);
+            String errorBodyString = errorBody.string();
+            try {
+              return objectMapper.readValue(errorBodyString, ApplyOTTResponse.class);
+            } catch (Exception jsonException) {
+              throw new DanaException("API Error: " + errorBodyString);
+            }
           } else {
             throw new DanaException("Empty error body");
           }
@@ -280,7 +290,12 @@ public class WidgetApi {
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
-            return objectMapper.readValue(errorBody.string(), ApplyTokenResponse.class);
+            String errorBodyString = errorBody.string();
+            try {
+              return objectMapper.readValue(errorBodyString, ApplyTokenResponse.class);
+            } catch (Exception jsonException) {
+              throw new DanaException("API Error: " + errorBodyString);
+            }
           } else {
             throw new DanaException("Empty error body");
           }
@@ -307,7 +322,12 @@ public class WidgetApi {
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
-            return objectMapper.readValue(errorBody.string(), BalanceInquiryResponse.class);
+            String errorBodyString = errorBody.string();
+            try {
+              return objectMapper.readValue(errorBodyString, BalanceInquiryResponse.class);
+            } catch (Exception jsonException) {
+              throw new DanaException("API Error: " + errorBodyString);
+            }
           } else {
             throw new DanaException("Empty error body");
           }
@@ -336,7 +356,12 @@ public class WidgetApi {
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
-            return objectMapper.readValue(errorBody.string(), CancelOrderResponse.class);
+            String errorBodyString = errorBody.string();
+            try {
+              return objectMapper.readValue(errorBodyString, CancelOrderResponse.class);
+            } catch (Exception jsonException) {
+              throw new DanaException("API Error: " + errorBodyString);
+            }
           } else {
             throw new DanaException("Empty error body");
           }
@@ -365,7 +390,12 @@ public class WidgetApi {
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
-            return objectMapper.readValue(errorBody.string(), QueryPaymentResponse.class);
+            String errorBodyString = errorBody.string();
+            try {
+              return objectMapper.readValue(errorBodyString, QueryPaymentResponse.class);
+            } catch (Exception jsonException) {
+              throw new DanaException("API Error: " + errorBodyString);
+            }
           } else {
             throw new DanaException("Empty error body");
           }
@@ -392,7 +422,12 @@ public class WidgetApi {
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
-            return objectMapper.readValue(errorBody.string(), QueryUserProfileResponse.class);
+            String errorBodyString = errorBody.string();
+            try {
+              return objectMapper.readValue(errorBodyString, QueryUserProfileResponse.class);
+            } catch (Exception jsonException) {
+              throw new DanaException("API Error: " + errorBodyString);
+            }
           } else {
             throw new DanaException("Empty error body");
           }
@@ -421,7 +456,12 @@ public class WidgetApi {
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
-            return objectMapper.readValue(errorBody.string(), RefundOrderResponse.class);
+            String errorBodyString = errorBody.string();
+            try {
+              return objectMapper.readValue(errorBodyString, RefundOrderResponse.class);
+            } catch (Exception jsonException) {
+              throw new DanaException("API Error: " + errorBodyString);
+            }
           } else {
             throw new DanaException("Empty error body");
           }
@@ -450,7 +490,12 @@ public class WidgetApi {
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
-            return objectMapper.readValue(errorBody.string(), WidgetPaymentResponse.class);
+            String errorBodyString = errorBody.string();
+            try {
+              return objectMapper.readValue(errorBodyString, WidgetPaymentResponse.class);
+            } catch (Exception jsonException) {
+              throw new DanaException("API Error: " + errorBodyString);
+            }
           } else {
             throw new DanaException("Empty error body");
           }

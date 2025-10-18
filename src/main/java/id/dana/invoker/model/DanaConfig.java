@@ -21,6 +21,7 @@ public class DanaConfig {
   private final String danaPublicKey;
   private final String privateKey;
   private final String origin;
+  private final boolean debugMode;
 
   private DanaConfig(Builder builder) {
     this.env = builder.env;
@@ -29,6 +30,7 @@ public class DanaConfig {
     this.danaPublicKey = cleanKey(builder.danaPublicKey);
     this.privateKey = cleanKey(builder.privateKey);
     this.origin = builder.origin;
+    this.debugMode = builder.debugMode;
   }
 
   public static class Builder {
@@ -40,6 +42,7 @@ public class DanaConfig {
     private String danaPublicKey = loadKey(EnvKey.DANA_PUBLIC_KEY_PATH, EnvKey.DANA_PUBLIC_KEY);
     private String privateKey = loadKey(EnvKey.PRIVATE_KEY_PATH, EnvKey.PRIVATE_KEY);
     private String origin = ConfigUtil.getConfig(EnvKey.ORIGIN, "");
+    private boolean debugMode = ConfigUtil.getConfig(EnvKey.X_DEBUG, "false").equals("true");
 
     public Builder env(DanaEnvironment env) {
       this.env = env;
@@ -68,6 +71,11 @@ public class DanaConfig {
 
     public Builder origin(String origin) {
       this.origin = origin;
+      return this;
+    }
+
+    public Builder debugMode(boolean debugMode) {
+      this.debugMode = debugMode;
       return this;
     }
 
@@ -216,6 +224,10 @@ public class DanaConfig {
 
   public String getOrigin() {
     return origin;
+  }
+
+  public boolean isDebugMode() {
+    return debugMode;
   }
 
   private static String cleanKey(String key) {

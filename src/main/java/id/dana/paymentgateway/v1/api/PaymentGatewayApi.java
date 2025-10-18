@@ -148,7 +148,12 @@ public class PaymentGatewayApi {
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
-            return objectMapper.readValue(errorBody.string(), CancelOrderResponse.class);
+            String errorBodyString = errorBody.string();
+            try {
+              return objectMapper.readValue(errorBodyString, CancelOrderResponse.class);
+            } catch (Exception jsonException) {
+              throw new DanaException("API Error: " + errorBodyString);
+            }
           } else {
             throw new DanaException("Empty error body");
           }
@@ -177,7 +182,12 @@ public class PaymentGatewayApi {
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
-            return objectMapper.readValue(errorBody.string(), ConsultPayResponse.class);
+            String errorBodyString = errorBody.string();
+            try {
+              return objectMapper.readValue(errorBodyString, ConsultPayResponse.class);
+            } catch (Exception jsonException) {
+              throw new DanaException("API Error: " + errorBodyString);
+            }
           } else {
             throw new DanaException("Empty error body");
           }
@@ -206,7 +216,12 @@ public class PaymentGatewayApi {
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
-            return objectMapper.readValue(errorBody.string(), CreateOrderResponse.class);
+            String errorBodyString = errorBody.string();
+            try {
+              return objectMapper.readValue(errorBodyString, CreateOrderResponse.class);
+            } catch (Exception jsonException) {
+              throw new DanaException("API Error: " + errorBodyString);
+            }
           } else {
             throw new DanaException("Empty error body");
           }
@@ -235,7 +250,12 @@ public class PaymentGatewayApi {
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
-            return objectMapper.readValue(errorBody.string(), QueryPaymentResponse.class);
+            String errorBodyString = errorBody.string();
+            try {
+              return objectMapper.readValue(errorBodyString, QueryPaymentResponse.class);
+            } catch (Exception jsonException) {
+              throw new DanaException("API Error: " + errorBodyString);
+            }
           } else {
             throw new DanaException("Empty error body");
           }
@@ -264,7 +284,12 @@ public class PaymentGatewayApi {
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
-            return objectMapper.readValue(errorBody.string(), RefundOrderResponse.class);
+            String errorBodyString = errorBody.string();
+            try {
+              return objectMapper.readValue(errorBodyString, RefundOrderResponse.class);
+            } catch (Exception jsonException) {
+              throw new DanaException("API Error: " + errorBodyString);
+            }
           } else {
             throw new DanaException("Empty error body");
           }
