@@ -3,6 +3,7 @@ package id.dana.invoker.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import id.dana.invoker.model.DanaConfig;
+import id.dana.invoker.model.enumeration.DanaEnvironment;
 import id.dana.invoker.model.exception.DanaException;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
@@ -27,6 +28,16 @@ public final class DanaSignatureUtil {
 
   private static final Logger log = LoggerFactory.getLogger(DanaSignatureUtil.class);
   private static final ObjectMapper objectMapper = new ObjectMapper();
+
+  /** Sandbox gateway public key (X.509 base64) for webhook verification when env is sandbox. */
+  private static final String SANDBOX_WEBHOOK_PUBLIC_KEY_BASE64 =
+      "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnaKVGRbin4Wh4KN35OPh"
+          + "ytJBjYTz7QZKSZjmHfiHxFmulfT87rta+IvGJ0rCBgg+1EtKk1hX8G5gPGJs1htJ"
+          + "5jHa3/jCk9l+luzjnuT9UVlwJahvzmFw+IoDoM7hIPjsLtnIe04SgYo0tZBpEmkQ"
+          + "vUGhmHPqYnUGSSMIpDLJDvbyr8gtwluja1SbRphgDCoYVXq+uUJ5HzPS049aaxTS"
+          + "nfXh/qXuDoB9EzCrgppLDS2ubmk21+dr7WaO/3RFjnwx5ouv6w+iC1XOJKar3CTk"
+          + "X6JV1OSST1C9sbPGzMHZ8AGB51BM0mok7davD/5irUk+f0C25OgzkwtxAt80dkDo"
+          + "/QIDAQAB";
 
   private DanaSignatureUtil() {
 
@@ -164,8 +175,10 @@ public final class DanaSignatureUtil {
       String bodyHash = DigestUtils.sha256Hex(processedBody);
       String stringToVerify = String.format("%s:%s:%s:%s", httpMethod, relativePathUrl, bodyHash, timestamp);
 
-
-      return verifySHA256withRSA(stringToVerify, signatureToVerify);
+      String publicKeyBase64 = DanaConfig.getInstance().getEnv() == DanaEnvironment.SANDBOX
+          ? SANDBOX_WEBHOOK_PUBLIC_KEY_BASE64
+          : DanaConfig.getInstance().getDanaPublicKey();
+      return verify(stringToVerify, signatureToVerify, "RSA", "SHA256withRSA", publicKeyBase64);
     } catch (NoSuchAlgorithmException | InvalidKeySpecException |
              InvalidKeyException | SignatureException e) {
       log.error("Failed to verify SNAP B2B scenario signature: {}", e.getMessage());
@@ -184,7 +197,14 @@ public final class DanaSignatureUtil {
   public static boolean verify(String stringToVerify, String signatureToVerify, String keyAlgorithm,
       String signatureAlgorithm)
       throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, SignatureException {
-    byte[] keyBytes = Base64.getDecoder().decode(DanaConfig.getInstance().getDanaPublicKey());
+    return verify(stringToVerify, signatureToVerify, keyAlgorithm, signatureAlgorithm,
+        DanaConfig.getInstance().getDanaPublicKey());
+  }
+
+  private static boolean verify(String stringToVerify, String signatureToVerify, String keyAlgorithm,
+      String signatureAlgorithm, String publicKeyBase64)
+      throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, SignatureException {
+    byte[] keyBytes = Base64.getDecoder().decode(publicKeyBase64);
 
     X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
     KeyFactory keyFactory = KeyFactory.getInstance(keyAlgorithm);

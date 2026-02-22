@@ -8,7 +8,7 @@
 | Name | Type | Description | Notes |
 | - | - | - | - |
 |**url** | **String** | URL link |  |
-|**type** | [**TypeEnum**](#TypeEnum) | Url param. The enums:<br> * PAY_RETURN - When finish payment, DANA will notify to the URL that has been defined by<br> * NOTIFICATION - After the payment, the user will be redirected to merchant page, this is mandatory<br>  |  |
+|**type** | [**TypeEnum**](#TypeEnum) | Url param. The enums:<br> * PAY_RETURN - After the payment, the user will be redirected to merchant page, this is mandatory<br> * NOTIFICATION - When finish payment, DANA will notify to the URL that has been defined by user<br>  |  |
 |**isDeeplink** | **String** | Deeplink URL or not |  |
 
 
@@ -17,8 +17,8 @@
 
 | Name | Value | Description |
 | - | - | - |
-| `PAY_RETURN` | "PAY_RETURN" | When finish payment, DANA will notify to the URL that has been defined by |
-| `NOTIFICATION` | "NOTIFICATION" | After the payment, the user will be redirected to merchant page, this is mandatory |
+| `PAY_RETURN` | "PAY_RETURN" | After the payment, the user will be redirected to merchant page, this is mandatory |
+| `NOTIFICATION` | "NOTIFICATION" | When finish payment, DANA will notify to the URL that has been defined by user |
 
 ### Usage Example
 ```java

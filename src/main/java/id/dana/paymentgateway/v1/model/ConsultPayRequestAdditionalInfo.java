@@ -29,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.12.0")
 public class ConsultPayRequestAdditionalInfo {
   public static final String JSON_PROPERTY_BUYER = "buyer";
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   private Buyer buyer;
 
   public static final String JSON_PROPERTY_ENV_INFO = "envInfo";
@@ -43,7 +43,7 @@ public class ConsultPayRequestAdditionalInfo {
   public ConsultPayRequestAdditionalInfo() {
   }
 
-  public ConsultPayRequestAdditionalInfo buyer(@javax.annotation.Nonnull Buyer buyer) {
+  public ConsultPayRequestAdditionalInfo buyer(@javax.annotation.Nullable Buyer buyer) {
     
     this.buyer = buyer;
     return this;
@@ -53,9 +53,9 @@ public class ConsultPayRequestAdditionalInfo {
    * Additional information of buyer
    * @return buyer
    */
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   @JsonProperty(JSON_PROPERTY_BUYER)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public Buyer getBuyer() {
     return buyer;
@@ -63,8 +63,8 @@ public class ConsultPayRequestAdditionalInfo {
 
 
   @JsonProperty(JSON_PROPERTY_BUYER)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setBuyer(@javax.annotation.Nonnull Buyer buyer) {
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setBuyer(@javax.annotation.Nullable Buyer buyer) {
     this.buyer = buyer;
   }
 

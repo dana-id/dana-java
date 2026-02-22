@@ -31,6 +31,9 @@ public class DanaConfig {
     this.privateKey = cleanKey(builder.privateKey);
     this.origin = builder.origin;
     this.debugMode = builder.debugMode;
+    String errMsgFormat = "Missing required environment variable: %s. Please set %s in your environment or .env file.";
+    Validate.notEmpty(this.danaPublicKey, String.format(errMsgFormat, EnvKey.DANA_PUBLIC_KEY, EnvKey.DANA_PUBLIC_KEY));
+    Validate.notEmpty(this.privateKey, String.format(errMsgFormat, EnvKey.PRIVATE_KEY, EnvKey.PRIVATE_KEY));
   }
 
   public static class Builder {
@@ -42,7 +45,8 @@ public class DanaConfig {
     private String danaPublicKey = loadKey(EnvKey.DANA_PUBLIC_KEY_PATH, EnvKey.DANA_PUBLIC_KEY);
     private String privateKey = loadKey(EnvKey.PRIVATE_KEY_PATH, EnvKey.PRIVATE_KEY);
     private String origin = ConfigUtil.getConfig(EnvKey.ORIGIN, "");
-    private boolean debugMode = ConfigUtil.getConfig(EnvKey.X_DEBUG, "false").equals("true");
+    private boolean debugMode = ConfigUtil.getConfig(EnvKey.X_DEBUG,
+        "SANDBOX".equalsIgnoreCase(ConfigUtil.getConfig(EnvKey.DANA_ENV, ConfigUtil.getConfig(EnvKey.ENV, "SANDBOX"))) ? "true" : "false").equals("true");
 
     public Builder env(DanaEnvironment env) {
       this.env = env;
@@ -96,6 +100,7 @@ public class DanaConfig {
         keyContent = ConfigUtil.getConfig(keyEnvKey, "");
       }
       
+      keyContent = DanaConfig.normalizeKeyLineEndings(keyContent);
       return convertToPkcs8IfNeeded(keyContent);
     }
     
@@ -230,11 +235,30 @@ public class DanaConfig {
     return debugMode;
   }
 
+  /**
+   * Normalize line endings for PEM keys (Windows CRLF / Mac CR to LF) and expand escaped \\n.
+   * Aligns with Go, PHP, Node, Python SDK behavior for keys pasted from files or env.
+   */
+  private static String normalizeKeyLineEndings(String key) {
+    if (key == null) {
+      return key;
+    }
+    return key
+        .trim()
+        .replace("\\n", "\n")
+        .replace("\r\n", "\n")
+        .replace("\r", "\n");
+  }
+
   private static String cleanKey(String key) {
+    if (key == null) {
+      return key;
+    }
+    key = normalizeKeyLineEndings(key);
     return key
         .replaceAll("-----BEGIN [^-]+-----", "")
         .replaceAll("-----END [^-]+-----", "")
-        .replace("\\n", "")
+        .replace("\n", "")
         .replaceAll("\\s+", "");
   }
 

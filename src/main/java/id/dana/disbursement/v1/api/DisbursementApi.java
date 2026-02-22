@@ -60,7 +60,7 @@ interface DisbursementApiService {
     "Content-Type:application/json",
     "X-API-TYPE:SNAP_B2B"
   })
-  @POST("v1.0/emoney/account-inquiry.htm")
+  @POST("rest/v1.0/emoney/account-inquiry")
   Call<DanaAccountInquiryResponse> danaAccountInquiry(
     @retrofit2.http.Body DanaAccountInquiryRequest danaAccountInquiryRequest
   );
@@ -105,7 +105,7 @@ interface DisbursementApiService {
     "Content-Type:application/json",
     "X-API-TYPE:SNAP_B2B"
   })
-  @POST("v1.0/emoney/topup.htm")
+  @POST("rest/v1.0/emoney/topup")
   Call<TransferToDanaResponse> transferToDana(
     @retrofit2.http.Body TransferToDanaRequest transferToDanaRequest
   );
@@ -120,7 +120,7 @@ interface DisbursementApiService {
     "Content-Type:application/json",
     "X-API-TYPE:SNAP_B2B"
   })
-  @POST("v1.0/emoney/topup-status.htm")
+  @POST("rest/v1.0/emoney/topup-status")
   Call<TransferToDanaInquiryStatusResponse> transferToDanaInquiryStatus(
     @retrofit2.http.Body TransferToDanaInquiryStatusRequest transferToDanaInquiryStatusRequest
   );
@@ -146,6 +146,30 @@ public class DisbursementApi {
   public BankAccountInquiryResponse bankAccountInquiry(
     @retrofit2.http.Body BankAccountInquiryRequest bankAccountInquiryRequest
   ) {
+    // Run custom validations (e.g., validUpTo date validation)
+    // This validation runs even when structs are created directly (bypassing setters)
+    try {
+      String packageName = "id.dana.disbursement.v1.api";
+      String customValidationPackage = packageName.replace(".api", "");
+      Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+      java.lang.reflect.Method customValidationMethod = customValidationClass.getMethod("customValidation", Object.class);
+      customValidationMethod.invoke(null, bankAccountInquiryRequest);
+    } catch (ClassNotFoundException | NoClassDefFoundError e) {
+      // If CustomValidation doesn't exist for this domain, skip it
+      // This allows the template to work for all domains
+    } catch (Exception e) {
+      // Re-throw other exceptions (validation errors, etc.)
+      if (e instanceof java.lang.reflect.InvocationTargetException) {
+        Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+        if (cause instanceof DanaException) {
+          throw (DanaException) cause;
+        }
+        if (cause instanceof RuntimeException) {
+          throw (RuntimeException) cause;
+        }
+      }
+      throw new DanaException("Custom validation error", e);
+    }
     try {
       Response<BankAccountInquiryResponse> response = service.bankAccountInquiry(bankAccountInquiryRequest).execute();
       if (response.isSuccessful()) {
@@ -178,6 +202,30 @@ public class DisbursementApi {
   public DanaAccountInquiryResponse danaAccountInquiry(
     @retrofit2.http.Body DanaAccountInquiryRequest danaAccountInquiryRequest
   ) {
+    // Run custom validations (e.g., validUpTo date validation)
+    // This validation runs even when structs are created directly (bypassing setters)
+    try {
+      String packageName = "id.dana.disbursement.v1.api";
+      String customValidationPackage = packageName.replace(".api", "");
+      Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+      java.lang.reflect.Method customValidationMethod = customValidationClass.getMethod("customValidation", Object.class);
+      customValidationMethod.invoke(null, danaAccountInquiryRequest);
+    } catch (ClassNotFoundException | NoClassDefFoundError e) {
+      // If CustomValidation doesn't exist for this domain, skip it
+      // This allows the template to work for all domains
+    } catch (Exception e) {
+      // Re-throw other exceptions (validation errors, etc.)
+      if (e instanceof java.lang.reflect.InvocationTargetException) {
+        Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+        if (cause instanceof DanaException) {
+          throw (DanaException) cause;
+        }
+        if (cause instanceof RuntimeException) {
+          throw (RuntimeException) cause;
+        }
+      }
+      throw new DanaException("Custom validation error", e);
+    }
     try {
       Response<DanaAccountInquiryResponse> response = service.danaAccountInquiry(danaAccountInquiryRequest).execute();
       if (response.isSuccessful()) {
@@ -210,6 +258,30 @@ public class DisbursementApi {
   public TransferToBankResponse transferToBank(
     @retrofit2.http.Body TransferToBankRequest transferToBankRequest
   ) {
+    // Run custom validations (e.g., validUpTo date validation)
+    // This validation runs even when structs are created directly (bypassing setters)
+    try {
+      String packageName = "id.dana.disbursement.v1.api";
+      String customValidationPackage = packageName.replace(".api", "");
+      Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+      java.lang.reflect.Method customValidationMethod = customValidationClass.getMethod("customValidation", Object.class);
+      customValidationMethod.invoke(null, transferToBankRequest);
+    } catch (ClassNotFoundException | NoClassDefFoundError e) {
+      // If CustomValidation doesn't exist for this domain, skip it
+      // This allows the template to work for all domains
+    } catch (Exception e) {
+      // Re-throw other exceptions (validation errors, etc.)
+      if (e instanceof java.lang.reflect.InvocationTargetException) {
+        Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+        if (cause instanceof DanaException) {
+          throw (DanaException) cause;
+        }
+        if (cause instanceof RuntimeException) {
+          throw (RuntimeException) cause;
+        }
+      }
+      throw new DanaException("Custom validation error", e);
+    }
     try {
       Response<TransferToBankResponse> response = service.transferToBank(transferToBankRequest).execute();
       if (response.isSuccessful()) {
@@ -242,6 +314,30 @@ public class DisbursementApi {
   public TransferToBankInquiryStatusResponse transferToBankInquiryStatus(
     @retrofit2.http.Body TransferToBankInquiryStatusRequest transferToBankInquiryStatusRequest
   ) {
+    // Run custom validations (e.g., validUpTo date validation)
+    // This validation runs even when structs are created directly (bypassing setters)
+    try {
+      String packageName = "id.dana.disbursement.v1.api";
+      String customValidationPackage = packageName.replace(".api", "");
+      Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+      java.lang.reflect.Method customValidationMethod = customValidationClass.getMethod("customValidation", Object.class);
+      customValidationMethod.invoke(null, transferToBankInquiryStatusRequest);
+    } catch (ClassNotFoundException | NoClassDefFoundError e) {
+      // If CustomValidation doesn't exist for this domain, skip it
+      // This allows the template to work for all domains
+    } catch (Exception e) {
+      // Re-throw other exceptions (validation errors, etc.)
+      if (e instanceof java.lang.reflect.InvocationTargetException) {
+        Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+        if (cause instanceof DanaException) {
+          throw (DanaException) cause;
+        }
+        if (cause instanceof RuntimeException) {
+          throw (RuntimeException) cause;
+        }
+      }
+      throw new DanaException("Custom validation error", e);
+    }
     try {
       Response<TransferToBankInquiryStatusResponse> response = service.transferToBankInquiryStatus(transferToBankInquiryStatusRequest).execute();
       if (response.isSuccessful()) {
@@ -274,6 +370,30 @@ public class DisbursementApi {
   public TransferToDanaResponse transferToDana(
     @retrofit2.http.Body TransferToDanaRequest transferToDanaRequest
   ) {
+    // Run custom validations (e.g., validUpTo date validation)
+    // This validation runs even when structs are created directly (bypassing setters)
+    try {
+      String packageName = "id.dana.disbursement.v1.api";
+      String customValidationPackage = packageName.replace(".api", "");
+      Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+      java.lang.reflect.Method customValidationMethod = customValidationClass.getMethod("customValidation", Object.class);
+      customValidationMethod.invoke(null, transferToDanaRequest);
+    } catch (ClassNotFoundException | NoClassDefFoundError e) {
+      // If CustomValidation doesn't exist for this domain, skip it
+      // This allows the template to work for all domains
+    } catch (Exception e) {
+      // Re-throw other exceptions (validation errors, etc.)
+      if (e instanceof java.lang.reflect.InvocationTargetException) {
+        Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+        if (cause instanceof DanaException) {
+          throw (DanaException) cause;
+        }
+        if (cause instanceof RuntimeException) {
+          throw (RuntimeException) cause;
+        }
+      }
+      throw new DanaException("Custom validation error", e);
+    }
     try {
       Response<TransferToDanaResponse> response = service.transferToDana(transferToDanaRequest).execute();
       if (response.isSuccessful()) {
@@ -306,6 +426,30 @@ public class DisbursementApi {
   public TransferToDanaInquiryStatusResponse transferToDanaInquiryStatus(
     @retrofit2.http.Body TransferToDanaInquiryStatusRequest transferToDanaInquiryStatusRequest
   ) {
+    // Run custom validations (e.g., validUpTo date validation)
+    // This validation runs even when structs are created directly (bypassing setters)
+    try {
+      String packageName = "id.dana.disbursement.v1.api";
+      String customValidationPackage = packageName.replace(".api", "");
+      Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+      java.lang.reflect.Method customValidationMethod = customValidationClass.getMethod("customValidation", Object.class);
+      customValidationMethod.invoke(null, transferToDanaInquiryStatusRequest);
+    } catch (ClassNotFoundException | NoClassDefFoundError e) {
+      // If CustomValidation doesn't exist for this domain, skip it
+      // This allows the template to work for all domains
+    } catch (Exception e) {
+      // Re-throw other exceptions (validation errors, etc.)
+      if (e instanceof java.lang.reflect.InvocationTargetException) {
+        Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+        if (cause instanceof DanaException) {
+          throw (DanaException) cause;
+        }
+        if (cause instanceof RuntimeException) {
+          throw (RuntimeException) cause;
+        }
+      }
+      throw new DanaException("Custom validation error", e);
+    }
     try {
       Response<TransferToDanaInquiryStatusResponse> response = service.transferToDanaInquiryStatus(transferToDanaInquiryStatusRequest).execute();
       if (response.isSuccessful()) {

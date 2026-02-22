@@ -177,6 +177,30 @@ public class MerchantManagementApi {
   public CreateDivisionResponse createDivision(
     @retrofit2.http.Body CreateDivisionRequest createDivisionRequest
   ) {
+    // Run custom validations (e.g., validUpTo date validation)
+    // This validation runs even when structs are created directly (bypassing setters)
+    try {
+      String packageName = "id.dana.merchantmanagement.v1.api";
+      String customValidationPackage = packageName.replace(".api", "");
+      Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+      java.lang.reflect.Method customValidationMethod = customValidationClass.getMethod("customValidation", Object.class);
+      customValidationMethod.invoke(null, createDivisionRequest);
+    } catch (ClassNotFoundException | NoClassDefFoundError e) {
+      // If CustomValidation doesn't exist for this domain, skip it
+      // This allows the template to work for all domains
+    } catch (Exception e) {
+      // Re-throw other exceptions (validation errors, etc.)
+      if (e instanceof java.lang.reflect.InvocationTargetException) {
+        Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+        if (cause instanceof DanaException) {
+          throw (DanaException) cause;
+        }
+        if (cause instanceof RuntimeException) {
+          throw (RuntimeException) cause;
+        }
+      }
+      throw new DanaException("Custom validation error", e);
+    }
     try {
       Response<CreateDivisionResponse> response = service.createDivision(createDivisionRequest).execute();
       if (response.isSuccessful()) {
@@ -209,6 +233,30 @@ public class MerchantManagementApi {
   public CreateShopResponse createShop(
     @retrofit2.http.Body CreateShopRequest createShopRequest
   ) {
+    // Run custom validations (e.g., validUpTo date validation)
+    // This validation runs even when structs are created directly (bypassing setters)
+    try {
+      String packageName = "id.dana.merchantmanagement.v1.api";
+      String customValidationPackage = packageName.replace(".api", "");
+      Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+      java.lang.reflect.Method customValidationMethod = customValidationClass.getMethod("customValidation", Object.class);
+      customValidationMethod.invoke(null, createShopRequest);
+    } catch (ClassNotFoundException | NoClassDefFoundError e) {
+      // If CustomValidation doesn't exist for this domain, skip it
+      // This allows the template to work for all domains
+    } catch (Exception e) {
+      // Re-throw other exceptions (validation errors, etc.)
+      if (e instanceof java.lang.reflect.InvocationTargetException) {
+        Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+        if (cause instanceof DanaException) {
+          throw (DanaException) cause;
+        }
+        if (cause instanceof RuntimeException) {
+          throw (RuntimeException) cause;
+        }
+      }
+      throw new DanaException("Custom validation error", e);
+    }
     try {
       Response<CreateShopResponse> response = service.createShop(createShopRequest).execute();
       if (response.isSuccessful()) {
@@ -241,6 +289,30 @@ public class MerchantManagementApi {
   public QueryDivisionResponse queryDivision(
     @retrofit2.http.Body QueryDivisionRequest queryDivisionRequest
   ) {
+    // Run custom validations (e.g., validUpTo date validation)
+    // This validation runs even when structs are created directly (bypassing setters)
+    try {
+      String packageName = "id.dana.merchantmanagement.v1.api";
+      String customValidationPackage = packageName.replace(".api", "");
+      Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+      java.lang.reflect.Method customValidationMethod = customValidationClass.getMethod("customValidation", Object.class);
+      customValidationMethod.invoke(null, queryDivisionRequest);
+    } catch (ClassNotFoundException | NoClassDefFoundError e) {
+      // If CustomValidation doesn't exist for this domain, skip it
+      // This allows the template to work for all domains
+    } catch (Exception e) {
+      // Re-throw other exceptions (validation errors, etc.)
+      if (e instanceof java.lang.reflect.InvocationTargetException) {
+        Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+        if (cause instanceof DanaException) {
+          throw (DanaException) cause;
+        }
+        if (cause instanceof RuntimeException) {
+          throw (RuntimeException) cause;
+        }
+      }
+      throw new DanaException("Custom validation error", e);
+    }
     try {
       Response<QueryDivisionResponse> response = service.queryDivision(queryDivisionRequest).execute();
       if (response.isSuccessful()) {
@@ -273,6 +345,30 @@ public class MerchantManagementApi {
   public QueryMerchantResourceResponse queryMerchantResource(
     @retrofit2.http.Body QueryMerchantResourceRequest queryMerchantResourceRequest
   ) {
+    // Run custom validations (e.g., validUpTo date validation)
+    // This validation runs even when structs are created directly (bypassing setters)
+    try {
+      String packageName = "id.dana.merchantmanagement.v1.api";
+      String customValidationPackage = packageName.replace(".api", "");
+      Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+      java.lang.reflect.Method customValidationMethod = customValidationClass.getMethod("customValidation", Object.class);
+      customValidationMethod.invoke(null, queryMerchantResourceRequest);
+    } catch (ClassNotFoundException | NoClassDefFoundError e) {
+      // If CustomValidation doesn't exist for this domain, skip it
+      // This allows the template to work for all domains
+    } catch (Exception e) {
+      // Re-throw other exceptions (validation errors, etc.)
+      if (e instanceof java.lang.reflect.InvocationTargetException) {
+        Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+        if (cause instanceof DanaException) {
+          throw (DanaException) cause;
+        }
+        if (cause instanceof RuntimeException) {
+          throw (RuntimeException) cause;
+        }
+      }
+      throw new DanaException("Custom validation error", e);
+    }
     try {
       Response<QueryMerchantResourceResponse> response = service.queryMerchantResource(queryMerchantResourceRequest).execute();
       if (response.isSuccessful()) {
@@ -305,6 +401,30 @@ public class MerchantManagementApi {
   public QueryShopResponse queryShop(
     @retrofit2.http.Body QueryShopRequest queryShopRequest
   ) {
+    // Run custom validations (e.g., validUpTo date validation)
+    // This validation runs even when structs are created directly (bypassing setters)
+    try {
+      String packageName = "id.dana.merchantmanagement.v1.api";
+      String customValidationPackage = packageName.replace(".api", "");
+      Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+      java.lang.reflect.Method customValidationMethod = customValidationClass.getMethod("customValidation", Object.class);
+      customValidationMethod.invoke(null, queryShopRequest);
+    } catch (ClassNotFoundException | NoClassDefFoundError e) {
+      // If CustomValidation doesn't exist for this domain, skip it
+      // This allows the template to work for all domains
+    } catch (Exception e) {
+      // Re-throw other exceptions (validation errors, etc.)
+      if (e instanceof java.lang.reflect.InvocationTargetException) {
+        Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+        if (cause instanceof DanaException) {
+          throw (DanaException) cause;
+        }
+        if (cause instanceof RuntimeException) {
+          throw (RuntimeException) cause;
+        }
+      }
+      throw new DanaException("Custom validation error", e);
+    }
     try {
       Response<QueryShopResponse> response = service.queryShop(queryShopRequest).execute();
       if (response.isSuccessful()) {
@@ -337,6 +457,30 @@ public class MerchantManagementApi {
   public UpdateDivisionResponse updateDivision(
     @retrofit2.http.Body UpdateDivisionRequest updateDivisionRequest
   ) {
+    // Run custom validations (e.g., validUpTo date validation)
+    // This validation runs even when structs are created directly (bypassing setters)
+    try {
+      String packageName = "id.dana.merchantmanagement.v1.api";
+      String customValidationPackage = packageName.replace(".api", "");
+      Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+      java.lang.reflect.Method customValidationMethod = customValidationClass.getMethod("customValidation", Object.class);
+      customValidationMethod.invoke(null, updateDivisionRequest);
+    } catch (ClassNotFoundException | NoClassDefFoundError e) {
+      // If CustomValidation doesn't exist for this domain, skip it
+      // This allows the template to work for all domains
+    } catch (Exception e) {
+      // Re-throw other exceptions (validation errors, etc.)
+      if (e instanceof java.lang.reflect.InvocationTargetException) {
+        Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+        if (cause instanceof DanaException) {
+          throw (DanaException) cause;
+        }
+        if (cause instanceof RuntimeException) {
+          throw (RuntimeException) cause;
+        }
+      }
+      throw new DanaException("Custom validation error", e);
+    }
     try {
       Response<UpdateDivisionResponse> response = service.updateDivision(updateDivisionRequest).execute();
       if (response.isSuccessful()) {
@@ -369,6 +513,30 @@ public class MerchantManagementApi {
   public UpdateShopResponse updateShop(
     @retrofit2.http.Body UpdateShopRequest updateShopRequest
   ) {
+    // Run custom validations (e.g., validUpTo date validation)
+    // This validation runs even when structs are created directly (bypassing setters)
+    try {
+      String packageName = "id.dana.merchantmanagement.v1.api";
+      String customValidationPackage = packageName.replace(".api", "");
+      Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+      java.lang.reflect.Method customValidationMethod = customValidationClass.getMethod("customValidation", Object.class);
+      customValidationMethod.invoke(null, updateShopRequest);
+    } catch (ClassNotFoundException | NoClassDefFoundError e) {
+      // If CustomValidation doesn't exist for this domain, skip it
+      // This allows the template to work for all domains
+    } catch (Exception e) {
+      // Re-throw other exceptions (validation errors, etc.)
+      if (e instanceof java.lang.reflect.InvocationTargetException) {
+        Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+        if (cause instanceof DanaException) {
+          throw (DanaException) cause;
+        }
+        if (cause instanceof RuntimeException) {
+          throw (RuntimeException) cause;
+        }
+      }
+      throw new DanaException("Custom validation error", e);
+    }
     try {
       Response<UpdateShopResponse> response = service.updateShop(updateShopRequest).execute();
       if (response.isSuccessful()) {

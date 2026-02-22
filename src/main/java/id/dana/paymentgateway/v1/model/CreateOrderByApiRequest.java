@@ -69,7 +69,7 @@ public class CreateOrderByApiRequest implements CreateOrderRequest {
   private String externalStoreId;
 
   public static final String JSON_PROPERTY_VALID_UP_TO = "validUpTo";
-  @javax.annotation.Nullable
+  @javax.annotation.Nonnull
   private String validUpTo;
 
   public static final String JSON_PROPERTY_DISABLED_PAY_METHODS = "disabledPayMethods";
@@ -266,7 +266,7 @@ public class CreateOrderByApiRequest implements CreateOrderRequest {
     this.externalStoreId = externalStoreId;
   }
 
-  public CreateOrderByApiRequest validUpTo(@javax.annotation.Nullable String validUpTo) {
+  public CreateOrderByApiRequest validUpTo(@javax.annotation.Nonnull String validUpTo) {
     
     this.validUpTo = validUpTo;
     return this;
@@ -276,9 +276,9 @@ public class CreateOrderByApiRequest implements CreateOrderRequest {
    * The time when the payment will be automatically expired, in format YYYY-MM-DDTHH:mm:ss+07:00. Time must be in GMT+7 (Jakarta time) and cannot be more than one week in the future.
    * @return validUpTo
    */
-  @javax.annotation.Nullable
+  @javax.annotation.Nonnull
   @JsonProperty(JSON_PROPERTY_VALID_UP_TO)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getValidUpTo() {
     return validUpTo;
@@ -286,8 +286,38 @@ public class CreateOrderByApiRequest implements CreateOrderRequest {
 
 
   @JsonProperty(JSON_PROPERTY_VALID_UP_TO)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setValidUpTo(@javax.annotation.Nullable String validUpTo) {
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setValidUpTo(@javax.annotation.Nonnull String validUpTo) {
+    // Validate that validUpTo date is not more than 30 minutes in the future (sandbox only)
+    if (validUpTo != null) {
+      // Only validate in sandbox environment
+      String env = System.getenv("DANA_ENV");
+      if (env == null || env.isEmpty()) {
+        env = System.getenv("ENV");
+      }
+      if (env == null || env.isEmpty() || "sandbox".equalsIgnoreCase(env)) {
+        try {
+          // Parse the input date
+          java.time.ZonedDateTime inputDate = java.time.ZonedDateTime.parse(validUpTo, java.time.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+          
+          // Create Jakarta timezone (GMT+7)
+          java.time.ZoneId jakartaZone = java.time.ZoneId.of("Asia/Jakarta");
+          
+          // Current date in Jakarta timezone
+          java.time.ZonedDateTime currentDate = java.time.ZonedDateTime.now(jakartaZone);
+          
+          // Maximum allowed date (current date + 30 minutes)
+          java.time.ZonedDateTime maxDate = currentDate.plusMinutes(30);
+          
+          // Check if the input date exceeds the maximum allowed date
+          if (inputDate.isAfter(maxDate)) {
+            throw new IllegalArgumentException("validUpTo date cannot be more than 30 minutes in the future");
+          }
+        } catch (java.time.format.DateTimeParseException e) {
+          throw new IllegalArgumentException("invalid date format for validUpTo. Expected format: YYYY-MM-DDTHH:mm:ss+07:00", e);
+        }
+      }
+    }
     this.validUpTo = validUpTo;
   }
 

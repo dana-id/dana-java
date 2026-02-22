@@ -18,6 +18,7 @@ import id.dana.invoker.auth.HttpBasicAuth;
 import id.dana.invoker.auth.HttpBearerAuth;
 import id.dana.invoker.auth.ApiKeyAuth;
 import id.dana.invoker.model.DanaConfig;
+import id.dana.invoker.model.enumeration.DanaEnvironment;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -40,6 +41,9 @@ public class ApiClient {
     apiAuthorizations = new LinkedHashMap<String, Interceptor>();
     createDefaultAdapter();
     okBuilder = new OkHttpClient.Builder();
+  // Add interceptor for Disbursement account-inquiry path routing
+
+  okBuilder.addInterceptor(new DisbursementPathInterceptor());
   }
 
   public ApiClient(OkHttpClient client){
@@ -217,5 +221,51 @@ public class ApiClient {
     this.okBuilder = okClient.newBuilder();
     addAuthsToOkBuilder(this.okBuilder);
   }
+  /**
+   * Interceptor to modify Disbursement account-inquiry path based on environment.
+   * This interceptor ONLY modifies the Disbursement API's danaAccountInquiry endpoint.
+   * 
+   * Path mapping:
+   * - Sandbox: /rest/v1.0/emoney/account-inquiry
+   * - Production: /v1.0/emoney/account-inquiry.htm
+   * 
+   * Note: Uses exact path matching to ensure no other endpoints are affected.
+   */
+  private static class DisbursementPathInterceptor implements okhttp3.Interceptor {
+    @Override
+    public okhttp3.Response intercept(okhttp3.Interceptor.Chain chain) throws java.io.IOException {
+      okhttp3.Request originalRequest = chain.request();
+      okhttp3.HttpUrl originalUrl = originalRequest.url();
+      String path = originalUrl.encodedPath();
+      
+      // Check if this is the Disbursement account-inquiry endpoint
+      // Use exact path matching to avoid modifying other endpoints that might contain similar paths
+      boolean isAccountInquiryEndpoint = path.equals("/rest/v1.0/emoney/account-inquiry") 
+          || path.equals("/v1.0/emoney/account-inquiry.htm");
+      
+      if (isAccountInquiryEndpoint) {
+        // Determine the correct path based on environment
+        DanaEnvironment env = DanaConfig.getInstance().getEnv();
+        String newPath = (env == DanaEnvironment.PRODUCTION)
+            ? "/v1.0/emoney/account-inquiry.htm"
+            : "/rest/v1.0/emoney/account-inquiry";
+        
+        // Only modify if path needs to change
+        if (!path.equals(newPath)) {
+          okhttp3.HttpUrl newUrl = originalUrl.newBuilder()
+              .encodedPath(newPath)
+              .build();
+          okhttp3.Request newRequest = originalRequest.newBuilder()
+              .url(newUrl)
+              .build();
+          return chain.proceed(newRequest);
+        }
+      }
+      
+      return chain.proceed(originalRequest);
+    }
+  }
+
+
 }
 

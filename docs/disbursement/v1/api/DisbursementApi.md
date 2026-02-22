@@ -19,11 +19,11 @@ All URIs are relative to *https://api.saas.dana.id*, except if the operation def
 | Method | HTTP request | Description |
 | - | - | - |
 | [**bankAccountInquiry**](DisbursementApi.md#bankAccountInquiry) | **POST** v1.0/emoney/bank-account-inquiry.htm | This API is used for merchant to do inquiry Bank account info via DANA |
-| [**danaAccountInquiry**](DisbursementApi.md#danaAccountInquiry) | **POST** v1.0/emoney/account-inquiry.htm | This API is used for merchant to do account inquiry to DANA |
+| [**danaAccountInquiry**](DisbursementApi.md#danaAccountInquiry) | **POST** rest/v1.0/emoney/account-inquiry | This API is used for merchant to do account inquiry to DANA |
 | [**transferToBank**](DisbursementApi.md#transferToBank) | **POST** v1.0/emoney/transfer-bank.htm | This API is used for merchant to do transfer to Bank request via DANA |
 | [**transferToBankInquiryStatus**](DisbursementApi.md#transferToBankInquiryStatus) | **POST** v1.0/emoney/transfer-bank-status.htm | This API is used for merchant to do inquiry status transfer to Bank transaction to DANA |
-| [**transferToDana**](DisbursementApi.md#transferToDana) | **POST** v1.0/emoney/topup.htm | This API is used for merchant to do top up request to DANA |
-| [**transferToDanaInquiryStatus**](DisbursementApi.md#transferToDanaInquiryStatus) | **POST** v1.0/emoney/topup-status.htm | This API is used for merchant to do inquiry status top up transaction to DANA |
+| [**transferToDana**](DisbursementApi.md#transferToDana) | **POST** rest/v1.0/emoney/topup | This API is used for merchant to do top up request to DANA |
+| [**transferToDanaInquiryStatus**](DisbursementApi.md#transferToDanaInquiryStatus) | **POST** rest/v1.0/emoney/topup-status | This API is used for merchant to do inquiry status top up transaction to DANA |
 
 
 <a name="bankAccountInquiry"></a>

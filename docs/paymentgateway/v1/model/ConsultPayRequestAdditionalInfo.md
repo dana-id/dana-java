@@ -7,7 +7,7 @@
 
 | Name | Type | Description | Notes |
 | - | - | - | - |
-|**buyer** | [**Buyer**](Buyer.md) | Additional information of buyer |  |
+|**buyer** | [**Buyer**](Buyer.md) | Additional information of buyer |  [optional] |
 |**envInfo** | [**EnvInfo**](EnvInfo.md) | Additional information of environment info |  |
 |**merchantTransType** | **String** | Additional information of merchant transaction type |  [optional] |
 

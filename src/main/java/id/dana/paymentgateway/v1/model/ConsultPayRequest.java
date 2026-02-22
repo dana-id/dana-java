@@ -24,7 +24,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonPropertyOrder({
   ConsultPayRequest.JSON_PROPERTY_MERCHANT_ID,
   ConsultPayRequest.JSON_PROPERTY_AMOUNT,
-  ConsultPayRequest.JSON_PROPERTY_ADDITIONAL_INFO
+  ConsultPayRequest.JSON_PROPERTY_ADDITIONAL_INFO,
+  ConsultPayRequest.JSON_PROPERTY_EXTERNAL_STORE_ID
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.12.0")
 public class ConsultPayRequest {
@@ -39,6 +40,10 @@ public class ConsultPayRequest {
   public static final String JSON_PROPERTY_ADDITIONAL_INFO = "additionalInfo";
   @javax.annotation.Nonnull
   private ConsultPayRequestAdditionalInfo additionalInfo;
+
+  public static final String JSON_PROPERTY_EXTERNAL_STORE_ID = "externalStoreId";
+  @javax.annotation.Nullable
+  private String externalStoreId;
 
   public ConsultPayRequest() {
   }
@@ -118,6 +123,31 @@ public class ConsultPayRequest {
     this.additionalInfo = additionalInfo;
   }
 
+  public ConsultPayRequest externalStoreId(@javax.annotation.Nullable String externalStoreId) {
+    
+    this.externalStoreId = externalStoreId;
+    return this;
+  }
+
+  /**
+   * Store identifier to indicate to which store this payment belongs to. Need to be provided to show QRIS payment method.
+   * @return externalStoreId
+   */
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_EXTERNAL_STORE_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getExternalStoreId() {
+    return externalStoreId;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_EXTERNAL_STORE_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setExternalStoreId(@javax.annotation.Nullable String externalStoreId) {
+    this.externalStoreId = externalStoreId;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -129,12 +159,13 @@ public class ConsultPayRequest {
     ConsultPayRequest consultPayRequest = (ConsultPayRequest) o;
     return Objects.equals(this.merchantId, consultPayRequest.merchantId) &&
         Objects.equals(this.amount, consultPayRequest.amount) &&
-        Objects.equals(this.additionalInfo, consultPayRequest.additionalInfo);
+        Objects.equals(this.additionalInfo, consultPayRequest.additionalInfo) &&
+        Objects.equals(this.externalStoreId, consultPayRequest.externalStoreId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(merchantId, amount, additionalInfo);
+    return Objects.hash(merchantId, amount, additionalInfo, externalStoreId);
   }
 
   @Override
@@ -144,6 +175,7 @@ public class ConsultPayRequest {
     sb.append("    merchantId: ").append(toIndentedString(merchantId)).append("\n");
     sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
     sb.append("    additionalInfo: ").append(toIndentedString(additionalInfo)).append("\n");
+    sb.append("    externalStoreId: ").append(toIndentedString(externalStoreId)).append("\n");
     sb.append("}");
     return sb.toString();
   }
