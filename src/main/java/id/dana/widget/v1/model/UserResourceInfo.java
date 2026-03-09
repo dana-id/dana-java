@@ -29,17 +29,80 @@ public class UserResourceInfo {
    * Type of user resource
    */
   public enum ResourceTypeEnum {
+    /**
+     * Query balance of user in DANA
+     */
     BALANCE(String.valueOf("BALANCE")),
     
-    TRANSACTION_URL(String.valueOf("TRANSACTION_URL")),
-    
-    MASK_DANA_ID(String.valueOf("MASK_DANA_ID")),
-    
+    /**
+     * Obtain the top up URL for merchant to redirect
+     */
     TOPUP_URL(String.valueOf("TOPUP_URL")),
     
+    /**
+     * Obtain the transaction URL for merchant to redirect
+     */
+    TRANSACTION_URL(String.valueOf("TRANSACTION_URL")),
+    
+    /**
+     * Obtain the OTT of URLs including TOPUP/TRANSACTION/CASHIER/CHECKOUT_URL
+     */
     OTT(String.valueOf("OTT")),
     
+    /**
+     * The masked identifier from DANA side
+     */
+    MASK_DANA_ID(String.valueOf("MASK_DANA_ID")),
+    
+    /**
+     * KYC level. 00 = KYC level 0, 02 = KYC level 2
+     */
     USER_KYC(String.valueOf("USER_KYC")),
+    
+    /**
+     * Login identifier of the user, currently it's only set to phone number
+     */
+    LOGIN_ID(String.valueOf("LOGIN_ID")),
+    
+    /**
+     * The unmasked identifier from DANA side
+     */
+    CLEAR_TEXT_DANA_ID(String.valueOf("CLEAR_TEXT_DANA_ID")),
+    
+    /**
+     * Nickname of the user in DANA
+     */
+    NICKNAME(String.valueOf("NICKNAME")),
+    
+    /**
+     * Full name of the user in DANA
+     */
+    FULLNAME(String.valueOf("FULLNAME")),
+    
+    /**
+     * KTP number of the user in DANA
+     */
+    KTP_NUMBER(String.valueOf("KTP_NUMBER")),
+    
+    /**
+     * KTP photo binary data in base64 of the user in DANA
+     */
+    KTP_PHOTO_DATA(String.valueOf("KTP_PHOTO_DATA")),
+    
+    /**
+     * Selfie photo binary data in base64 of the user in DANA
+     */
+    SELFIE_PHOTO_DATA(String.valueOf("SELFIE_PHOTO_DATA")),
+    
+    /**
+     * Location of avatar photo of the user in DANA
+     */
+    AVATAR_URL(String.valueOf("AVATAR_URL")),
+    
+    /**
+     * Masked full name of the user in DANA
+     */
+    MASKED_FULLNAME(String.valueOf("MASKED_FULLNAME")),
     
     /**
      * To handle empty string value

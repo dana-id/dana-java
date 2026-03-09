@@ -130,14 +130,36 @@ public final class DanaHeaderUtil {
       String requestBody = RequestUtil.peekRequestBody(request);
       ObjectNode requestBodyNode = objectMapper.readValue(requestBody, ObjectNode.class);
 
+      ObjectNode bodyNodeForRequest;
+      if (requestBodyNode.has("request") && requestBodyNode.get("request").has("body")) {
+        bodyNodeForRequest = (ObjectNode) requestBodyNode.get("request").get("body").deepCopy();
+        // If body contains accessToken, add it to head and remove from body (widget queryUserProfile format)
+        if (bodyNodeForRequest.has("accessToken") && !bodyNodeForRequest.get("accessToken").isNull()) {
+          String accessToken = bodyNodeForRequest.get("accessToken").asText();
+          if (StringUtils.isNotEmpty(accessToken)) {
+            headNode.put("accessToken", accessToken);
+            bodyNodeForRequest.remove("accessToken");
+          }
+        }
+      } else {
+        // Flat body (e.g. QueryUserProfileRequest): put accessToken in head, body without accessToken
+        if (requestBodyNode.has("accessToken") && !requestBodyNode.get("accessToken").isNull()) {
+          String accessToken = requestBodyNode.get("accessToken").asText();
+          if (StringUtils.isNotEmpty(accessToken)) {
+            headNode.put("accessToken", accessToken);
+          }
+        }
+        bodyNodeForRequest = objectMapper.createObjectNode();
+        requestBodyNode.fields().forEachRemaining(entry -> {
+          if (!"accessToken".equals(entry.getKey())) {
+            bodyNodeForRequest.set(entry.getKey(), entry.getValue());
+          }
+        });
+      }
+
       ObjectNode newRequestBodyNode = objectMapper.createObjectNode();
       newRequestBodyNode.set("head", headNode);
-
-      if (requestBodyNode.has("request") && requestBodyNode.get("request").has("body")) {
-        newRequestBodyNode.set("body", requestBodyNode.get("request").get("body"));
-      } else {
-        newRequestBodyNode.set("body", requestBodyNode);
-      }
+      newRequestBodyNode.set("body", bodyNodeForRequest);
 
       String signature = DanaSignatureUtil.generateOpenApiScenarioSignature(
           newRequestBodyNode.toString());

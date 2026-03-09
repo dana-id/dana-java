@@ -23,7 +23,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * QueryUserProfileRequest
  */
 @JsonPropertyOrder({
-  QueryUserProfileRequest.JSON_PROPERTY_USER_RESOURCES
+  QueryUserProfileRequest.JSON_PROPERTY_USER_RESOURCES,
+  QueryUserProfileRequest.JSON_PROPERTY_ACCESS_TOKEN
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.12.0")
 public class QueryUserProfileRequest {
@@ -31,17 +32,80 @@ public class QueryUserProfileRequest {
    * Gets or Sets userResources
    */
   public enum UserResourcesEnum {
+    /**
+     * Query balance of user in DANA
+     */
     BALANCE(String.valueOf("BALANCE")),
     
-    TRANSACTION_URL(String.valueOf("TRANSACTION_URL")),
-    
-    MASK_DANA_ID(String.valueOf("MASK_DANA_ID")),
-    
+    /**
+     * Obtain the top up URL for merchant to redirect
+     */
     TOPUP_URL(String.valueOf("TOPUP_URL")),
     
+    /**
+     * Obtain the transaction URL for merchant to redirect
+     */
+    TRANSACTION_URL(String.valueOf("TRANSACTION_URL")),
+    
+    /**
+     * Obtain the OTT of URLs including TOPUP/TRANSACTION/CASHIER/CHECKOUT_URL
+     */
     OTT(String.valueOf("OTT")),
     
+    /**
+     * The masked identifier from DANA side
+     */
+    MASK_DANA_ID(String.valueOf("MASK_DANA_ID")),
+    
+    /**
+     * KYC level. 00 = KYC level 0, 02 = KYC level 2
+     */
     USER_KYC(String.valueOf("USER_KYC")),
+    
+    /**
+     * Login identifier of the user, currently it's only set to phone number
+     */
+    LOGIN_ID(String.valueOf("LOGIN_ID")),
+    
+    /**
+     * The unmasked identifier from DANA side
+     */
+    CLEAR_TEXT_DANA_ID(String.valueOf("CLEAR_TEXT_DANA_ID")),
+    
+    /**
+     * Nickname of the user in DANA
+     */
+    NICKNAME(String.valueOf("NICKNAME")),
+    
+    /**
+     * Full name of the user in DANA
+     */
+    FULLNAME(String.valueOf("FULLNAME")),
+    
+    /**
+     * KTP number of the user in DANA
+     */
+    KTP_NUMBER(String.valueOf("KTP_NUMBER")),
+    
+    /**
+     * KTP photo binary data in base64 of the user in DANA
+     */
+    KTP_PHOTO_DATA(String.valueOf("KTP_PHOTO_DATA")),
+    
+    /**
+     * Selfie photo binary data in base64 of the user in DANA
+     */
+    SELFIE_PHOTO_DATA(String.valueOf("SELFIE_PHOTO_DATA")),
+    
+    /**
+     * Location of avatar photo of the user in DANA
+     */
+    AVATAR_URL(String.valueOf("AVATAR_URL")),
+    
+    /**
+     * Masked full name of the user in DANA
+     */
+    MASKED_FULLNAME(String.valueOf("MASKED_FULLNAME")),
     
     /**
      * To handle empty string value
@@ -77,6 +141,10 @@ public class QueryUserProfileRequest {
   public static final String JSON_PROPERTY_USER_RESOURCES = "userResources";
   @javax.annotation.Nonnull
   private List<UserResourcesEnum> userResources = new ArrayList<>();
+
+  public static final String JSON_PROPERTY_ACCESS_TOKEN = "accessToken";
+  @javax.annotation.Nonnull
+  private String accessToken;
 
   public QueryUserProfileRequest() {
   }
@@ -114,6 +182,31 @@ public class QueryUserProfileRequest {
     this.userResources = userResources;
   }
 
+  public QueryUserProfileRequest accessToken(@javax.annotation.Nonnull String accessToken) {
+    
+    this.accessToken = accessToken;
+    return this;
+  }
+
+  /**
+   * Access token required for user profile query
+   * @return accessToken
+   */
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_ACCESS_TOKEN)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public String getAccessToken() {
+    return accessToken;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_ACCESS_TOKEN)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setAccessToken(@javax.annotation.Nonnull String accessToken) {
+    this.accessToken = accessToken;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -123,12 +216,13 @@ public class QueryUserProfileRequest {
       return false;
     }
     QueryUserProfileRequest queryUserProfileRequest = (QueryUserProfileRequest) o;
-    return Objects.equals(this.userResources, queryUserProfileRequest.userResources);
+    return Objects.equals(this.userResources, queryUserProfileRequest.userResources) &&
+        Objects.equals(this.accessToken, queryUserProfileRequest.accessToken);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(userResources);
+    return Objects.hash(userResources, accessToken);
   }
 
   @Override
@@ -136,6 +230,7 @@ public class QueryUserProfileRequest {
     StringBuilder sb = new StringBuilder();
     sb.append("class QueryUserProfileRequest {\n");
     sb.append("    userResources: ").append(toIndentedString(userResources)).append("\n");
+    sb.append("    accessToken: ").append(toIndentedString(accessToken)).append("\n");
     sb.append("}");
     return sb.toString();
   }

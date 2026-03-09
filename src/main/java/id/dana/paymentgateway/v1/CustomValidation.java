@@ -7,9 +7,13 @@ import id.dana.paymentgateway.v1.model.CreateOrderByRedirectRequest;
 import id.dana.paymentgateway.v1.model.Money;
 import id.dana.paymentgateway.v1.model.PayOptionDetail;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
@@ -40,6 +44,7 @@ public final class CustomValidation {
     createOrderByApiValidators.add(CustomValidation::validateMoneyValuePattern);
     createOrderByApiValidators.add(CustomValidation::validateValidUpToCreateOrderRequest);
     createOrderByApiValidators.add(CustomValidation::validateExternalStoreIdForQris);
+    createOrderByApiValidators.add(CustomValidation::validateSandboxPayMethodAndPayOption);
     validationRegistry.put("CreateOrderByApiRequest", createOrderByApiValidators);
 
     // Register validators for CreateOrderByRedirectRequest
@@ -47,6 +52,7 @@ public final class CustomValidation {
     createOrderByRedirectValidators.add(CustomValidation::validateAdditionalInfoRequired);
     createOrderByRedirectValidators.add(CustomValidation::validateMoneyValuePattern);
     createOrderByRedirectValidators.add(CustomValidation::validateValidUpToCreateOrderRequest);
+    createOrderByRedirectValidators.add(CustomValidation::validateSandboxPayMethodAndPayOption);
     validationRegistry.put("CreateOrderByRedirectRequest", createOrderByRedirectValidators);
   }
 
@@ -213,6 +219,107 @@ public final class CustomValidation {
       if (externalStoreId == null || externalStoreId.trim().isEmpty()) {
         throw new DanaException("externalStoreId is required when payOption is NETWORK_PAY_PG_QRIS");
       }
+    }
+  }
+
+  /** In sandbox, only these payMethods are available (Payment Gateway). */
+  private static final Set<String> SANDBOX_ALLOWED_PAY_METHODS = Collections.unmodifiableSet(new HashSet<>(
+      Arrays.asList("BALANCE", "CREDIT_CARD", "DEBIT_CARD", "VIRTUAL_ACCOUNT", "NETWORK_PAY")));
+
+  /** In sandbox, only these payOptions are available (exact or suffix e.g. VIRTUAL_ACCOUNT_BRI). */
+  private static final Set<String> SANDBOX_ALLOWED_PAY_OPTIONS = Collections.unmodifiableSet(new HashSet<>(
+      Arrays.asList("CARD", "QRIS", "BRI", "PANIN", "CIMB", "MANDIRI", "BTPN")));
+
+  private static boolean isSandbox() {
+    String env = System.getenv("DANA_ENV");
+    if (env == null || env.isEmpty()) {
+      env = System.getenv("ENV");
+    }
+    if (env == null || env.isEmpty()) {
+      env = "sandbox";
+    }
+    return "sandbox".equalsIgnoreCase(env);
+  }
+
+  private static boolean payOptionAllowedInSandbox(String value) {
+    if (value == null || value.trim().isEmpty()) {
+      return false;
+    }
+    String s = value.trim();
+    if (SANDBOX_ALLOWED_PAY_OPTIONS.contains(s)) {
+      return true;
+    }
+    for (String opt : SANDBOX_ALLOWED_PAY_OPTIONS) {
+      if (s.endsWith("_" + opt)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * In sandbox, only certain payMethod and payOption values are available.
+   * Skipped when not in sandbox.
+   */
+  private static void validateSandboxPayMethodAndPayOption(Object request) {
+    if (request == null || !isSandbox()) {
+      return;
+    }
+    if (!(request instanceof CreateOrderByApiRequest)) {
+      return;
+    }
+    List<?> payOptionDetails = ((CreateOrderByApiRequest) request).getPayOptionDetails();
+    if (payOptionDetails == null || payOptionDetails.isEmpty()) {
+      return;
+    }
+    for (int idx = 0; idx < payOptionDetails.size(); idx++) {
+      Object detail = payOptionDetails.get(idx);
+      if (detail == null) {
+        continue;
+      }
+      try {
+        String payMethodStr = getPayMethodString(detail);
+        if (payMethodStr != null && !payMethodStr.isEmpty() && !SANDBOX_ALLOWED_PAY_METHODS.contains(payMethodStr.trim())) {
+          throw new DanaException(
+              "In sandbox, payMethod must be one of " + SANDBOX_ALLOWED_PAY_METHODS + "; got " + payMethodStr + " in payOptionDetails[" + idx + "]");
+        }
+        String payOptionStr = getPayOptionString(detail);
+        if (payOptionStr != null && !payOptionStr.isEmpty() && !payOptionAllowedInSandbox(payOptionStr)) {
+          throw new DanaException(
+              "In sandbox, payOption must be one of " + SANDBOX_ALLOWED_PAY_OPTIONS + " (or suffix like VIRTUAL_ACCOUNT_BRI); got " + payOptionStr + " in payOptionDetails[" + idx + "]");
+        }
+      } catch (DanaException e) {
+        throw e;
+      } catch (Exception e) {
+        // Skip if we cannot access fields
+      }
+    }
+  }
+
+  private static String getPayMethodString(Object payOptionDetail) {
+    try {
+      java.lang.reflect.Method m = payOptionDetail.getClass().getMethod("getPayMethod");
+      Object v = m.invoke(payOptionDetail);
+      if (v == null) return null;
+      if (v instanceof Enum) return ((Enum<?>) v).name();
+      if (v instanceof String) return (String) v;
+      return String.valueOf(v);
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
+  private static String getPayOptionString(Object payOptionDetail) {
+    try {
+      java.lang.reflect.Method m = payOptionDetail.getClass().getMethod("getPayOption");
+      Object v = m.invoke(payOptionDetail);
+      if (v == null) return null;
+      if (v instanceof PayOptionDetail.PayOptionEnum) return ((PayOptionDetail.PayOptionEnum) v).getValue();
+      if (v instanceof Enum) return ((Enum<?>) v).name();
+      if (v instanceof String) return (String) v;
+      return String.valueOf(v);
+    } catch (Exception e) {
+      return null;
     }
   }
 }
