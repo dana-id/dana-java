@@ -2,15 +2,24 @@ package id.dana.paymentgateway.v1;
 
 import id.dana.invoker.model.exception.DanaException;
 import id.dana.invoker.util.DateValidation;
+import id.dana.paymentgateway.v1.model.Buyer;
 import id.dana.paymentgateway.v1.model.CreateOrderByApiRequest;
+import id.dana.paymentgateway.v1.model.CreateOrderByRedirectAdditionalInfo;
 import id.dana.paymentgateway.v1.model.CreateOrderByRedirectRequest;
+import id.dana.paymentgateway.v1.model.CreateOrderByApiAdditionalInfo;
+import id.dana.paymentgateway.v1.model.Goods;
 import id.dana.paymentgateway.v1.model.Money;
+import id.dana.paymentgateway.v1.model.OrderApiObject;
+import id.dana.paymentgateway.v1.model.OrderRedirectObject;
+import id.dana.paymentgateway.v1.model.PayOptionAdditionalInfo;
 import id.dana.paymentgateway.v1.model.PayOptionDetail;
+import id.dana.paymentgateway.v1.model.ShippingInfo;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -19,95 +28,108 @@ import java.util.regex.Pattern;
 
 /**
  * CustomValidation
- * 
- * This class provides custom validation functions for Payment Gateway API requests.
- * Validations are registered in the validationRegistry and executed via customValidation().
+ *
+ * <p>Validations are registered in the validationRegistry and executed via {@link #customValidation(Object)} with
+ * aggregated {@link DanaException} contexts (field/message pairs).
  */
 public final class CustomValidation {
 
   /** Money value pattern: digits (1-16) + "." + exactly 2 digits (e.g. 10000.00) */
   private static final Pattern MONEY_VALUE_PATTERN = Pattern.compile("^\\d{1,16}\\.\\d{2}$");
 
-  private CustomValidation() {
-    // Utility class - prevent instantiation
-  }
+  private static final String NETWORK_PAY_PG_CARD = "NETWORK_PAY_PG_CARD";
 
-  /**
-   * Validation registry maps request class names to their validation functions
-   */
+  private static final Set<String> CREDIT_DEBIT_CARD_PAY_METHODS =
+      Collections.unmodifiableSet(new HashSet<>(Arrays.asList("CREDIT_CARD", "DEBIT_CARD")));
+
+  private static final Set<String> EWALLET_PAY_OPTIONS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+      "NETWORK_PAY_PG_SPAY",
+      "NETWORK_PAY_PG_OVO",
+      "NETWORK_PAY_PG_GOPAY",
+      "NETWORK_PAY_PG_LINKAJA")));
+
+  private CustomValidation() {}
+
   private static final Map<String, List<Consumer<Object>>> validationRegistry = new HashMap<>();
 
   static {
-    // Register validators for CreateOrderByApiRequest
     List<Consumer<Object>> createOrderByApiValidators = new ArrayList<>();
     createOrderByApiValidators.add(CustomValidation::validateAdditionalInfoRequired);
     createOrderByApiValidators.add(CustomValidation::validateMoneyValuePattern);
     createOrderByApiValidators.add(CustomValidation::validateValidUpToCreateOrderRequest);
     createOrderByApiValidators.add(CustomValidation::validateExternalStoreIdForQris);
     createOrderByApiValidators.add(CustomValidation::validateSandboxPayMethodAndPayOption);
+    createOrderByApiValidators.add(CustomValidation::validateConditionalPayOptionAdditionalInfoCreateOrderRequest);
+    createOrderByApiValidators.add(CustomValidation::validateOptionalFieldsWithRequiredNestedCreateOrderRequest);
     validationRegistry.put("CreateOrderByApiRequest", createOrderByApiValidators);
 
-    // Register validators for CreateOrderByRedirectRequest
     List<Consumer<Object>> createOrderByRedirectValidators = new ArrayList<>();
     createOrderByRedirectValidators.add(CustomValidation::validateAdditionalInfoRequired);
     createOrderByRedirectValidators.add(CustomValidation::validateMoneyValuePattern);
     createOrderByRedirectValidators.add(CustomValidation::validateValidUpToCreateOrderRequest);
     createOrderByRedirectValidators.add(CustomValidation::validateSandboxPayMethodAndPayOption);
+    createOrderByRedirectValidators.add(CustomValidation::validateConditionalPayOptionAdditionalInfoCreateOrderRequest);
+    createOrderByRedirectValidators.add(CustomValidation::validateOptionalFieldsWithRequiredNestedCreateOrderRequest);
     validationRegistry.put("CreateOrderByRedirectRequest", createOrderByRedirectValidators);
   }
 
   /**
-   * Perform custom validations on the request based on its type
-   *
-   * This method checks the request type and runs the appropriate validations from the registry.
-   *
-   * @param request The request object to validate (can be any type)
-   * @throws DanaException if validation fails
+   * Run all validators for the request type and aggregate validation failures into one {@link DanaException}.
    */
   public static void customValidation(Object request) {
     if (request == null) {
       return;
     }
-
-    // Get the class name of the request
     String className = request.getClass().getSimpleName();
-
-    // Check if this request type has validations registered
     List<Consumer<Object>> validators = validationRegistry.get(className);
-    if (validators != null) {
-      for (Consumer<Object> validator : validators) {
+    if (validators == null) {
+      return;
+    }
+    List<Map<String, String>> aggregated = new ArrayList<>();
+    for (Consumer<Object> validator : validators) {
+      try {
         validator.accept(request);
+      } catch (DanaException e) {
+        mergeDanaException(aggregated, e);
       }
+    }
+    if (!aggregated.isEmpty()) {
+      throw new DanaException(aggregated);
     }
   }
 
-  /**
-   * Validate that additionalInfo must exist.
-   *
-   * @param request The request object to validate
-   * @throws DanaException if validation fails
-   */
+  private static void mergeDanaException(List<Map<String, String>> aggregated, DanaException e) {
+    if (e.getValidationContexts() != null && !e.getValidationContexts().isEmpty()) {
+      aggregated.addAll(e.getValidationContexts());
+    } else if (e.getMessage() != null) {
+      aggregated.add(ctx("validation", e.getMessage()));
+    }
+  }
+
+  private static Map<String, String> ctx(String field, String message) {
+    Map<String, String> m = new LinkedHashMap<>();
+    m.put("field", field);
+    m.put("message", message);
+    return m;
+  }
+
   private static void validateAdditionalInfoRequired(Object request) {
     if (request == null) {
       return;
     }
     if (request instanceof CreateOrderByApiRequest) {
       if (((CreateOrderByApiRequest) request).getAdditionalInfo() == null) {
-        throw new DanaException("additionalInfo is required");
+        throw new DanaException(Collections.singletonList(
+            ctx("additionalInfo", "additionalInfo is required")));
       }
     } else if (request instanceof CreateOrderByRedirectRequest) {
       if (((CreateOrderByRedirectRequest) request).getAdditionalInfo() == null) {
-        throw new DanaException("additionalInfo is required");
+        throw new DanaException(Collections.singletonList(
+            ctx("additionalInfo", "additionalInfo is required")));
       }
     }
   }
 
-  /**
-   * Validate that Money value matches pattern (e.g. 10000.00): ^\d{1,16}\.\d{2}$
-   *
-   * @param request The request object to validate
-   * @throws DanaException if validation fails
-   */
   private static void validateMoneyValuePattern(Object request) {
     if (request == null) {
       return;
@@ -123,110 +145,63 @@ public final class CustomValidation {
     }
     String value = amount.getValue();
     if (value == null || value.isEmpty()) {
-      throw new DanaException("amount.value is required");
+      throw new DanaException(Collections.singletonList(ctx("amount.value", "amount.value is required")));
     }
     if (!MONEY_VALUE_PATTERN.matcher(value).matches()) {
-      throw new DanaException("amount.value must match pattern (e.g. 10000.00): got " + value);
+      throw new DanaException(Collections.singletonList(ctx("amount.value",
+          "amount.value must match pattern (e.g. 10000.00): got " + value)));
     }
   }
 
-  /**
-   * Validate validUpTo field in CreateOrderByApiRequest or CreateOrderByRedirectRequest.
-   *
-   * This function handles both request types directly (not wrapped in CreateOrderRequest):
-   * - CreateOrderByApiRequest: validates validUpTo directly
-   * - CreateOrderByRedirectRequest: validates validUpTo directly
-   *
-   * @param request The request object to validate
-   * @throws DanaException if validation fails
-   */
   private static void validateValidUpToCreateOrderRequest(Object request) {
     if (request == null) {
       return;
     }
-
     String validUpTo = null;
     if (request instanceof CreateOrderByApiRequest) {
       validUpTo = ((CreateOrderByApiRequest) request).getValidUpTo();
     } else if (request instanceof CreateOrderByRedirectRequest) {
       validUpTo = ((CreateOrderByRedirectRequest) request).getValidUpTo();
     }
-
     if (validUpTo != null) {
       try {
         DateValidation.validateValidUpToDate(validUpTo);
       } catch (IllegalArgumentException e) {
-        throw new DanaException("validUpTo validation failed: " + e.getMessage());
+        throw new DanaException(Collections.singletonList(
+            ctx("validUpTo", "validUpTo validation failed: " + e.getMessage())));
       }
     }
   }
 
-  /**
-   * Validate that externalStoreId is required when payOption is NETWORK_PAY_PG_QRIS.
-   *
-   * This function checks if any payOption in payOptionDetails is NETWORK_PAY_PG_QRIS,
-   * and if so, ensures externalStoreId is provided.
-   *
-   * @param request The request object to validate
-   * @throws DanaException if validation fails
-   */
   private static void validateExternalStoreIdForQris(Object request) {
-    if (request == null) {
+    if (request == null || !(request instanceof CreateOrderByApiRequest)) {
       return;
     }
-
-    if (!(request instanceof CreateOrderByApiRequest)) {
-      return;
-    }
-
     CreateOrderByApiRequest apiRequest = (CreateOrderByApiRequest) request;
-    java.util.List<?> payOptionDetails = apiRequest.getPayOptionDetails();
+    List<PayOptionDetail> payOptionDetails = apiRequest.getPayOptionDetails();
     String externalStoreId = apiRequest.getExternalStoreId();
-
     if (payOptionDetails == null || payOptionDetails.isEmpty()) {
       return;
     }
-
-    // Check if any payOption is NETWORK_PAY_PG_QRIS
     boolean hasQris = false;
-    for (Object payOptionDetail : payOptionDetails) {
-      if (payOptionDetail != null) {
-        try {
-          java.lang.reflect.Method getPayOptionMethod = payOptionDetail.getClass().getMethod("getPayOption");
-          Object payOption = getPayOptionMethod.invoke(payOptionDetail);
-          // Handle enum or string
-          String payOptionStr = null;
-          if (payOption instanceof PayOptionDetail.PayOptionEnum) {
-            payOptionStr = ((PayOptionDetail.PayOptionEnum) payOption).getValue();
-          } else if (payOption instanceof java.lang.Enum) {
-            payOptionStr = ((java.lang.Enum<?>) payOption).name();
-          } else if (payOption instanceof String) {
-            payOptionStr = (String) payOption;
-          }
-          if (PayOptionDetail.PayOptionEnum.NETWORK_PAY_PG_QRIS.getValue().equals(payOptionStr)) {
-            hasQris = true;
-            break;
-          }
-        } catch (Exception e) {
-          // Skip if we can't access payOption
-          continue;
-        }
+    for (PayOptionDetail detail : payOptionDetails) {
+      if (detail == null || detail.getPayOption() == null) {
+        continue;
+      }
+      if (PayOptionDetail.PayOptionEnum.NETWORK_PAY_PG_QRIS.equals(detail.getPayOption())) {
+        hasQris = true;
+        break;
       }
     }
-
-    // If QRIS is found, externalStoreId must be provided
-    if (hasQris) {
-      if (externalStoreId == null || externalStoreId.trim().isEmpty()) {
-        throw new DanaException("externalStoreId is required when payOption is NETWORK_PAY_PG_QRIS");
-      }
+    if (hasQris && (externalStoreId == null || externalStoreId.trim().isEmpty())) {
+      throw new DanaException(Collections.singletonList(ctx("externalStoreId",
+          "externalStoreId is required when payOption is NETWORK_PAY_PG_QRIS")));
     }
   }
 
-  /** In sandbox, only these payMethods are available (Payment Gateway). */
   private static final Set<String> SANDBOX_ALLOWED_PAY_METHODS = Collections.unmodifiableSet(new HashSet<>(
       Arrays.asList("BALANCE", "CREDIT_CARD", "DEBIT_CARD", "VIRTUAL_ACCOUNT", "NETWORK_PAY")));
 
-  /** In sandbox, only these payOptions are available (exact or suffix e.g. VIRTUAL_ACCOUNT_BRI). */
   private static final Set<String> SANDBOX_ALLOWED_PAY_OPTIONS = Collections.unmodifiableSet(new HashSet<>(
       Arrays.asList("CARD", "QRIS", "BRI", "PANIN", "CIMB", "MANDIRI", "BTPN")));
 
@@ -257,69 +232,180 @@ public final class CustomValidation {
     return false;
   }
 
-  /**
-   * In sandbox, only certain payMethod and payOption values are available.
-   * Skipped when not in sandbox.
-   */
   private static void validateSandboxPayMethodAndPayOption(Object request) {
-    if (request == null || !isSandbox()) {
+    if (request == null || !isSandbox() || !(request instanceof CreateOrderByApiRequest)) {
       return;
     }
-    if (!(request instanceof CreateOrderByApiRequest)) {
-      return;
-    }
-    List<?> payOptionDetails = ((CreateOrderByApiRequest) request).getPayOptionDetails();
+    List<PayOptionDetail> payOptionDetails = ((CreateOrderByApiRequest) request).getPayOptionDetails();
     if (payOptionDetails == null || payOptionDetails.isEmpty()) {
       return;
     }
     for (int idx = 0; idx < payOptionDetails.size(); idx++) {
-      Object detail = payOptionDetails.get(idx);
+      PayOptionDetail detail = payOptionDetails.get(idx);
       if (detail == null) {
         continue;
       }
-      try {
-        String payMethodStr = getPayMethodString(detail);
-        if (payMethodStr != null && !payMethodStr.isEmpty() && !SANDBOX_ALLOWED_PAY_METHODS.contains(payMethodStr.trim())) {
-          throw new DanaException(
-              "In sandbox, payMethod must be one of " + SANDBOX_ALLOWED_PAY_METHODS + "; got " + payMethodStr + " in payOptionDetails[" + idx + "]");
-        }
-        String payOptionStr = getPayOptionString(detail);
-        if (payOptionStr != null && !payOptionStr.isEmpty() && !payOptionAllowedInSandbox(payOptionStr)) {
-          throw new DanaException(
-              "In sandbox, payOption must be one of " + SANDBOX_ALLOWED_PAY_OPTIONS + " (or suffix like VIRTUAL_ACCOUNT_BRI); got " + payOptionStr + " in payOptionDetails[" + idx + "]");
-        }
-      } catch (DanaException e) {
-        throw e;
-      } catch (Exception e) {
-        // Skip if we cannot access fields
+      String payMethodStr = getPayMethodString(detail);
+      if (payMethodStr != null && !payMethodStr.isEmpty()
+          && !SANDBOX_ALLOWED_PAY_METHODS.contains(payMethodStr.trim())) {
+        throw new DanaException(Collections.singletonList(ctx(
+            "payOptionDetails[" + idx + "].payMethod",
+            "In sandbox, payMethod must be one of " + SANDBOX_ALLOWED_PAY_METHODS + "; got " + payMethodStr)));
+      }
+      String payOptionStr = getPayOptionString(detail);
+      if (payOptionStr != null && !payOptionStr.isEmpty() && !payOptionAllowedInSandbox(payOptionStr)) {
+        throw new DanaException(Collections.singletonList(ctx(
+            "payOptionDetails[" + idx + "].payOption",
+            "In sandbox, payOption must be one of " + SANDBOX_ALLOWED_PAY_OPTIONS
+                + " (or suffix like VIRTUAL_ACCOUNT_BRI); got " + payOptionStr)));
       }
     }
   }
 
-  private static String getPayMethodString(Object payOptionDetail) {
-    try {
-      java.lang.reflect.Method m = payOptionDetail.getClass().getMethod("getPayMethod");
-      Object v = m.invoke(payOptionDetail);
-      if (v == null) return null;
-      if (v instanceof Enum) return ((Enum<?>) v).name();
-      if (v instanceof String) return (String) v;
-      return String.valueOf(v);
-    } catch (Exception e) {
+  private static String getPayMethodString(PayOptionDetail detail) {
+    if (detail.getPayMethod() == null) {
       return null;
+    }
+    return detail.getPayMethod().name();
+  }
+
+  private static String getPayOptionString(PayOptionDetail detail) {
+    if (detail.getPayOption() == null) {
+      return null;
+    }
+    return detail.getPayOption().getValue();
+  }
+
+  private static String trimStr(String s) {
+    return s == null ? "" : s.trim();
+  }
+
+  private static int runeLen(String s) {
+    if (s == null) {
+      return 0;
+    }
+    return s.codePointCount(0, s.length());
+  }
+
+  /**
+   * Requires {@link PayOptionAdditionalInfo#getPhoneNumber()} for card / card pay option / e-wallet pay options.
+   */
+  private static void validateConditionalPayOptionAdditionalInfoCreateOrderRequest(Object request) {
+    if (request == null || !(request instanceof CreateOrderByApiRequest)) {
+      return;
+    }
+    List<PayOptionDetail> payOptionDetails = ((CreateOrderByApiRequest) request).getPayOptionDetails();
+    if (payOptionDetails == null || payOptionDetails.isEmpty()) {
+      return;
+    }
+    List<Map<String, String>> contexts = new ArrayList<>();
+    for (int i = 0; i < payOptionDetails.size(); i++) {
+      PayOptionDetail detail = payOptionDetails.get(i);
+      if (detail == null) {
+        continue;
+      }
+      String payMethod = trimStr(getPayMethodString(detail));
+      String payOption = trimStr(getPayOptionString(detail));
+      PayOptionAdditionalInfo additionalInfo = detail.getAdditionalInfo();
+      String phoneRaw = additionalInfo != null ? additionalInfo.getPhoneNumber() : null;
+      String phoneNumber = trimStr(phoneRaw);
+
+      boolean isCard = CREDIT_DEBIT_CARD_PAY_METHODS.contains(payMethod) || NETWORK_PAY_PG_CARD.equals(payOption);
+      boolean isEwallet = EWALLET_PAY_OPTIONS.contains(payOption);
+
+      if (isCard || isEwallet) {
+        String field = "payOptionDetails[" + i + "].additionalInfo.phoneNumber";
+        if (phoneNumber.isEmpty()) {
+          contexts.add(ctx(field,
+              "phoneNumber is required for card/e-wallet payment (payOptionDetails[" + i + "])"));
+        } else {
+          int ln = runeLen(phoneNumber);
+          if (ln < 1 || ln > 15) {
+            contexts.add(ctx(field,
+                "phoneNumber must be between 1 and 15 characters (payOptionDetails[" + i + "])"));
+          }
+        }
+      }
+    }
+    if (!contexts.isEmpty()) {
+      throw new DanaException(contexts);
     }
   }
 
-  private static String getPayOptionString(Object payOptionDetail) {
-    try {
-      java.lang.reflect.Method m = payOptionDetail.getClass().getMethod("getPayOption");
-      Object v = m.invoke(payOptionDetail);
-      if (v == null) return null;
-      if (v instanceof PayOptionDetail.PayOptionEnum) return ((PayOptionDetail.PayOptionEnum) v).getValue();
-      if (v instanceof Enum) return ((Enum<?>) v).name();
-      if (v instanceof String) return (String) v;
-      return String.valueOf(v);
-    } catch (Exception e) {
-      return null;
+  /**
+   * When optional nested objects are present, require their mandatory sub-fields (buyer, goods, shipping).
+   */
+  private static void validateOptionalFieldsWithRequiredNestedCreateOrderRequest(Object request) {
+    if (request == null) {
+      return;
+    }
+    Buyer buyer = null;
+    List<Goods> goods = null;
+    List<ShippingInfo> shippingInfo = null;
+    if (request instanceof CreateOrderByApiRequest) {
+      CreateOrderByApiAdditionalInfo ai = ((CreateOrderByApiRequest) request).getAdditionalInfo();
+      if (ai != null && ai.getOrder() != null) {
+        OrderApiObject order = ai.getOrder();
+        buyer = order.getBuyer();
+        goods = order.getGoods();
+        shippingInfo = order.getShippingInfo();
+      }
+    } else if (request instanceof CreateOrderByRedirectRequest) {
+      CreateOrderByRedirectAdditionalInfo ai = ((CreateOrderByRedirectRequest) request).getAdditionalInfo();
+      if (ai != null && ai.getOrder() != null) {
+        OrderRedirectObject order = ai.getOrder();
+        buyer = order.getBuyer();
+        goods = order.getGoods();
+        shippingInfo = order.getShippingInfo();
+      }
+    }
+    if (buyer == null && (goods == null || goods.isEmpty()) && (shippingInfo == null || shippingInfo.isEmpty())) {
+      return;
+    }
+    List<Map<String, String>> contexts = new ArrayList<>();
+    if (buyer != null) {
+      String extType = trimStr(buyer.getExternalUserType());
+      String extId = trimStr(buyer.getExternalUserId());
+      boolean hasType = !extType.isEmpty();
+      boolean hasId = !extId.isEmpty();
+      if (hasId && !hasType) {
+        contexts.add(ctx("additionalInfo.order.buyer.externalUserType",
+            "externalUserType is required when externalUserId is filled"));
+      }
+      if (hasType && !hasId) {
+        contexts.add(ctx("additionalInfo.order.buyer.externalUserId",
+            "externalUserId is required when externalUserType is filled"));
+      }
+    }
+
+    if (goods != null && !goods.isEmpty()) {
+      for (int i = 0; i < goods.size(); i++) {
+        Goods g = goods.get(i);
+        if (g == null) {
+          continue;
+        }
+        if (trimStr(g.getName()).isEmpty()) {
+          contexts.add(ctx("additionalInfo.order.goods[" + i + "].name",
+              "name is required when goods is filled"));
+        }
+      }
+    }
+
+    if (shippingInfo != null && !shippingInfo.isEmpty()) {
+      for (int i = 0; i < shippingInfo.size(); i++) {
+        ShippingInfo s = shippingInfo.get(i);
+        if (s == null) {
+          continue;
+        }
+        if (trimStr(s.getFirstName()).isEmpty()) {
+          contexts.add(ctx("additionalInfo.order.shippingInfo[" + i + "].firstName",
+              "firstName is required when shippingInfo is filled"));
+        }
+      }
+    }
+
+    if (!contexts.isEmpty()) {
+      throw new DanaException(contexts);
     }
   }
 }

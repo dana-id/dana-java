@@ -5,7 +5,7 @@
     <artifactId>dana-java</artifactId>
     <packaging>jar</packaging>
     <name>dana-java</name>
-    <version>2.1.0</version>
+    <version>2.1.1</version>
     <url>https://github.com/dana-id/dana-java</url>
     <description>The official DANA Java SDK provides a simple and convenient way to call DANA's REST API in applications written in Java.</description>
     <scm>
@@ -24,6 +24,7 @@
 
     <developers>
         <developer>
+            <id>dana</id>
             <name>DANA</name>
             <email>dana@dana.id</email>
             <organization>DANA Indonesia</organization>
@@ -230,6 +231,44 @@
                 </plugins>
             </build>
         </profile>
+        <!--
+          CI deploy: mvn deploy -DconsumerPom=true. Flattened OSS consumer POM for Maven Central;
+          prepare-package so tests still see full deps. See sdk .gitlab/ci.yml.
+        -->
+        <profile>
+            <id>consumer-pom</id>
+            <activation>
+                <property>
+                    <name>consumerPom</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>flatten-maven-plugin</artifactId>
+                        <version>1.7.3</version>
+                        <configuration>
+                            <flattenMode>oss</flattenMode>
+                            <updatePomFile>true</updatePomFile>
+                            <flattenDependencyMode>direct</flattenDependencyMode>
+                            <embedBuildProfileDependencies>false</embedBuildProfileDependencies>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <flattenedPomFilename>flattened-consumer-pom.xml</flattenedPomFilename>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>flatten</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>flatten</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 
     <dependencies>
@@ -370,10 +409,12 @@
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j-api-version}</version>
         </dependency>
+        <!-- Binding only for tests / automation; not imposed on SDK consumers. -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>${logback-classic-version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -396,7 +437,7 @@
         <commons-collection4-version>4.5.0</commons-collection4-version>
         <commons-lang3-version>3.17.0</commons-lang3-version>
         <dotenv-java-version>2.3.2</dotenv-java-version>
-        <selenium-version>4.15.0</selenium-version>
+        <selenium-version>4.25.0</selenium-version>
         <webdrivermanager-version>5.6.2</webdrivermanager-version>
         <slf4j-api-version>2.0.17</slf4j-api-version>
         <logback-classic-version>1.3.15</logback-classic-version>
