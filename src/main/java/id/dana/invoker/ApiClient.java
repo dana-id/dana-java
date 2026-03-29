@@ -41,7 +41,7 @@ public class ApiClient {
     apiAuthorizations = new LinkedHashMap<String, Interceptor>();
     createDefaultAdapter();
     okBuilder = new OkHttpClient.Builder();
-  // Add interceptor for Disbursement account-inquiry path routing
+  // Add interceptor for Disbursement dynamic path routing
 
   okBuilder.addInterceptor(new DisbursementPathInterceptor());
   }
@@ -222,14 +222,8 @@ public class ApiClient {
     addAuthsToOkBuilder(this.okBuilder);
   }
   /**
-   * Interceptor to modify Disbursement account-inquiry path based on environment.
-   * This interceptor ONLY modifies the Disbursement API's danaAccountInquiry endpoint.
-   * 
-   * Path mapping:
-   * - Sandbox: /rest/v1.0/emoney/account-inquiry
-   * - Production: /v1.0/emoney/account-inquiry.htm
-   * 
-   * Note: Uses exact path matching to ensure no other endpoints are affected.
+   * Interceptor to modify Disbursement SNAP B2B paths that differ between sandbox (/rest/...)
+   * and production (/v1.0/...htm).
    */
   private static class DisbursementPathInterceptor implements okhttp3.Interceptor {
     @Override
@@ -237,31 +231,29 @@ public class ApiClient {
       okhttp3.Request originalRequest = chain.request();
       okhttp3.HttpUrl originalUrl = originalRequest.url();
       String path = originalUrl.encodedPath();
-      
-      // Check if this is the Disbursement account-inquiry endpoint
-      // Use exact path matching to avoid modifying other endpoints that might contain similar paths
-      boolean isAccountInquiryEndpoint = path.equals("/rest/v1.0/emoney/account-inquiry") 
-          || path.equals("/v1.0/emoney/account-inquiry.htm");
-      
-      if (isAccountInquiryEndpoint) {
-        // Determine the correct path based on environment
-        DanaEnvironment env = DanaConfig.getInstance().getEnv();
-        String newPath = (env == DanaEnvironment.PRODUCTION)
-            ? "/v1.0/emoney/account-inquiry.htm"
-            : "/rest/v1.0/emoney/account-inquiry";
-        
-        // Only modify if path needs to change
-        if (!path.equals(newPath)) {
-          okhttp3.HttpUrl newUrl = originalUrl.newBuilder()
-              .encodedPath(newPath)
-              .build();
-          okhttp3.Request newRequest = originalRequest.newBuilder()
-              .url(newUrl)
-              .build();
-          return chain.proceed(newRequest);
-        }
+
+      DanaEnvironment env = DanaConfig.getInstance().getEnv();
+      boolean prod = (env == DanaEnvironment.PRODUCTION);
+
+      String newPath = null;
+      if (path.equals("/rest/v1.0/emoney/account-inquiry") || path.equals("/v1.0/emoney/account-inquiry.htm")) {
+        newPath = prod ? "/v1.0/emoney/account-inquiry.htm" : "/rest/v1.0/emoney/account-inquiry";
+      } else if (path.equals("/rest/v1.0/emoney/topup") || path.equals("/v1.0/emoney/topup.htm")) {
+        newPath = prod ? "/v1.0/emoney/topup.htm" : "/rest/v1.0/emoney/topup";
+      } else if (path.equals("/rest/v1.0/emoney/topup-status") || path.equals("/v1.0/emoney/topup-status.htm")) {
+        newPath = prod ? "/v1.0/emoney/topup-status.htm" : "/rest/v1.0/emoney/topup-status";
       }
-      
+
+      if (newPath != null && !path.equals(newPath)) {
+        okhttp3.HttpUrl newUrl = originalUrl.newBuilder()
+            .encodedPath(newPath)
+            .build();
+        okhttp3.Request newRequest = originalRequest.newBuilder()
+            .url(newUrl)
+            .build();
+        return chain.proceed(newRequest);
+      }
+
       return chain.proceed(originalRequest);
     }
   }
