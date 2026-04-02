@@ -203,7 +203,7 @@ public final class CustomValidation {
       Arrays.asList("BALANCE", "CREDIT_CARD", "DEBIT_CARD", "VIRTUAL_ACCOUNT", "NETWORK_PAY")));
 
   private static final Set<String> SANDBOX_ALLOWED_PAY_OPTIONS = Collections.unmodifiableSet(new HashSet<>(
-      Arrays.asList("CARD", "QRIS", "BRI", "PANIN", "CIMB", "MANDIRI", "BTPN")));
+      Arrays.asList("CARD", "QRIS", "BRI", "PANIN", "CIMB", "MANDIRI", "BTPN", "BSI")));
 
   private static boolean isSandbox() {
     String env = System.getenv("DANA_ENV");
