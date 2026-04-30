@@ -72,6 +72,7 @@ public final class DanaHeaderUtil {
 
     requestBuilder.header(DanaHeader.X_TIMESTAMP, timestamp);
     requestBuilder.header(DanaHeader.X_CLIENT_KEY, partnerId);
+    requestBuilder.header(DanaHeader.X_PARTNER_ID, partnerId);
     requestBuilder.header(DanaHeader.X_SIGNATURE, signature);
   }
 
