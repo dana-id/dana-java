@@ -20,6 +20,7 @@ All URIs are relative to *https://api.saas.dana.id*, except if the operation def
 | - | - | - |
 | [**createDivision**](MerchantManagementApi.md#createDivision) | **POST** dana/merchant/division/createDivision.htm | This API is used to create a new division |
 | [**createShop**](MerchantManagementApi.md#createShop) | **POST** dana/merchant/shop/createShop.htm | Create shop under merchant or division |
+| [**queryAssetCardList**](MerchantManagementApi.md#queryAssetCardList) | **POST** dana/member/asset/queryAssetCardList.htm | Query member asset cards filtered by contact business type and asset type. JSON envelope uses `request.head`, `request.body`, and root `signature` (same Open API pattern as other `.htm` endpoints).  |
 | [**queryDivision**](MerchantManagementApi.md#queryDivision) | **POST** dana/merchant/division/queryDivision.htm | This API is used to obtain information of division |
 | [**queryMerchantResource**](MerchantManagementApi.md#queryMerchantResource) | **POST** dana/merchant/queryMerchantResource.htm | The interface is check merchant resource info (account balance merchant) |
 | [**queryShop**](MerchantManagementApi.md#queryShop) | **POST** dana/merchant/shop/queryShop.htm | This API is used to obtain information of shop information |
@@ -89,6 +90,41 @@ public class Example {
 
         try {
             CreateShopResponse response = api.createShop(createShopRequest);
+            System.out.println(response);
+        } catch (DanaException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+<a name="queryAssetCardList"></a>
+## `queryAssetCardList()` Function
+
+### Function Signature
+| Name | Value |
+| - | - |
+| **Function Name** | `queryAssetCardList` |
+| **Payload** | [**QueryAssetCardListRequest**](../model/QueryAssetCardListRequest.md) |
+| **Return Type** | [**QueryAssetCardListResponse**](../model/QueryAssetCardListResponse.md) |
+
+### Usage Example
+```java
+import id.dana.invoker.Dana;
+
+import id.dana.merchantmanagement.v1.api.MerchantManagementApi;
+
+import id.dana.merchantmanagement.v1.model.QueryAssetCardListRequest;
+import id.dana.merchantmanagement.v1.model.QueryAssetCardListResponse;
+
+public class Example {
+    public static void main(String[] args) {
+        MerchantManagementApi api = Dana.getInstance().getMerchantManagementApi();
+
+        QueryAssetCardListRequest queryAssetCardListRequest = new QueryAssetCardListRequest();
+
+        try {
+            QueryAssetCardListResponse response = api.queryAssetCardList(queryAssetCardListRequest);
             System.out.println(response);
         } catch (DanaException e) {
             e.printStackTrace();

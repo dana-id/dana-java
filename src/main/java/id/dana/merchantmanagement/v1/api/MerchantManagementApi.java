@@ -22,6 +22,8 @@ import id.dana.merchantmanagement.v1.model.CreateDivisionRequest;
 import id.dana.merchantmanagement.v1.model.CreateDivisionResponse;
 import id.dana.merchantmanagement.v1.model.CreateShopRequest;
 import id.dana.merchantmanagement.v1.model.CreateShopResponse;
+import id.dana.merchantmanagement.v1.model.QueryAssetCardListRequest;
+import id.dana.merchantmanagement.v1.model.QueryAssetCardListResponse;
 import id.dana.merchantmanagement.v1.model.QueryDivisionRequest;
 import id.dana.merchantmanagement.v1.model.QueryDivisionResponse;
 import id.dana.merchantmanagement.v1.model.QueryMerchantResourceRequest;
@@ -69,6 +71,23 @@ interface MerchantManagementApiService {
   @POST("dana/merchant/shop/createShop.htm")
   Call<CreateShopResponse> createShop(
     @retrofit2.http.Body CreateShopRequest createShopRequest
+  );
+
+  /**
+   * Member – Query asset card list
+   * Query member asset cards filtered by contact business type and asset type. JSON envelope uses `request.head`, `request.body`, and root `signature` (same Open API pattern as other `.htm` endpoints). 
+   * @param queryAssetCardListRequest  (required)
+   * @return Call<QueryAssetCardListResponse>
+   */
+  @Headers({
+    "Content-Type:application/json",
+    "X-API-TYPE:OPEN_API",
+    "X-API-VERSION:2.0",
+    "X-API-FUNCTION:dana.member.asset.queryAssetCardList"
+  })
+  @POST("dana/member/asset/queryAssetCardList.htm")
+  Call<QueryAssetCardListResponse> queryAssetCardList(
+    @retrofit2.http.Body QueryAssetCardListRequest queryAssetCardListRequest
   );
 
   /**
@@ -267,6 +286,62 @@ public class MerchantManagementApi {
             String errorBodyString = errorBody.string();
             try {
               return objectMapper.readValue(errorBodyString, CreateShopResponse.class);
+            } catch (Exception jsonException) {
+              throw new DanaException("API Error: " + errorBodyString);
+            }
+          } else {
+            throw new DanaException("Empty error body");
+          }
+        }
+      }
+    } catch (IOException e) {
+      throw new DanaException("Network error", e);
+    }
+  }
+
+  /**
+   * Member – Query asset card list
+   * Query member asset cards filtered by contact business type and asset type. JSON envelope uses `request.head`, `request.body`, and root `signature` (same Open API pattern as other `.htm` endpoints). 
+   * @param queryAssetCardListRequest  (required)
+   * @return QueryAssetCardListResponse
+   */
+  public QueryAssetCardListResponse queryAssetCardList(
+    @retrofit2.http.Body QueryAssetCardListRequest queryAssetCardListRequest
+  ) {
+    // Run custom validations (e.g., validUpTo date validation)
+    // This validation runs even when structs are created directly (bypassing setters)
+    try {
+      String packageName = "id.dana.merchantmanagement.v1.api";
+      String customValidationPackage = packageName.replace(".api", "");
+      Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+      java.lang.reflect.Method customValidationMethod = customValidationClass.getMethod("customValidation", Object.class);
+      customValidationMethod.invoke(null, queryAssetCardListRequest);
+    } catch (ClassNotFoundException | NoClassDefFoundError e) {
+      // If CustomValidation doesn't exist for this domain, skip it
+      // This allows the template to work for all domains
+    } catch (Exception e) {
+      // Re-throw other exceptions (validation errors, etc.)
+      if (e instanceof java.lang.reflect.InvocationTargetException) {
+        Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+        if (cause instanceof DanaException) {
+          throw (DanaException) cause;
+        }
+        if (cause instanceof RuntimeException) {
+          throw (RuntimeException) cause;
+        }
+      }
+      throw new DanaException("Custom validation error", e);
+    }
+    try {
+      Response<QueryAssetCardListResponse> response = service.queryAssetCardList(queryAssetCardListRequest).execute();
+      if (response.isSuccessful()) {
+        return response.body();
+      } else {
+        try (ResponseBody errorBody = response.errorBody()) {
+          if (errorBody != null) {
+            String errorBodyString = errorBody.string();
+            try {
+              return objectMapper.readValue(errorBodyString, QueryAssetCardListResponse.class);
             } catch (Exception jsonException) {
               throw new DanaException("API Error: " + errorBodyString);
             }

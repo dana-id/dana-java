@@ -72,7 +72,7 @@ public class WidgetUtil {
         String baseUrl;
         if (mode.equals(Mode.DEEPLINK)) {
             if (env.equals(Env.PRODUCTION)) {
-                baseUrl = "https://link.dana.id/bindSnap";
+                baseUrl = "https://m.dana.id/n/link/bind";
             } else {
                 baseUrl = "https://m.sandbox.dana.id/n/link/binding";
             }
@@ -102,7 +102,7 @@ public class WidgetUtil {
             if (!env.equals(Env.PRODUCTION)) {
                 scopes = "CASHIER,AGREEMENT_PAY,QUERY_BALANCE,DEFAULT_BASIC_PROFILE,MINI_DANA";
             } else {
-                scopes = "CASHIER";
+                scopes = "MINI_DANA,CASHIER,QUERY_BALANCE,DEFAULT_BASIC_PROFILE";
             }
         }
 
@@ -293,6 +293,7 @@ public class WidgetUtil {
      * @param widgetPaymentResponse The widget payment response
      * @param applyOTTResponse The apply OTT response
      * @return The generated payment URL or empty string if inputs are invalid
+     * @throws DanaException if URL-encoding fails (UTF-8 should always be available on a compliant JVM)
      */
     public static String generateCompletePaymentUrl(WidgetPaymentResponse widgetPaymentResponse, ApplyOTTResponse applyOTTResponse) {
         if (widgetPaymentResponse == null || applyOTTResponse == null) {
@@ -324,7 +325,12 @@ public class WidgetUtil {
         if (ottValue.isEmpty()) {
             return webRedirectUrl;
         }
-        
-        return webRedirectUrl + "&ott=" + ottValue;
+
+        String sep = webRedirectUrl.contains("?") ? "&" : "?";
+        try {
+            return webRedirectUrl + sep + "ott=" + URLEncoder.encode(ottValue, "UTF-8").replace("+", "%20");
+        } catch (UnsupportedEncodingException e) {
+            throw new DanaException("UTF-8 is not supported by this Java runtime", e);
+        }
     }
 }

@@ -18,7 +18,6 @@ import id.dana.invoker.auth.HttpBasicAuth;
 import id.dana.invoker.auth.HttpBearerAuth;
 import id.dana.invoker.auth.ApiKeyAuth;
 import id.dana.invoker.model.DanaConfig;
-import id.dana.invoker.model.enumeration.DanaEnvironment;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -41,9 +40,6 @@ public class ApiClient {
     apiAuthorizations = new LinkedHashMap<String, Interceptor>();
     createDefaultAdapter();
     okBuilder = new OkHttpClient.Builder();
-  // Add interceptor for Disbursement dynamic path routing
-
-  okBuilder.addInterceptor(new DisbursementPathInterceptor());
   }
 
   public ApiClient(OkHttpClient client){
@@ -221,43 +217,5 @@ public class ApiClient {
     this.okBuilder = okClient.newBuilder();
     addAuthsToOkBuilder(this.okBuilder);
   }
-  /**
-   * Interceptor to modify Disbursement SNAP B2B paths that differ between sandbox (/rest/...)
-   * and production (/v1.0/...htm).
-   */
-  private static class DisbursementPathInterceptor implements okhttp3.Interceptor {
-    @Override
-    public okhttp3.Response intercept(okhttp3.Interceptor.Chain chain) throws java.io.IOException {
-      okhttp3.Request originalRequest = chain.request();
-      okhttp3.HttpUrl originalUrl = originalRequest.url();
-      String path = originalUrl.encodedPath();
-
-      DanaEnvironment env = DanaConfig.getInstance().getEnv();
-      boolean prod = (env == DanaEnvironment.PRODUCTION);
-
-      String newPath = null;
-      if (path.equals("/rest/v1.0/emoney/account-inquiry") || path.equals("/v1.0/emoney/account-inquiry.htm")) {
-        newPath = prod ? "/v1.0/emoney/account-inquiry.htm" : "/rest/v1.0/emoney/account-inquiry";
-      } else if (path.equals("/rest/v1.0/emoney/topup") || path.equals("/v1.0/emoney/topup.htm")) {
-        newPath = prod ? "/v1.0/emoney/topup.htm" : "/rest/v1.0/emoney/topup";
-      } else if (path.equals("/rest/v1.0/emoney/topup-status") || path.equals("/v1.0/emoney/topup-status.htm")) {
-        newPath = prod ? "/v1.0/emoney/topup-status.htm" : "/rest/v1.0/emoney/topup-status";
-      }
-
-      if (newPath != null && !path.equals(newPath)) {
-        okhttp3.HttpUrl newUrl = originalUrl.newBuilder()
-            .encodedPath(newPath)
-            .build();
-        okhttp3.Request newRequest = originalRequest.newBuilder()
-            .url(newUrl)
-            .build();
-        return chain.proceed(newRequest);
-      }
-
-      return chain.proceed(originalRequest);
-    }
-  }
-
-
 }
 
