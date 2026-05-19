@@ -26,6 +26,8 @@ import id.dana.merchantmanagement.v1.model.QueryAssetCardListRequest;
 import id.dana.merchantmanagement.v1.model.QueryAssetCardListResponse;
 import id.dana.merchantmanagement.v1.model.QueryDivisionRequest;
 import id.dana.merchantmanagement.v1.model.QueryDivisionResponse;
+import id.dana.merchantmanagement.v1.model.QueryMerchantInfoRequest;
+import id.dana.merchantmanagement.v1.model.QueryMerchantInfoResponse;
 import id.dana.merchantmanagement.v1.model.QueryMerchantResourceRequest;
 import id.dana.merchantmanagement.v1.model.QueryMerchantResourceResponse;
 import id.dana.merchantmanagement.v1.model.QueryShopRequest;
@@ -49,7 +51,7 @@ interface MerchantManagementApiService {
     "Content-Type:application/json",
     "X-API-TYPE:OPEN_API",
     "X-API-VERSION:2.0",
-    "X-API-FUNCTION:dana.merchant.division.createDivision"
+    "X-API-FUNCTION:dana.member.asset.queryAssetCardList"
   })
   @POST("dana/merchant/division/createDivision.htm")
   Call<CreateDivisionResponse> createDivision(
@@ -105,6 +107,23 @@ interface MerchantManagementApiService {
   @POST("dana/merchant/division/queryDivision.htm")
   Call<QueryDivisionResponse> queryDivision(
     @retrofit2.http.Body QueryDivisionRequest queryDivisionRequest
+  );
+
+  /**
+   * Member – Query Merchant Info
+   * Query merchant profile information by login identifier (for example mobile number). JSON envelope uses `request.head`, `request.body`, and root `signature` (same Open API pattern as other `.htm` endpoints). 
+   * @param queryMerchantInfoRequest  (required)
+   * @return Call<QueryMerchantInfoResponse>
+   */
+  @Headers({
+    "Content-Type:application/json",
+    "X-API-TYPE:OPEN_API",
+    "X-API-VERSION:2.0",
+    "X-API-FUNCTION:dana.ap.bizprod.biz.service.openapi.merchant.queryMerchantInfo"
+  })
+  @POST("dana/member/merchant/queryMerchantInfo.htm")
+  Call<QueryMerchantInfoResponse> queryMerchantInfo(
+    @retrofit2.http.Body QueryMerchantInfoRequest queryMerchantInfoRequest
   );
 
   /**
@@ -398,6 +417,62 @@ public class MerchantManagementApi {
             String errorBodyString = errorBody.string();
             try {
               return objectMapper.readValue(errorBodyString, QueryDivisionResponse.class);
+            } catch (Exception jsonException) {
+              throw new DanaException("API Error: " + errorBodyString);
+            }
+          } else {
+            throw new DanaException("Empty error body");
+          }
+        }
+      }
+    } catch (IOException e) {
+      throw new DanaException("Network error", e);
+    }
+  }
+
+  /**
+   * Member – Query Merchant Info
+   * Query merchant profile information by login identifier (for example mobile number). JSON envelope uses `request.head`, `request.body`, and root `signature` (same Open API pattern as other `.htm` endpoints). 
+   * @param queryMerchantInfoRequest  (required)
+   * @return QueryMerchantInfoResponse
+   */
+  public QueryMerchantInfoResponse queryMerchantInfo(
+    @retrofit2.http.Body QueryMerchantInfoRequest queryMerchantInfoRequest
+  ) {
+    // Run custom validations (e.g., validUpTo date validation)
+    // This validation runs even when structs are created directly (bypassing setters)
+    try {
+      String packageName = "id.dana.merchantmanagement.v1.api";
+      String customValidationPackage = packageName.replace(".api", "");
+      Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+      java.lang.reflect.Method customValidationMethod = customValidationClass.getMethod("customValidation", Object.class);
+      customValidationMethod.invoke(null, queryMerchantInfoRequest);
+    } catch (ClassNotFoundException | NoClassDefFoundError e) {
+      // If CustomValidation doesn't exist for this domain, skip it
+      // This allows the template to work for all domains
+    } catch (Exception e) {
+      // Re-throw other exceptions (validation errors, etc.)
+      if (e instanceof java.lang.reflect.InvocationTargetException) {
+        Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+        if (cause instanceof DanaException) {
+          throw (DanaException) cause;
+        }
+        if (cause instanceof RuntimeException) {
+          throw (RuntimeException) cause;
+        }
+      }
+      throw new DanaException("Custom validation error", e);
+    }
+    try {
+      Response<QueryMerchantInfoResponse> response = service.queryMerchantInfo(queryMerchantInfoRequest).execute();
+      if (response.isSuccessful()) {
+        return response.body();
+      } else {
+        try (ResponseBody errorBody = response.errorBody()) {
+          if (errorBody != null) {
+            String errorBodyString = errorBody.string();
+            try {
+              return objectMapper.readValue(errorBodyString, QueryMerchantInfoResponse.class);
             } catch (Exception jsonException) {
               throw new DanaException("API Error: " + errorBodyString);
             }

@@ -22,6 +22,7 @@ All URIs are relative to *https://api.saas.dana.id*, except if the operation def
 | [**createShop**](MerchantManagementApi.md#createShop) | **POST** dana/merchant/shop/createShop.htm | Create shop under merchant or division |
 | [**queryAssetCardList**](MerchantManagementApi.md#queryAssetCardList) | **POST** dana/member/asset/queryAssetCardList.htm | Query member asset cards filtered by contact business type and asset type. JSON envelope uses `request.head`, `request.body`, and root `signature` (same Open API pattern as other `.htm` endpoints).  |
 | [**queryDivision**](MerchantManagementApi.md#queryDivision) | **POST** dana/merchant/division/queryDivision.htm | This API is used to obtain information of division |
+| [**queryMerchantInfo**](MerchantManagementApi.md#queryMerchantInfo) | **POST** dana/member/merchant/queryMerchantInfo.htm | Query merchant profile information by login identifier (for example mobile number). JSON envelope uses `request.head`, `request.body`, and root `signature` (same Open API pattern as other `.htm` endpoints).  |
 | [**queryMerchantResource**](MerchantManagementApi.md#queryMerchantResource) | **POST** dana/merchant/queryMerchantResource.htm | The interface is check merchant resource info (account balance merchant) |
 | [**queryShop**](MerchantManagementApi.md#queryShop) | **POST** dana/merchant/shop/queryShop.htm | This API is used to obtain information of shop information |
 | [**updateDivision**](MerchantManagementApi.md#updateDivision) | **POST** dana/merchant/division/updateDivision.htm | This API is used to update the division information |
@@ -160,6 +161,41 @@ public class Example {
 
         try {
             QueryDivisionResponse response = api.queryDivision(queryDivisionRequest);
+            System.out.println(response);
+        } catch (DanaException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+<a name="queryMerchantInfo"></a>
+## `queryMerchantInfo()` Function
+
+### Function Signature
+| Name | Value |
+| - | - |
+| **Function Name** | `queryMerchantInfo` |
+| **Payload** | [**QueryMerchantInfoRequest**](../model/QueryMerchantInfoRequest.md) |
+| **Return Type** | [**QueryMerchantInfoResponse**](../model/QueryMerchantInfoResponse.md) |
+
+### Usage Example
+```java
+import id.dana.invoker.Dana;
+
+import id.dana.merchantmanagement.v1.api.MerchantManagementApi;
+
+import id.dana.merchantmanagement.v1.model.QueryMerchantInfoRequest;
+import id.dana.merchantmanagement.v1.model.QueryMerchantInfoResponse;
+
+public class Example {
+    public static void main(String[] args) {
+        MerchantManagementApi api = Dana.getInstance().getMerchantManagementApi();
+
+        QueryMerchantInfoRequest queryMerchantInfoRequest = new QueryMerchantInfoRequest();
+
+        try {
+            QueryMerchantInfoResponse response = api.queryMerchantInfo(queryMerchantInfoRequest);
             System.out.println(response);
         } catch (DanaException e) {
             e.printStackTrace();
