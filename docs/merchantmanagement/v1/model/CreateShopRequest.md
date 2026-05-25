@@ -70,6 +70,7 @@ public class Example {
 | `UKE` | "UKE" |  |
 | `UME` | "UME" |  |
 | `UBE` | "UBE" |  |
+| `URE` | "URE" |  |
 
 ### Usage Example
 ```java

@@ -153,6 +153,8 @@ public class CreateShopRequest {
     
     UBE(String.valueOf("UBE")),
     
+    URE(String.valueOf("URE")),
+    
     /**
      * To handle empty string value
      */

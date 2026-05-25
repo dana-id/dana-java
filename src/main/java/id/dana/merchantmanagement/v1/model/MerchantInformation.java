@@ -324,6 +324,8 @@ public class MerchantInformation {
     
     UBE(String.valueOf("UBE")),
     
+    URE(String.valueOf("URE")),
+    
     /**
      * To handle empty string value
      */

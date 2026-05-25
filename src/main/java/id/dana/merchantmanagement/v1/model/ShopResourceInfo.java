@@ -54,9 +54,54 @@ public class ShopResourceInfo {
   @javax.annotation.Nullable
   private String mainName;
 
+  /**
+   * Size type
+   */
+  public enum SizeTypeEnum {
+    UMI(String.valueOf("UMI")),
+    
+    UKE(String.valueOf("UKE")),
+    
+    UME(String.valueOf("UME")),
+    
+    UBE(String.valueOf("UBE")),
+    
+    URE(String.valueOf("URE")),
+    
+    /**
+     * To handle empty string value
+     */
+    UNSPECIFIED(String.valueOf(""));
+
+    private String value;
+
+    SizeTypeEnum(String value) {
+      this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static SizeTypeEnum fromValue(String value) {
+      for (SizeTypeEnum b : SizeTypeEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+  }
   public static final String JSON_PROPERTY_SIZE_TYPE = "sizeType";
   @javax.annotation.Nullable
-  private String sizeType;
+  private SizeTypeEnum sizeType;
 
   public static final String JSON_PROPERTY_SHOP_ADDRESS = "shopAddress";
   @javax.annotation.Nullable
@@ -189,7 +234,7 @@ public class ShopResourceInfo {
     this.mainName = mainName;
   }
 
-  public ShopResourceInfo sizeType(@javax.annotation.Nullable String sizeType) {
+  public ShopResourceInfo sizeType(@javax.annotation.Nullable SizeTypeEnum sizeType) {
     
     this.sizeType = sizeType;
     return this;
@@ -203,14 +248,14 @@ public class ShopResourceInfo {
   @JsonProperty(JSON_PROPERTY_SIZE_TYPE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public String getSizeType() {
+  public SizeTypeEnum getSizeType() {
     return sizeType;
   }
 
 
   @JsonProperty(JSON_PROPERTY_SIZE_TYPE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setSizeType(@javax.annotation.Nullable String sizeType) {
+  public void setSizeType(@javax.annotation.Nullable SizeTypeEnum sizeType) {
     this.sizeType = sizeType;
   }
 
