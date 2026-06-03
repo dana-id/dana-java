@@ -16,7 +16,12 @@ import java.security.SignatureException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import okhttp3.Request;
@@ -135,50 +140,182 @@ public final class DanaSignatureUtil {
   }
 
   /**
-   * Handles nested JSON fields with proper quote escaping
+   * Returns the request body string used when computing the SNAP webhook body hash.
+   * Minified payloads with standard escaping are returned unchanged; over-escaped nested
+   * JSON-in-string fields are normalized before hashing.
    */
   private static String ensureMinifiedJSON(String json) {
     try {
-      json = json.replace("\\\\\"", "\"");
-      
-      boolean isMinified = !json.contains(": ") && !json.contains(",\n") && !json.contains("{\n");
-      
-      if (!isMinified) {
-        Object mappedJson = objectMapper.readValue(json, Object.class);
-        json = objectMapper.writeValueAsString(mappedJson);
+      if (isJSONMinified(json) && !hasTripleEscapedJsonStringField(json)) {
+        return json;
       }
-      
-      Pattern pattern = Pattern.compile("\"(\\w+)\":\"(\\{.*?\\})\"");
-      Matcher matcher = pattern.matcher(json);
-      
-      StringBuffer result = new StringBuffer();
-      while (matcher.find()) {
-        String fieldName = matcher.group(1);
-        String jsonValue = matcher.group(2);
-        
-        String escapedValue = jsonValue.replace("\"", "\\\"");
-        matcher.appendReplacement(result, "\"" + fieldName + "\":\"" + escapedValue + "\"");
+
+      if (isJSONMinified(json)) {
+        return processOverEscapedMinifiedJson(json);
       }
-      matcher.appendTail(result);
-      
-      return result.toString();
+
+      String normalized = json.replace("\\\\\"", "\\\"");
+      String processed = processNestedJSONFields(normalized);
+      Object mappedJson = objectMapper.readValue(processed, Object.class);
+      return objectMapper.writeValueAsString(mappedJson);
     } catch (JsonProcessingException e) {
       log.warn("Failed to process JSON minification, using original: {}", e.getMessage());
       return json;
     }
   }
 
+  private static boolean hasTripleEscapedJsonStringField(String json) {
+    return json.contains("\":\"{\\\\\\\"");
+  }
+
+  private static String processOverEscapedMinifiedJson(String json) {
+    String normalized = json.replace("\\\\\"", "\"");
+    return processNestedJSONFields(normalized);
+  }
+
+  private static String processNestedJSONFields(String json) {
+    Pattern pattern = Pattern.compile("\"(\\w+)\":\"(\\{.*?\\})\"");
+    Matcher matcher = pattern.matcher(json);
+
+    StringBuffer result = new StringBuffer();
+    while (matcher.find()) {
+      String fieldName = matcher.group(1);
+      String jsonValue = matcher.group(2);
+
+      String escapedValue = jsonValue.replace("\"", "\\\"");
+      matcher.appendReplacement(result, "\"" + fieldName + "\":\"" + escapedValue + "\"");
+    }
+    matcher.appendTail(result);
+
+    return result.toString();
+  }
+
+  private static boolean isJSONMinified(String jsonStr) {
+    String[] indicators = {": ", ", ", "{ ", "[ ", "\n", "\t", "\r"};
+    for (String indicator : indicators) {
+      if (jsonStr.contains(indicator)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private static boolean isValidJson(String jsonStr) {
+    try {
+      objectMapper.readTree(jsonStr);
+      return true;
+    } catch (JsonProcessingException e) {
+      return false;
+    }
+  }
+
+  private static String collapseTripleBackslashQuotes(String s) {
+    if (!s.contains("\\\\\\\"")) {
+      return s;
+    }
+    String result = s;
+    while (result.contains("\\\\\\\"")) {
+      result = result.replace("\\\\\\\"", "\\\"");
+    }
+    return result;
+  }
+
+  private static String collapseDoubleBackslashQuotes(String s) {
+    if (!s.contains("\\\\\"")) {
+      return s;
+    }
+    return s.replace("\\\\\"", "\"");
+  }
+
+  private static String removeColonSpaceBeforeQuotedValue(String s) {
+    if (!s.contains(": \\")) {
+      return s;
+    }
+    return s.replaceAll(": (\\\\+\")", ":$1");
+  }
+
+  private static String normalizeOverEscapedQuotes(String s) {
+    if (s.contains("\\\\\"")) {
+      return s.replace("\\\\\"", "\\\"");
+    }
+    return s;
+  }
+
+  /**
+   * Ordered body strings to hash for SNAP webhook signature verification.
+   * DANA may sign exact wire bytes, escape-normalized forms, or minified canonical JSON.
+   */
+  private static List<String> bodyFormsForSignature(String requestBody) {
+    Set<String> seen = new LinkedHashSet<>();
+    List<String> forms = new ArrayList<>();
+    Consumer<String> add = form -> {
+      if (form != null && !form.isEmpty() && seen.add(form)) {
+        forms.add(form);
+      }
+    };
+
+    String tripleCollapsed = collapseTripleBackslashQuotes(requestBody);
+    if (!tripleCollapsed.equals(requestBody) && isValidJson(tripleCollapsed)) {
+      add.accept(tripleCollapsed);
+    }
+
+    // Space before triple-backslash-quote (`: \"\"\"`) is not handled by removeColonSpace alone
+    // because it only matches `: \"`. Collapse first, then strip spaces.
+    String tripleCollapsedSpaced = removeColonSpaceBeforeQuotedValue(tripleCollapsed);
+    if (!tripleCollapsedSpaced.equals(tripleCollapsed) && isValidJson(tripleCollapsedSpaced)) {
+      add.accept(tripleCollapsedSpaced);
+    }
+
+    String collapsed = collapseDoubleBackslashQuotes(requestBody);
+    if (!collapsed.equals(requestBody) && isValidJson(collapsed)) {
+      add.accept(collapsed);
+    }
+
+    String spaced = removeColonSpaceBeforeQuotedValue(requestBody);
+    if (!spaced.equals(requestBody) && isValidJson(spaced)) {
+      add.accept(spaced);
+    }
+
+    collapsed = collapseTripleBackslashQuotes(spaced);
+    if (!collapsed.equals(requestBody) && isValidJson(collapsed)) {
+      add.accept(collapsed);
+    }
+
+    if (isValidJson(requestBody)) {
+      add.accept(requestBody);
+    }
+
+    String normalized = normalizeOverEscapedQuotes(requestBody);
+    if (!normalized.equals(requestBody) && isJSONMinified(normalized) && isValidJson(normalized)) {
+      add.accept(normalized);
+    }
+
+    add.accept(ensureMinifiedJSON(requestBody));
+
+    if (forms.isEmpty()) {
+      throw new DanaException("failed to prepare any signature body form");
+    }
+    return forms;
+  }
+
   public static boolean verifySnapB2BScenarioSignature(String httpMethod, String relativePathUrl,
       String requestBody, String timestamp, String signatureToVerify) {
     try {
-      String processedBody = ensureMinifiedJSON(requestBody);
-      String bodyHash = DigestUtils.sha256Hex(processedBody);
-      String stringToVerify = String.format("%s:%s:%s:%s", httpMethod, relativePathUrl, bodyHash, timestamp);
+      String method = httpMethod.toUpperCase();
+      List<String> bodyForms = bodyFormsForSignature(requestBody);
 
       String publicKeyBase64 = DanaConfig.getInstance().getEnv() == DanaEnvironment.SANDBOX
           ? SANDBOX_WEBHOOK_PUBLIC_KEY_BASE64
           : DanaConfig.getInstance().getDanaPublicKey();
-      return verify(stringToVerify, signatureToVerify, "RSA", "SHA256withRSA", publicKeyBase64);
+
+      for (String body : bodyForms) {
+        String bodyHash = DigestUtils.sha256Hex(body);
+        String stringToVerify = String.format("%s:%s:%s:%s", method, relativePathUrl, bodyHash, timestamp);
+        if (verify(stringToVerify, signatureToVerify, "RSA", "SHA256withRSA", publicKeyBase64)) {
+          return true;
+        }
+      }
+      return false;
     } catch (NoSuchAlgorithmException | InvalidKeySpecException |
              InvalidKeyException | SignatureException e) {
       log.error("Failed to verify SNAP B2B scenario signature: {}", e.getMessage());
