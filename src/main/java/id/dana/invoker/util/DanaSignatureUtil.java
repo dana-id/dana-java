@@ -241,6 +241,27 @@ public final class DanaSignatureUtil {
     return s;
   }
 
+  private static final Pattern SPACED_JSON_KEY_PATTERN = Pattern.compile(
+      "(\\\\*)\"(\\w+(?:\\s+\\w+)+)(\\\\*)\"\\s*:"
+  );
+
+  private static String removeSpacesInJsonKeyNames(String s) {
+    Matcher matcher = SPACED_JSON_KEY_PATTERN.matcher(s);
+    if (!matcher.find()) {
+      return s;
+    }
+    StringBuffer sb = new StringBuffer();
+    matcher.reset();
+    while (matcher.find()) {
+      String leading = matcher.group(1);
+      String key = matcher.group(2).replaceAll("\\s+", "");
+      String trailing = matcher.group(3);
+      matcher.appendReplacement(sb, Matcher.quoteReplacement(leading + "\"" + key + trailing + "\":"));
+    }
+    matcher.appendTail(sb);
+    return sb.toString();
+  }
+
   /**
    * Ordered body strings to hash for SNAP webhook signature verification.
    * DANA may sign exact wire bytes, escape-normalized forms, or minified canonical JSON.
@@ -253,6 +274,16 @@ public final class DanaSignatureUtil {
         forms.add(form);
       }
     };
+
+    String spacedKeyRemoved = removeSpacesInJsonKeyNames(requestBody);
+    if (!spacedKeyRemoved.equals(requestBody)) {
+      add.accept(spacedKeyRemoved);
+    }
+
+    String spacedKeyRemovedTripleCollapsed = removeSpacesInJsonKeyNames(collapseTripleBackslashQuotes(requestBody));
+    if (!spacedKeyRemovedTripleCollapsed.equals(requestBody)) {
+      add.accept(spacedKeyRemovedTripleCollapsed);
+    }
 
     String tripleCollapsed = collapseTripleBackslashQuotes(requestBody);
     if (!tripleCollapsed.equals(requestBody) && isValidJson(tripleCollapsed)) {
