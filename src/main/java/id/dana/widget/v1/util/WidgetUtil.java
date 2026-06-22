@@ -72,7 +72,7 @@ public class WidgetUtil {
         String baseUrl;
         if (mode.equals(Mode.DEEPLINK)) {
             if (env.equals(Env.PRODUCTION)) {
-                baseUrl = "https://m.dana.id/n/link/bind";
+                baseUrl = "https://m.dana.id/n/link/binding";
             } else {
                 baseUrl = "https://m.sandbox.dana.id/n/link/binding";
             }
