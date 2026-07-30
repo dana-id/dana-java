@@ -6,6 +6,7 @@
 
 package id.dana.widget.v1.api;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import id.dana.invoker.ApiClient;
@@ -196,7 +197,8 @@ interface WidgetApiService {
 
 public class WidgetApi {
 
-  private static final ObjectMapper objectMapper = new ObjectMapper();
+  private static final ObjectMapper objectMapper = new ObjectMapper()
+      .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
   private final WidgetApiService service;
 
@@ -242,13 +244,67 @@ public class WidgetApi {
     try {
       Response<AccountUnbindingResponse> response = service.accountUnbinding(accountUnbindingRequest).execute();
       if (response.isSuccessful()) {
-        return response.body();
+        AccountUnbindingResponse body = response.body();
+        try {
+          String packageName = "id.dana.widget.v1.api";
+          String customValidationPackage = packageName.replace(".api", "");
+          Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+          java.lang.reflect.Method customValidationResponseMethod =
+              customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
+          customValidationResponseMethod.invoke(null, accountUnbindingRequest, body);
+        } catch (ClassNotFoundException | NoClassDefFoundError | NoSuchMethodException e) {
+          // If CustomValidation response hook doesn't exist for this domain, skip it
+        } catch (Exception e) {
+          if (e instanceof java.lang.reflect.InvocationTargetException) {
+            Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+            if (cause instanceof DanaException) {
+              throw (DanaException) cause;
+            }
+            if (cause instanceof RuntimeException) {
+              throw (RuntimeException) cause;
+            }
+          }
+          throw new DanaException("Custom validation response error", e);
+        }
+        return body;
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
             String errorBodyString = errorBody.string();
             try {
-              return objectMapper.readValue(errorBodyString, AccountUnbindingResponse.class);
+              AccountUnbindingResponse body = objectMapper.readValue(errorBodyString, AccountUnbindingResponse.class);
+              try {
+                String packageName = "id.dana.widget.v1.api";
+                String customValidationPackage = packageName.replace(".api", "");
+                Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+                try {
+                  java.lang.reflect.Method enrichErrorMethod =
+                      customValidationClass.getMethod("enrichCreateOrderError", Object.class, Object.class);
+                  enrichErrorMethod.invoke(null, accountUnbindingRequest, body);
+                } catch (NoSuchMethodException enrichMissing) {
+                  java.lang.reflect.Method customValidationResponseMethod =
+                      customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
+                  customValidationResponseMethod.invoke(null, accountUnbindingRequest, body);
+                }
+              } catch (ClassNotFoundException | NoClassDefFoundError | NoSuchMethodException e) {
+                // If CustomValidation response/error hook doesn't exist for this domain, skip it
+              } catch (Exception e) {
+                if (e instanceof java.lang.reflect.InvocationTargetException) {
+                  Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+                  if (cause instanceof DanaException) {
+                    throw (DanaException) cause;
+                  }
+                  if (cause instanceof RuntimeException) {
+                    throw (RuntimeException) cause;
+                  }
+                }
+                throw new DanaException("Custom validation response error", e);
+              }
+              // Preserve previous Java behavior: return typed body on HTTP non-2xx.
+              // Hints (QRIS / balance / etc.) are applied onto responseMessage above when hooks exist.
+              return body;
+            } catch (DanaException danaException) {
+              throw danaException;
             } catch (Exception jsonException) {
               throw new DanaException("API Error: " + errorBodyString);
             }
@@ -300,13 +356,67 @@ public class WidgetApi {
     try {
       Response<ApplyOTTResponse> response = service.applyOTT(applyOTTRequest).execute();
       if (response.isSuccessful()) {
-        return response.body();
+        ApplyOTTResponse body = response.body();
+        try {
+          String packageName = "id.dana.widget.v1.api";
+          String customValidationPackage = packageName.replace(".api", "");
+          Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+          java.lang.reflect.Method customValidationResponseMethod =
+              customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
+          customValidationResponseMethod.invoke(null, applyOTTRequest, body);
+        } catch (ClassNotFoundException | NoClassDefFoundError | NoSuchMethodException e) {
+          // If CustomValidation response hook doesn't exist for this domain, skip it
+        } catch (Exception e) {
+          if (e instanceof java.lang.reflect.InvocationTargetException) {
+            Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+            if (cause instanceof DanaException) {
+              throw (DanaException) cause;
+            }
+            if (cause instanceof RuntimeException) {
+              throw (RuntimeException) cause;
+            }
+          }
+          throw new DanaException("Custom validation response error", e);
+        }
+        return body;
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
             String errorBodyString = errorBody.string();
             try {
-              return objectMapper.readValue(errorBodyString, ApplyOTTResponse.class);
+              ApplyOTTResponse body = objectMapper.readValue(errorBodyString, ApplyOTTResponse.class);
+              try {
+                String packageName = "id.dana.widget.v1.api";
+                String customValidationPackage = packageName.replace(".api", "");
+                Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+                try {
+                  java.lang.reflect.Method enrichErrorMethod =
+                      customValidationClass.getMethod("enrichCreateOrderError", Object.class, Object.class);
+                  enrichErrorMethod.invoke(null, applyOTTRequest, body);
+                } catch (NoSuchMethodException enrichMissing) {
+                  java.lang.reflect.Method customValidationResponseMethod =
+                      customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
+                  customValidationResponseMethod.invoke(null, applyOTTRequest, body);
+                }
+              } catch (ClassNotFoundException | NoClassDefFoundError | NoSuchMethodException e) {
+                // If CustomValidation response/error hook doesn't exist for this domain, skip it
+              } catch (Exception e) {
+                if (e instanceof java.lang.reflect.InvocationTargetException) {
+                  Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+                  if (cause instanceof DanaException) {
+                    throw (DanaException) cause;
+                  }
+                  if (cause instanceof RuntimeException) {
+                    throw (RuntimeException) cause;
+                  }
+                }
+                throw new DanaException("Custom validation response error", e);
+              }
+              // Preserve previous Java behavior: return typed body on HTTP non-2xx.
+              // Hints (QRIS / balance / etc.) are applied onto responseMessage above when hooks exist.
+              return body;
+            } catch (DanaException danaException) {
+              throw danaException;
             } catch (Exception jsonException) {
               throw new DanaException("API Error: " + errorBodyString);
             }
@@ -358,13 +468,67 @@ public class WidgetApi {
     try {
       Response<ApplyTokenResponse> response = service.applyToken(applyTokenRequest).execute();
       if (response.isSuccessful()) {
-        return response.body();
+        ApplyTokenResponse body = response.body();
+        try {
+          String packageName = "id.dana.widget.v1.api";
+          String customValidationPackage = packageName.replace(".api", "");
+          Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+          java.lang.reflect.Method customValidationResponseMethod =
+              customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
+          customValidationResponseMethod.invoke(null, applyTokenRequest, body);
+        } catch (ClassNotFoundException | NoClassDefFoundError | NoSuchMethodException e) {
+          // If CustomValidation response hook doesn't exist for this domain, skip it
+        } catch (Exception e) {
+          if (e instanceof java.lang.reflect.InvocationTargetException) {
+            Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+            if (cause instanceof DanaException) {
+              throw (DanaException) cause;
+            }
+            if (cause instanceof RuntimeException) {
+              throw (RuntimeException) cause;
+            }
+          }
+          throw new DanaException("Custom validation response error", e);
+        }
+        return body;
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
             String errorBodyString = errorBody.string();
             try {
-              return objectMapper.readValue(errorBodyString, ApplyTokenResponse.class);
+              ApplyTokenResponse body = objectMapper.readValue(errorBodyString, ApplyTokenResponse.class);
+              try {
+                String packageName = "id.dana.widget.v1.api";
+                String customValidationPackage = packageName.replace(".api", "");
+                Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+                try {
+                  java.lang.reflect.Method enrichErrorMethod =
+                      customValidationClass.getMethod("enrichCreateOrderError", Object.class, Object.class);
+                  enrichErrorMethod.invoke(null, applyTokenRequest, body);
+                } catch (NoSuchMethodException enrichMissing) {
+                  java.lang.reflect.Method customValidationResponseMethod =
+                      customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
+                  customValidationResponseMethod.invoke(null, applyTokenRequest, body);
+                }
+              } catch (ClassNotFoundException | NoClassDefFoundError | NoSuchMethodException e) {
+                // If CustomValidation response/error hook doesn't exist for this domain, skip it
+              } catch (Exception e) {
+                if (e instanceof java.lang.reflect.InvocationTargetException) {
+                  Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+                  if (cause instanceof DanaException) {
+                    throw (DanaException) cause;
+                  }
+                  if (cause instanceof RuntimeException) {
+                    throw (RuntimeException) cause;
+                  }
+                }
+                throw new DanaException("Custom validation response error", e);
+              }
+              // Preserve previous Java behavior: return typed body on HTTP non-2xx.
+              // Hints (QRIS / balance / etc.) are applied onto responseMessage above when hooks exist.
+              return body;
+            } catch (DanaException danaException) {
+              throw danaException;
             } catch (Exception jsonException) {
               throw new DanaException("API Error: " + errorBodyString);
             }
@@ -414,13 +578,67 @@ public class WidgetApi {
     try {
       Response<BalanceInquiryResponse> response = service.balanceInquiry(balanceInquiryRequest).execute();
       if (response.isSuccessful()) {
-        return response.body();
+        BalanceInquiryResponse body = response.body();
+        try {
+          String packageName = "id.dana.widget.v1.api";
+          String customValidationPackage = packageName.replace(".api", "");
+          Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+          java.lang.reflect.Method customValidationResponseMethod =
+              customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
+          customValidationResponseMethod.invoke(null, balanceInquiryRequest, body);
+        } catch (ClassNotFoundException | NoClassDefFoundError | NoSuchMethodException e) {
+          // If CustomValidation response hook doesn't exist for this domain, skip it
+        } catch (Exception e) {
+          if (e instanceof java.lang.reflect.InvocationTargetException) {
+            Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+            if (cause instanceof DanaException) {
+              throw (DanaException) cause;
+            }
+            if (cause instanceof RuntimeException) {
+              throw (RuntimeException) cause;
+            }
+          }
+          throw new DanaException("Custom validation response error", e);
+        }
+        return body;
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
             String errorBodyString = errorBody.string();
             try {
-              return objectMapper.readValue(errorBodyString, BalanceInquiryResponse.class);
+              BalanceInquiryResponse body = objectMapper.readValue(errorBodyString, BalanceInquiryResponse.class);
+              try {
+                String packageName = "id.dana.widget.v1.api";
+                String customValidationPackage = packageName.replace(".api", "");
+                Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+                try {
+                  java.lang.reflect.Method enrichErrorMethod =
+                      customValidationClass.getMethod("enrichCreateOrderError", Object.class, Object.class);
+                  enrichErrorMethod.invoke(null, balanceInquiryRequest, body);
+                } catch (NoSuchMethodException enrichMissing) {
+                  java.lang.reflect.Method customValidationResponseMethod =
+                      customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
+                  customValidationResponseMethod.invoke(null, balanceInquiryRequest, body);
+                }
+              } catch (ClassNotFoundException | NoClassDefFoundError | NoSuchMethodException e) {
+                // If CustomValidation response/error hook doesn't exist for this domain, skip it
+              } catch (Exception e) {
+                if (e instanceof java.lang.reflect.InvocationTargetException) {
+                  Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+                  if (cause instanceof DanaException) {
+                    throw (DanaException) cause;
+                  }
+                  if (cause instanceof RuntimeException) {
+                    throw (RuntimeException) cause;
+                  }
+                }
+                throw new DanaException("Custom validation response error", e);
+              }
+              // Preserve previous Java behavior: return typed body on HTTP non-2xx.
+              // Hints (QRIS / balance / etc.) are applied onto responseMessage above when hooks exist.
+              return body;
+            } catch (DanaException danaException) {
+              throw danaException;
             } catch (Exception jsonException) {
               throw new DanaException("API Error: " + errorBodyString);
             }
@@ -472,13 +690,67 @@ public class WidgetApi {
     try {
       Response<CancelOrderResponse> response = service.cancelOrder(cancelOrderRequest).execute();
       if (response.isSuccessful()) {
-        return response.body();
+        CancelOrderResponse body = response.body();
+        try {
+          String packageName = "id.dana.widget.v1.api";
+          String customValidationPackage = packageName.replace(".api", "");
+          Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+          java.lang.reflect.Method customValidationResponseMethod =
+              customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
+          customValidationResponseMethod.invoke(null, cancelOrderRequest, body);
+        } catch (ClassNotFoundException | NoClassDefFoundError | NoSuchMethodException e) {
+          // If CustomValidation response hook doesn't exist for this domain, skip it
+        } catch (Exception e) {
+          if (e instanceof java.lang.reflect.InvocationTargetException) {
+            Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+            if (cause instanceof DanaException) {
+              throw (DanaException) cause;
+            }
+            if (cause instanceof RuntimeException) {
+              throw (RuntimeException) cause;
+            }
+          }
+          throw new DanaException("Custom validation response error", e);
+        }
+        return body;
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
             String errorBodyString = errorBody.string();
             try {
-              return objectMapper.readValue(errorBodyString, CancelOrderResponse.class);
+              CancelOrderResponse body = objectMapper.readValue(errorBodyString, CancelOrderResponse.class);
+              try {
+                String packageName = "id.dana.widget.v1.api";
+                String customValidationPackage = packageName.replace(".api", "");
+                Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+                try {
+                  java.lang.reflect.Method enrichErrorMethod =
+                      customValidationClass.getMethod("enrichCreateOrderError", Object.class, Object.class);
+                  enrichErrorMethod.invoke(null, cancelOrderRequest, body);
+                } catch (NoSuchMethodException enrichMissing) {
+                  java.lang.reflect.Method customValidationResponseMethod =
+                      customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
+                  customValidationResponseMethod.invoke(null, cancelOrderRequest, body);
+                }
+              } catch (ClassNotFoundException | NoClassDefFoundError | NoSuchMethodException e) {
+                // If CustomValidation response/error hook doesn't exist for this domain, skip it
+              } catch (Exception e) {
+                if (e instanceof java.lang.reflect.InvocationTargetException) {
+                  Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+                  if (cause instanceof DanaException) {
+                    throw (DanaException) cause;
+                  }
+                  if (cause instanceof RuntimeException) {
+                    throw (RuntimeException) cause;
+                  }
+                }
+                throw new DanaException("Custom validation response error", e);
+              }
+              // Preserve previous Java behavior: return typed body on HTTP non-2xx.
+              // Hints (QRIS / balance / etc.) are applied onto responseMessage above when hooks exist.
+              return body;
+            } catch (DanaException danaException) {
+              throw danaException;
             } catch (Exception jsonException) {
               throw new DanaException("API Error: " + errorBodyString);
             }
@@ -530,13 +802,67 @@ public class WidgetApi {
     try {
       Response<QueryPaymentResponse> response = service.queryPayment(queryPaymentRequest).execute();
       if (response.isSuccessful()) {
-        return response.body();
+        QueryPaymentResponse body = response.body();
+        try {
+          String packageName = "id.dana.widget.v1.api";
+          String customValidationPackage = packageName.replace(".api", "");
+          Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+          java.lang.reflect.Method customValidationResponseMethod =
+              customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
+          customValidationResponseMethod.invoke(null, queryPaymentRequest, body);
+        } catch (ClassNotFoundException | NoClassDefFoundError | NoSuchMethodException e) {
+          // If CustomValidation response hook doesn't exist for this domain, skip it
+        } catch (Exception e) {
+          if (e instanceof java.lang.reflect.InvocationTargetException) {
+            Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+            if (cause instanceof DanaException) {
+              throw (DanaException) cause;
+            }
+            if (cause instanceof RuntimeException) {
+              throw (RuntimeException) cause;
+            }
+          }
+          throw new DanaException("Custom validation response error", e);
+        }
+        return body;
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
             String errorBodyString = errorBody.string();
             try {
-              return objectMapper.readValue(errorBodyString, QueryPaymentResponse.class);
+              QueryPaymentResponse body = objectMapper.readValue(errorBodyString, QueryPaymentResponse.class);
+              try {
+                String packageName = "id.dana.widget.v1.api";
+                String customValidationPackage = packageName.replace(".api", "");
+                Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+                try {
+                  java.lang.reflect.Method enrichErrorMethod =
+                      customValidationClass.getMethod("enrichCreateOrderError", Object.class, Object.class);
+                  enrichErrorMethod.invoke(null, queryPaymentRequest, body);
+                } catch (NoSuchMethodException enrichMissing) {
+                  java.lang.reflect.Method customValidationResponseMethod =
+                      customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
+                  customValidationResponseMethod.invoke(null, queryPaymentRequest, body);
+                }
+              } catch (ClassNotFoundException | NoClassDefFoundError | NoSuchMethodException e) {
+                // If CustomValidation response/error hook doesn't exist for this domain, skip it
+              } catch (Exception e) {
+                if (e instanceof java.lang.reflect.InvocationTargetException) {
+                  Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+                  if (cause instanceof DanaException) {
+                    throw (DanaException) cause;
+                  }
+                  if (cause instanceof RuntimeException) {
+                    throw (RuntimeException) cause;
+                  }
+                }
+                throw new DanaException("Custom validation response error", e);
+              }
+              // Preserve previous Java behavior: return typed body on HTTP non-2xx.
+              // Hints (QRIS / balance / etc.) are applied onto responseMessage above when hooks exist.
+              return body;
+            } catch (DanaException danaException) {
+              throw danaException;
             } catch (Exception jsonException) {
               throw new DanaException("API Error: " + errorBodyString);
             }
@@ -586,13 +912,67 @@ public class WidgetApi {
     try {
       Response<QueryUserProfileResponse> response = service.queryUserProfile(queryUserProfileRequest).execute();
       if (response.isSuccessful()) {
-        return response.body();
+        QueryUserProfileResponse body = response.body();
+        try {
+          String packageName = "id.dana.widget.v1.api";
+          String customValidationPackage = packageName.replace(".api", "");
+          Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+          java.lang.reflect.Method customValidationResponseMethod =
+              customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
+          customValidationResponseMethod.invoke(null, queryUserProfileRequest, body);
+        } catch (ClassNotFoundException | NoClassDefFoundError | NoSuchMethodException e) {
+          // If CustomValidation response hook doesn't exist for this domain, skip it
+        } catch (Exception e) {
+          if (e instanceof java.lang.reflect.InvocationTargetException) {
+            Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+            if (cause instanceof DanaException) {
+              throw (DanaException) cause;
+            }
+            if (cause instanceof RuntimeException) {
+              throw (RuntimeException) cause;
+            }
+          }
+          throw new DanaException("Custom validation response error", e);
+        }
+        return body;
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
             String errorBodyString = errorBody.string();
             try {
-              return objectMapper.readValue(errorBodyString, QueryUserProfileResponse.class);
+              QueryUserProfileResponse body = objectMapper.readValue(errorBodyString, QueryUserProfileResponse.class);
+              try {
+                String packageName = "id.dana.widget.v1.api";
+                String customValidationPackage = packageName.replace(".api", "");
+                Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+                try {
+                  java.lang.reflect.Method enrichErrorMethod =
+                      customValidationClass.getMethod("enrichCreateOrderError", Object.class, Object.class);
+                  enrichErrorMethod.invoke(null, queryUserProfileRequest, body);
+                } catch (NoSuchMethodException enrichMissing) {
+                  java.lang.reflect.Method customValidationResponseMethod =
+                      customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
+                  customValidationResponseMethod.invoke(null, queryUserProfileRequest, body);
+                }
+              } catch (ClassNotFoundException | NoClassDefFoundError | NoSuchMethodException e) {
+                // If CustomValidation response/error hook doesn't exist for this domain, skip it
+              } catch (Exception e) {
+                if (e instanceof java.lang.reflect.InvocationTargetException) {
+                  Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+                  if (cause instanceof DanaException) {
+                    throw (DanaException) cause;
+                  }
+                  if (cause instanceof RuntimeException) {
+                    throw (RuntimeException) cause;
+                  }
+                }
+                throw new DanaException("Custom validation response error", e);
+              }
+              // Preserve previous Java behavior: return typed body on HTTP non-2xx.
+              // Hints (QRIS / balance / etc.) are applied onto responseMessage above when hooks exist.
+              return body;
+            } catch (DanaException danaException) {
+              throw danaException;
             } catch (Exception jsonException) {
               throw new DanaException("API Error: " + errorBodyString);
             }
@@ -644,13 +1024,67 @@ public class WidgetApi {
     try {
       Response<RefundOrderResponse> response = service.refundOrder(refundOrderRequest).execute();
       if (response.isSuccessful()) {
-        return response.body();
+        RefundOrderResponse body = response.body();
+        try {
+          String packageName = "id.dana.widget.v1.api";
+          String customValidationPackage = packageName.replace(".api", "");
+          Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+          java.lang.reflect.Method customValidationResponseMethod =
+              customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
+          customValidationResponseMethod.invoke(null, refundOrderRequest, body);
+        } catch (ClassNotFoundException | NoClassDefFoundError | NoSuchMethodException e) {
+          // If CustomValidation response hook doesn't exist for this domain, skip it
+        } catch (Exception e) {
+          if (e instanceof java.lang.reflect.InvocationTargetException) {
+            Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+            if (cause instanceof DanaException) {
+              throw (DanaException) cause;
+            }
+            if (cause instanceof RuntimeException) {
+              throw (RuntimeException) cause;
+            }
+          }
+          throw new DanaException("Custom validation response error", e);
+        }
+        return body;
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
             String errorBodyString = errorBody.string();
             try {
-              return objectMapper.readValue(errorBodyString, RefundOrderResponse.class);
+              RefundOrderResponse body = objectMapper.readValue(errorBodyString, RefundOrderResponse.class);
+              try {
+                String packageName = "id.dana.widget.v1.api";
+                String customValidationPackage = packageName.replace(".api", "");
+                Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+                try {
+                  java.lang.reflect.Method enrichErrorMethod =
+                      customValidationClass.getMethod("enrichCreateOrderError", Object.class, Object.class);
+                  enrichErrorMethod.invoke(null, refundOrderRequest, body);
+                } catch (NoSuchMethodException enrichMissing) {
+                  java.lang.reflect.Method customValidationResponseMethod =
+                      customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
+                  customValidationResponseMethod.invoke(null, refundOrderRequest, body);
+                }
+              } catch (ClassNotFoundException | NoClassDefFoundError | NoSuchMethodException e) {
+                // If CustomValidation response/error hook doesn't exist for this domain, skip it
+              } catch (Exception e) {
+                if (e instanceof java.lang.reflect.InvocationTargetException) {
+                  Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+                  if (cause instanceof DanaException) {
+                    throw (DanaException) cause;
+                  }
+                  if (cause instanceof RuntimeException) {
+                    throw (RuntimeException) cause;
+                  }
+                }
+                throw new DanaException("Custom validation response error", e);
+              }
+              // Preserve previous Java behavior: return typed body on HTTP non-2xx.
+              // Hints (QRIS / balance / etc.) are applied onto responseMessage above when hooks exist.
+              return body;
+            } catch (DanaException danaException) {
+              throw danaException;
             } catch (Exception jsonException) {
               throw new DanaException("API Error: " + errorBodyString);
             }
@@ -702,13 +1136,67 @@ public class WidgetApi {
     try {
       Response<WidgetPaymentResponse> response = service.widgetPayment(widgetPaymentRequest).execute();
       if (response.isSuccessful()) {
-        return response.body();
+        WidgetPaymentResponse body = response.body();
+        try {
+          String packageName = "id.dana.widget.v1.api";
+          String customValidationPackage = packageName.replace(".api", "");
+          Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+          java.lang.reflect.Method customValidationResponseMethod =
+              customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
+          customValidationResponseMethod.invoke(null, widgetPaymentRequest, body);
+        } catch (ClassNotFoundException | NoClassDefFoundError | NoSuchMethodException e) {
+          // If CustomValidation response hook doesn't exist for this domain, skip it
+        } catch (Exception e) {
+          if (e instanceof java.lang.reflect.InvocationTargetException) {
+            Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+            if (cause instanceof DanaException) {
+              throw (DanaException) cause;
+            }
+            if (cause instanceof RuntimeException) {
+              throw (RuntimeException) cause;
+            }
+          }
+          throw new DanaException("Custom validation response error", e);
+        }
+        return body;
       } else {
         try (ResponseBody errorBody = response.errorBody()) {
           if (errorBody != null) {
             String errorBodyString = errorBody.string();
             try {
-              return objectMapper.readValue(errorBodyString, WidgetPaymentResponse.class);
+              WidgetPaymentResponse body = objectMapper.readValue(errorBodyString, WidgetPaymentResponse.class);
+              try {
+                String packageName = "id.dana.widget.v1.api";
+                String customValidationPackage = packageName.replace(".api", "");
+                Class<?> customValidationClass = Class.forName(customValidationPackage + ".CustomValidation");
+                try {
+                  java.lang.reflect.Method enrichErrorMethod =
+                      customValidationClass.getMethod("enrichCreateOrderError", Object.class, Object.class);
+                  enrichErrorMethod.invoke(null, widgetPaymentRequest, body);
+                } catch (NoSuchMethodException enrichMissing) {
+                  java.lang.reflect.Method customValidationResponseMethod =
+                      customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
+                  customValidationResponseMethod.invoke(null, widgetPaymentRequest, body);
+                }
+              } catch (ClassNotFoundException | NoClassDefFoundError | NoSuchMethodException e) {
+                // If CustomValidation response/error hook doesn't exist for this domain, skip it
+              } catch (Exception e) {
+                if (e instanceof java.lang.reflect.InvocationTargetException) {
+                  Throwable cause = ((java.lang.reflect.InvocationTargetException) e).getTargetException();
+                  if (cause instanceof DanaException) {
+                    throw (DanaException) cause;
+                  }
+                  if (cause instanceof RuntimeException) {
+                    throw (RuntimeException) cause;
+                  }
+                }
+                throw new DanaException("Custom validation response error", e);
+              }
+              // Preserve previous Java behavior: return typed body on HTTP non-2xx.
+              // Hints (QRIS / balance / etc.) are applied onto responseMessage above when hooks exist.
+              return body;
+            } catch (DanaException danaException) {
+              throw danaException;
             } catch (Exception jsonException) {
               throw new DanaException("API Error: " + errorBodyString);
             }

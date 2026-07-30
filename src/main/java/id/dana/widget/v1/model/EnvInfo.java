@@ -66,7 +66,7 @@ public class EnvInfo {
   private String sdkVersion;
 
   /**
-   * The source platform is always independent payment gateway (IPG)
+   * The source platform is always independent payment gateway (IPG). Defaults to IPG when omitted.
    */
   public enum SourcePlatformEnum {
     /**
@@ -106,8 +106,8 @@ public class EnvInfo {
     }
   }
   public static final String JSON_PROPERTY_SOURCE_PLATFORM = "sourcePlatform";
-  @javax.annotation.Nonnull
-  private SourcePlatformEnum sourcePlatform;
+  @javax.annotation.Nullable
+  private SourcePlatformEnum sourcePlatform = SourcePlatformEnum.IPG;
 
   public static final String JSON_PROPERTY_ORDER_OS_TYPE = "orderOsType";
   @javax.annotation.Nullable
@@ -421,19 +421,19 @@ public class EnvInfo {
     this.sdkVersion = sdkVersion;
   }
 
-  public EnvInfo sourcePlatform(@javax.annotation.Nonnull SourcePlatformEnum sourcePlatform) {
+  public EnvInfo sourcePlatform(@javax.annotation.Nullable SourcePlatformEnum sourcePlatform) {
     
     this.sourcePlatform = sourcePlatform;
     return this;
   }
 
   /**
-   * The source platform is always independent payment gateway (IPG)
+   * The source platform is always independent payment gateway (IPG). Defaults to IPG when omitted.
    * @return sourcePlatform
    */
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   @JsonProperty(JSON_PROPERTY_SOURCE_PLATFORM)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public SourcePlatformEnum getSourcePlatform() {
     return sourcePlatform;
@@ -441,8 +441,8 @@ public class EnvInfo {
 
 
   @JsonProperty(JSON_PROPERTY_SOURCE_PLATFORM)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setSourcePlatform(@javax.annotation.Nonnull SourcePlatformEnum sourcePlatform) {
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setSourcePlatform(@javax.annotation.Nullable SourcePlatformEnum sourcePlatform) {
     this.sourcePlatform = sourcePlatform;
   }
 

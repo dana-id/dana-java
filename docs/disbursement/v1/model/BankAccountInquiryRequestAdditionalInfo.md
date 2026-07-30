@@ -13,7 +13,7 @@ Additional information
 |**chargeTarget** | [**ChargeTargetEnum**](#ChargeTargetEnum) | Additional information of charge target. The values are:<br> • null<br> • DIVISION<br> • MERCHANT<br> Notes: If the value is DIVISION, externalDivisionId will be Mandatory  |  [optional] |
 |**beneficiaryBankCode** | **String** | Additional information of beneficiary Bank code |  |
 |**beneficiaryAccountName** | **String** | Additional information of beneficiary account name for validation purpose |  [optional] |
-|**accountType** | **String** | Additional information of account type |  [optional] |
+|**accountType** | [**AccountTypeEnum**](#AccountTypeEnum) | Additional information of account type  |  [optional] |
 |**accessToken** | **String** | Contains customer token, which has been obtained from binding process, refer to Account Binding & Unbinding documentation<br> If request is coming from user interaction, this field is mandatory. If not, just filled customerNumber  |  [optional] |
 
 
@@ -32,6 +32,27 @@ import id.dana.disbursement.v1.model.BankAccountInquiryRequestAdditionalInfo.Cha
 public class Example {
     public static void main(String[] args) {
         ChargeTargetEnum exampleEnum = ChargeTargetEnum.DIVISION;
+    }
+}
+```
+
+
+<a name="AccountTypeEnum"></a>
+## Enum: AccountTypeEnum
+
+| Name | Value | Description |
+| - | - | - |
+| `MERCHANT_DEPOSIT_ACCOUNT` | "MERCHANT_DEPOSIT_ACCOUNT" | Merchant deposit account |
+| `SETTLEMENT_ACCOUNT` | "SETTLEMENT_ACCOUNT" | Settlement account |
+| `DIVISION_DEPOSIT_ACCOUNT` | "DIVISION_DEPOSIT_ACCOUNT" | Division deposit account |
+
+### Usage Example
+```java
+import id.dana.disbursement.v1.model.BankAccountInquiryRequestAdditionalInfo.AccountTypeEnum;
+
+public class Example {
+    public static void main(String[] args) {
+        AccountTypeEnum exampleEnum = AccountTypeEnum.MERCHANT_DEPOSIT_ACCOUNT;
     }
 }
 ```

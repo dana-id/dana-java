@@ -35,9 +35,59 @@ public class TransferToDanaRequestAdditionalInfo {
   @javax.annotation.Nullable
   private String extendInfo;
 
+  /**
+   * Additional information of account type 
+   */
+  public enum AccountTypeEnum {
+    /**
+     * Merchant deposit account
+     */
+    MERCHANT_DEPOSIT_ACCOUNT(String.valueOf("MERCHANT_DEPOSIT_ACCOUNT")),
+    
+    /**
+     * Settlement account
+     */
+    SETTLEMENT_ACCOUNT(String.valueOf("SETTLEMENT_ACCOUNT")),
+    
+    /**
+     * Division deposit account
+     */
+    DIVISION_DEPOSIT_ACCOUNT(String.valueOf("DIVISION_DEPOSIT_ACCOUNT")),
+    
+    /**
+     * To handle empty string value
+     */
+    UNSPECIFIED(String.valueOf(""));
+
+    private String value;
+
+    AccountTypeEnum(String value) {
+      this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static AccountTypeEnum fromValue(String value) {
+      for (AccountTypeEnum b : AccountTypeEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+  }
   public static final String JSON_PROPERTY_ACCOUNT_TYPE = "accountType";
   @javax.annotation.Nullable
-  private String accountType;
+  private AccountTypeEnum accountType;
 
   public static final String JSON_PROPERTY_FUND_TYPE = "fundType";
   @javax.annotation.Nonnull
@@ -126,28 +176,28 @@ public class TransferToDanaRequestAdditionalInfo {
     this.extendInfo = extendInfo;
   }
 
-  public TransferToDanaRequestAdditionalInfo accountType(@javax.annotation.Nullable String accountType) {
+  public TransferToDanaRequestAdditionalInfo accountType(@javax.annotation.Nullable AccountTypeEnum accountType) {
     
     this.accountType = accountType;
     return this;
   }
 
   /**
-   * Additional information of account type
+   * Additional information of account type 
    * @return accountType
    */
   @javax.annotation.Nullable
   @JsonProperty(JSON_PROPERTY_ACCOUNT_TYPE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public String getAccountType() {
+  public AccountTypeEnum getAccountType() {
     return accountType;
   }
 
 
   @JsonProperty(JSON_PROPERTY_ACCOUNT_TYPE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setAccountType(@javax.annotation.Nullable String accountType) {
+  public void setAccountType(@javax.annotation.Nullable AccountTypeEnum accountType) {
     this.accountType = accountType;
   }
 

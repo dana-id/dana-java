@@ -6,7 +6,9 @@ import id.dana.paymentgateway.v1.model.Buyer;
 import id.dana.paymentgateway.v1.model.CreateOrderByApiRequest;
 import id.dana.paymentgateway.v1.model.CreateOrderByRedirectAdditionalInfo;
 import id.dana.paymentgateway.v1.model.CreateOrderByRedirectRequest;
+import id.dana.paymentgateway.v1.model.CreateOrderResponse;
 import id.dana.paymentgateway.v1.model.CreateOrderByApiAdditionalInfo;
+import id.dana.paymentgateway.v1.model.EnvInfo;
 import id.dana.paymentgateway.v1.model.Goods;
 import id.dana.paymentgateway.v1.model.Money;
 import id.dana.paymentgateway.v1.model.OrderApiObject;
@@ -37,6 +39,9 @@ public final class CustomValidation {
   /** Money value pattern: digits (1-16) + "." + exactly 2 digits (e.g. 10000.00) */
   private static final Pattern MONEY_VALUE_PATTERN = Pattern.compile("^\\d{1,16}\\.\\d{2}$");
 
+  /** Sandbox maximum amount (major units) for Payment Gateway create order. */
+  private static final double SANDBOX_MAX_AMOUNT = 10000000d;
+
   private static final String NETWORK_PAY_PG_CARD = "NETWORK_PAY_PG_CARD";
 
   private static final Set<String> CREDIT_DEBIT_CARD_PAY_METHODS =
@@ -54,18 +59,25 @@ public final class CustomValidation {
 
   static {
     List<Consumer<Object>> createOrderByApiValidators = new ArrayList<>();
+    createOrderByApiValidators.add(CustomValidation::defaultSourcePlatform);
     createOrderByApiValidators.add(CustomValidation::validateAdditionalInfoRequired);
+    createOrderByApiValidators.add(CustomValidation::validateRequiredAdditionalInfoFieldsNotEmpty);
     createOrderByApiValidators.add(CustomValidation::validateMoneyValuePattern);
+    createOrderByApiValidators.add(CustomValidation::validateSandboxAmount);
     createOrderByApiValidators.add(CustomValidation::validateValidUpToCreateOrderRequest);
     createOrderByApiValidators.add(CustomValidation::validateExternalStoreIdForQris);
+    createOrderByApiValidators.add(CustomValidation::validatePartnerReferenceNoForQris);
     createOrderByApiValidators.add(CustomValidation::validateSandboxPayMethodAndPayOption);
     createOrderByApiValidators.add(CustomValidation::validateConditionalPayOptionAdditionalInfoCreateOrderRequest);
     createOrderByApiValidators.add(CustomValidation::validateOptionalFieldsWithRequiredNestedCreateOrderRequest);
     validationRegistry.put("CreateOrderByApiRequest", createOrderByApiValidators);
 
     List<Consumer<Object>> createOrderByRedirectValidators = new ArrayList<>();
+    createOrderByRedirectValidators.add(CustomValidation::defaultSourcePlatform);
     createOrderByRedirectValidators.add(CustomValidation::validateAdditionalInfoRequired);
+    createOrderByRedirectValidators.add(CustomValidation::validateRequiredAdditionalInfoFieldsNotEmpty);
     createOrderByRedirectValidators.add(CustomValidation::validateMoneyValuePattern);
+    createOrderByRedirectValidators.add(CustomValidation::validateSandboxAmount);
     createOrderByRedirectValidators.add(CustomValidation::validateValidUpToCreateOrderRequest);
     createOrderByRedirectValidators.add(CustomValidation::validateSandboxPayMethodAndPayOption);
     createOrderByRedirectValidators.add(CustomValidation::validateConditionalPayOptionAdditionalInfoCreateOrderRequest);
@@ -98,6 +110,127 @@ public final class CustomValidation {
     }
   }
 
+  private static final String SANDBOX_QRIS_GUIDANCE_HINT_SUCCESS =
+      "If you want to use QRIS and it is not showing in payment methods, make sure you already fill externalStoreId. "
+          + "See https://dashboard.dana.id/sandbox/submerchants in the external shop id section.";
+
+  private static final String SANDBOX_QRIS_GUIDANCE_HINT_ERROR =
+      "If you want to use QRIS, make sure you fill externalStoreId. "
+          + "See https://dashboard.dana.id/sandbox/submerchants in the external shop id section. "
+          + "For QRIS, partnerReferenceNo max is 25 chars.";
+
+  private static final String SANDBOX_SUB_MERCHANT_ID_GUIDANCE_HINT =
+      "Make sure your subMerchantId exists. You can see it at "
+          + "https://dashboard.dana.id/sandbox/submerchants in the External Division ID section.";
+
+  /**
+   * Augment successful CreateOrder responses in sandbox (QRIS SUCCESS / subMerchantId guidance).
+   */
+  public static void customValidationResponse(Object request, Object response) {
+    if (!isSandbox() || request == null || response == null) {
+      return;
+    }
+    if (!(response instanceof CreateOrderResponse)) {
+      return;
+    }
+    CreateOrderResponse createOrderResponse = (CreateOrderResponse) response;
+
+    if (request instanceof CreateOrderByRedirectRequest) {
+      CreateOrderByRedirectRequest redirectRequest = (CreateOrderByRedirectRequest) request;
+      String externalStoreId = redirectRequest.getExternalStoreId();
+      if (externalStoreId == null || externalStoreId.trim().isEmpty()) {
+        createOrderResponse.setResponseMessage(
+            appendSandboxHint(
+                createOrderResponse.getResponseMessage(),
+                SANDBOX_QRIS_GUIDANCE_HINT_SUCCESS,
+                "externalstoreid"));
+      }
+    }
+
+    String subMerchantId = extractSubMerchantId(request);
+    if (subMerchantId != null && !subMerchantId.isEmpty()
+        && isBusinessErrorResponse(createOrderResponse.getResponseCode())) {
+      createOrderResponse.setResponseMessage(
+          appendSandboxHint(
+              createOrderResponse.getResponseMessage(),
+              SANDBOX_SUB_MERCHANT_ID_GUIDANCE_HINT,
+              "submerchantid",
+              "externaldivisionid"));
+    }
+  }
+
+  /**
+   * Enrich CreateOrder HTTP-error bodies in sandbox.
+   * SubMerchant guidance goes on responseMessage; redirect missing externalStoreId gets ERROR QRIS
+   * wording (incl. partnerReferenceNo max 25) on responseMessage (Java returns body, does not throw).
+   */
+  public static void enrichCreateOrderError(Object request, Object response) {
+    if (!isSandbox() || request == null || response == null) {
+      return;
+    }
+    if (!(response instanceof CreateOrderResponse)) {
+      return;
+    }
+    CreateOrderResponse createOrderResponse = (CreateOrderResponse) response;
+
+    String subMerchantId = extractSubMerchantId(request);
+    if (subMerchantId != null && !subMerchantId.isEmpty()
+        && isBusinessErrorResponse(createOrderResponse.getResponseCode())) {
+      createOrderResponse.setResponseMessage(
+          appendSandboxHint(
+              createOrderResponse.getResponseMessage(),
+              SANDBOX_SUB_MERCHANT_ID_GUIDANCE_HINT,
+              "submerchantid",
+              "externaldivisionid"));
+    }
+
+    if (request instanceof CreateOrderByRedirectRequest) {
+      CreateOrderByRedirectRequest redirectRequest = (CreateOrderByRedirectRequest) request;
+      String externalStoreId = redirectRequest.getExternalStoreId();
+      if (externalStoreId == null || externalStoreId.trim().isEmpty()) {
+        createOrderResponse.setResponseMessage(
+            appendSandboxHint(
+                createOrderResponse.getResponseMessage(),
+                SANDBOX_QRIS_GUIDANCE_HINT_ERROR,
+                "externalstoreid",
+                "partnerreferenceno"));
+      }
+    }
+  }
+
+  private static String extractSubMerchantId(Object request) {
+    if (request instanceof CreateOrderByApiRequest) {
+      return trimStr(((CreateOrderByApiRequest) request).getSubMerchantId());
+    }
+    if (request instanceof CreateOrderByRedirectRequest) {
+      return trimStr(((CreateOrderByRedirectRequest) request).getSubMerchantId());
+    }
+    return "";
+  }
+
+  private static boolean isBusinessErrorResponse(String responseCode) {
+    String code = trimStr(responseCode);
+    return code.isEmpty() || !code.startsWith("200");
+  }
+
+  private static String appendSandboxHint(
+      String responseMessage, String hint, String... alreadyPresentMarkers) {
+    String msg = responseMessage == null ? "" : responseMessage.trim();
+    String lowerMsg = msg.toLowerCase();
+    for (String marker : alreadyPresentMarkers) {
+      if (marker != null && !marker.isEmpty() && lowerMsg.contains(marker.toLowerCase())) {
+        return msg;
+      }
+    }
+    if (msg.isEmpty()) {
+      return hint;
+    }
+    if (msg.endsWith(".")) {
+      return msg + " " + hint;
+    }
+    return msg + ". " + hint;
+  }
+
   private static void mergeDanaException(List<Map<String, String>> aggregated, DanaException e) {
     if (e.getValidationContexts() != null && !e.getValidationContexts().isEmpty()) {
       aggregated.addAll(e.getValidationContexts());
@@ -111,6 +244,79 @@ public final class CustomValidation {
     m.put("field", field);
     m.put("message", message);
     return m;
+  }
+
+  /**
+   * Sets {@code envInfo.sourcePlatform} to {@link EnvInfo.SourcePlatformEnum#IPG} when null or empty.
+   */
+  private static void defaultSourcePlatform(Object request) {
+    if (request == null) {
+      return;
+    }
+    EnvInfo envInfo = null;
+    if (request instanceof CreateOrderByApiRequest) {
+      CreateOrderByApiAdditionalInfo ai = ((CreateOrderByApiRequest) request).getAdditionalInfo();
+      if (ai != null) {
+        envInfo = ai.getEnvInfo();
+      }
+    } else if (request instanceof CreateOrderByRedirectRequest) {
+      CreateOrderByRedirectAdditionalInfo ai =
+          ((CreateOrderByRedirectRequest) request).getAdditionalInfo();
+      if (ai != null) {
+        envInfo = ai.getEnvInfo();
+      }
+    }
+    if (envInfo == null) {
+      return;
+    }
+    EnvInfo.SourcePlatformEnum sourcePlatform = envInfo.getSourcePlatform();
+    if (sourcePlatform == null
+        || EnvInfo.SourcePlatformEnum.UNSPECIFIED.equals(sourcePlatform)
+        || trimStr(sourcePlatform.getValue()).isEmpty()) {
+      envInfo.setSourcePlatform(EnvInfo.SourcePlatformEnum.IPG);
+    }
+  }
+
+  /**
+   * Rejects blank required additionalInfo fields ({@code mcc}, {@code envInfo.terminalType}).
+   */
+  private static void validateRequiredAdditionalInfoFieldsNotEmpty(Object request) {
+    if (request == null) {
+      return;
+    }
+    String mcc = null;
+    EnvInfo envInfo = null;
+    if (request instanceof CreateOrderByApiRequest) {
+      CreateOrderByApiAdditionalInfo ai = ((CreateOrderByApiRequest) request).getAdditionalInfo();
+      if (ai == null) {
+        return;
+      }
+      mcc = ai.getMcc();
+      envInfo = ai.getEnvInfo();
+    } else if (request instanceof CreateOrderByRedirectRequest) {
+      CreateOrderByRedirectAdditionalInfo ai =
+          ((CreateOrderByRedirectRequest) request).getAdditionalInfo();
+      if (ai == null) {
+        return;
+      }
+      mcc = ai.getMcc();
+      envInfo = ai.getEnvInfo();
+    } else {
+      return;
+    }
+    List<Map<String, String>> contexts = new ArrayList<>();
+    if (trimStr(mcc).isEmpty()) {
+      contexts.add(ctx("additionalInfo.mcc",
+          "additionalInfo.mcc is required and cannot be empty"));
+    }
+    EnvInfo.TerminalTypeEnum terminalType = envInfo != null ? envInfo.getTerminalType() : null;
+    if (terminalType == null || trimStr(terminalType.getValue()).isEmpty()) {
+      contexts.add(ctx("additionalInfo.envInfo.terminalType",
+          "additionalInfo.envInfo.terminalType is required and cannot be empty"));
+    }
+    if (!contexts.isEmpty()) {
+      throw new DanaException(contexts);
+    }
   }
 
   private static void validateAdditionalInfoRequired(Object request) {
@@ -150,6 +356,36 @@ public final class CustomValidation {
     if (!MONEY_VALUE_PATTERN.matcher(value).matches()) {
       throw new DanaException(Collections.singletonList(ctx("amount.value",
           "amount.value must match pattern (e.g. 10000.00): got " + value)));
+    }
+  }
+
+  /** In sandbox, amount.value must not exceed {@link #SANDBOX_MAX_AMOUNT}. */
+  private static void validateSandboxAmount(Object request) {
+    if (request == null || !isSandbox()) {
+      return;
+    }
+    Money amount = null;
+    if (request instanceof CreateOrderByApiRequest) {
+      amount = ((CreateOrderByApiRequest) request).getAmount();
+    } else if (request instanceof CreateOrderByRedirectRequest) {
+      amount = ((CreateOrderByRedirectRequest) request).getAmount();
+    }
+    if (amount == null) {
+      return;
+    }
+    String value = amount.getValue();
+    if (value == null || value.trim().isEmpty()) {
+      return;
+    }
+    try {
+      double parsed = Double.parseDouble(value.trim());
+      if (parsed > SANDBOX_MAX_AMOUNT) {
+        throw new DanaException(Collections.singletonList(ctx(
+            "amount.value",
+            "in sandbox, amount.value must not exceed " + (long) SANDBOX_MAX_AMOUNT + "; got " + value)));
+      }
+    } catch (NumberFormatException ignored) {
+      // format is validated elsewhere
     }
   }
 
@@ -199,11 +435,36 @@ public final class CustomValidation {
     }
   }
 
+  private static void validatePartnerReferenceNoForQris(Object request) {
+    if (request == null || !(request instanceof CreateOrderByApiRequest)) {
+      return;
+    }
+    CreateOrderByApiRequest apiRequest = (CreateOrderByApiRequest) request;
+    List<PayOptionDetail> payOptionDetails = apiRequest.getPayOptionDetails();
+    if (payOptionDetails == null || payOptionDetails.isEmpty()) {
+      return;
+    }
+    boolean hasQris = false;
+    for (PayOptionDetail detail : payOptionDetails) {
+      if (detail == null || detail.getPayOption() == null) {
+        continue;
+      }
+      if (PayOptionDetail.PayOptionEnum.NETWORK_PAY_PG_QRIS.equals(detail.getPayOption())) {
+        hasQris = true;
+        break;
+      }
+    }
+    if (hasQris && trimStr(apiRequest.getPartnerReferenceNo()).length() > 25) {
+      throw new DanaException(Collections.singletonList(ctx("partnerReferenceNo",
+          "partnerReferenceNo must be at most 25 characters when payOption is NETWORK_PAY_PG_QRIS")));
+    }
+  }
+
   private static final Set<String> SANDBOX_ALLOWED_PAY_METHODS = Collections.unmodifiableSet(new HashSet<>(
       Arrays.asList("BALANCE", "CREDIT_CARD", "DEBIT_CARD", "VIRTUAL_ACCOUNT", "NETWORK_PAY")));
 
   private static final Set<String> SANDBOX_ALLOWED_PAY_OPTIONS = Collections.unmodifiableSet(new HashSet<>(
-      Arrays.asList("CARD", "QRIS", "BRI", "PANI", "CIMB", "MANDIRI", "BTPN", "BSI_PAYMENT")));
+      Arrays.asList("CARD", "QRIS", "BRI", "PANI", "CIMB", "BTPN", "BSI_PAYMENT")));
 
   private static boolean isSandbox() {
     String env = System.getenv("DANA_ENV");
@@ -384,9 +645,32 @@ public final class CustomValidation {
         if (g == null) {
           continue;
         }
+        String prefix = "additionalInfo.order.goods[" + i + "]";
         if (trimStr(g.getName()).isEmpty()) {
-          contexts.add(ctx("additionalInfo.order.goods[" + i + "].name",
-              "name is required when goods is filled"));
+          contexts.add(ctx(prefix + ".name", "name is required when goods is filled"));
+        }
+        if (trimStr(g.getMerchantGoodsId()).isEmpty()) {
+          contexts.add(ctx(prefix + ".merchantGoodsId",
+              "merchantGoodsId is required when goods is filled"));
+        }
+        if (trimStr(g.getDescription()).isEmpty()) {
+          contexts.add(ctx(prefix + ".description",
+              "description is required when goods is filled"));
+        }
+        if (trimStr(g.getCategory()).isEmpty()) {
+          contexts.add(ctx(prefix + ".category", "category is required when goods is filled"));
+        }
+        if (trimStr(g.getQuantity()).isEmpty()) {
+          contexts.add(ctx(prefix + ".quantity", "quantity is required when goods is filled"));
+        }
+        Money price = g.getPrice();
+        if (price == null || trimStr(price.getValue()).isEmpty()) {
+          contexts.add(ctx(prefix + ".price.value",
+              "price.value is required when goods is filled"));
+        }
+        if (price == null || trimStr(price.getCurrency()).isEmpty()) {
+          contexts.add(ctx(prefix + ".price.currency",
+              "price.currency is required when goods is filled"));
         }
       }
     }
@@ -397,9 +681,38 @@ public final class CustomValidation {
         if (s == null) {
           continue;
         }
+        String prefix = "additionalInfo.order.shippingInfo[" + i + "]";
+        if (trimStr(s.getMerchantShippingId()).isEmpty()) {
+          contexts.add(ctx(prefix + ".merchantShippingId",
+              "merchantShippingId is required when shippingInfo is filled"));
+        }
+        if (trimStr(s.getCountryName()).isEmpty()) {
+          contexts.add(ctx(prefix + ".countryName",
+              "countryName is required when shippingInfo is filled"));
+        }
+        if (trimStr(s.getStateName()).isEmpty()) {
+          contexts.add(ctx(prefix + ".stateName",
+              "stateName is required when shippingInfo is filled"));
+        }
+        if (trimStr(s.getCityName()).isEmpty()) {
+          contexts.add(ctx(prefix + ".cityName",
+              "cityName is required when shippingInfo is filled"));
+        }
+        if (trimStr(s.getAddress1()).isEmpty()) {
+          contexts.add(ctx(prefix + ".address1",
+              "address1 is required when shippingInfo is filled"));
+        }
         if (trimStr(s.getFirstName()).isEmpty()) {
-          contexts.add(ctx("additionalInfo.order.shippingInfo[" + i + "].firstName",
+          contexts.add(ctx(prefix + ".firstName",
               "firstName is required when shippingInfo is filled"));
+        }
+        if (trimStr(s.getLastName()).isEmpty()) {
+          contexts.add(ctx(prefix + ".lastName",
+              "lastName is required when shippingInfo is filled"));
+        }
+        if (trimStr(s.getZipCode()).isEmpty()) {
+          contexts.add(ctx(prefix + ".zipCode",
+              "zipCode is required when shippingInfo is filled"));
         }
       }
     }

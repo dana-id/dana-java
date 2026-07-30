@@ -4,7 +4,10 @@ import id.dana.invoker.model.exception.DanaException;
 import id.dana.invoker.util.DateValidation;
 import id.dana.widget.v1.model.ApplyTokenAuthorizationCodeRequest;
 import id.dana.widget.v1.model.ApplyTokenRefreshTokenRequest;
+import id.dana.widget.v1.model.EnvInfo;
+import id.dana.widget.v1.model.Money;
 import id.dana.widget.v1.model.WidgetPaymentRequest;
+import id.dana.widget.v1.model.WidgetPaymentRequestAdditionalInfo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,12 +21,18 @@ import java.util.function.Consumer;
  */
 public final class CustomValidation {
 
+  /** Sandbox maximum amount (major units) for Widget payment. */
+  private static final double SANDBOX_MAX_AMOUNT = 10000000d;
+
   private CustomValidation() {}
 
   private static final Map<String, List<Consumer<Object>>> validationRegistry = new HashMap<>();
 
   static {
     List<Consumer<Object>> w = new ArrayList<>();
+    w.add(CustomValidation::defaultSourcePlatform);
+    w.add(CustomValidation::validateRequiredAdditionalInfoFieldsNotEmpty);
+    w.add(CustomValidation::validateSandboxAmount);
     w.add(CustomValidation::validateValidUpToWidgetPaymentRequest);
     validationRegistry.put("WidgetPaymentRequest", w);
 
@@ -71,6 +80,96 @@ public final class CustomValidation {
     m.put("field", field);
     m.put("message", message);
     return m;
+  }
+
+  private static String trimStr(String s) {
+    return s == null ? "" : s.trim();
+  }
+
+  /**
+   * Sets {@code envInfo.sourcePlatform} to {@link EnvInfo.SourcePlatformEnum#IPG} when null or empty.
+   */
+  private static void defaultSourcePlatform(Object request) {
+    if (!(request instanceof WidgetPaymentRequest)) {
+      return;
+    }
+    WidgetPaymentRequestAdditionalInfo info =
+        ((WidgetPaymentRequest) request).getAdditionalInfo();
+    if (info == null || info.getEnvInfo() == null) {
+      return;
+    }
+    EnvInfo envInfo = info.getEnvInfo();
+    EnvInfo.SourcePlatformEnum sourcePlatform = envInfo.getSourcePlatform();
+    if (sourcePlatform == null
+        || EnvInfo.SourcePlatformEnum.UNSPECIFIED.equals(sourcePlatform)
+        || trimStr(sourcePlatform.getValue()).isEmpty()) {
+      envInfo.setSourcePlatform(EnvInfo.SourcePlatformEnum.IPG);
+    }
+  }
+
+  /**
+   * Rejects blank required additionalInfo fields ({@code productCode},
+   * {@code envInfo.terminalType}). Note: {@code mcc} may be an empty string for Widget.
+   */
+  private static void validateRequiredAdditionalInfoFieldsNotEmpty(Object request) {
+    if (!(request instanceof WidgetPaymentRequest)) {
+      return;
+    }
+    WidgetPaymentRequestAdditionalInfo info =
+        ((WidgetPaymentRequest) request).getAdditionalInfo();
+    if (info == null) {
+      return;
+    }
+    List<Map<String, String>> contexts = new ArrayList<>();
+    if (trimStr(info.getProductCode()).isEmpty()) {
+      contexts.add(ctx("additionalInfo.productCode",
+          "additionalInfo.productCode is required and cannot be empty"));
+    }
+    EnvInfo envInfo = info.getEnvInfo();
+    EnvInfo.TerminalTypeEnum terminalType = envInfo != null ? envInfo.getTerminalType() : null;
+    if (terminalType == null || trimStr(terminalType.getValue()).isEmpty()) {
+      contexts.add(ctx("additionalInfo.envInfo.terminalType",
+          "additionalInfo.envInfo.terminalType is required and cannot be empty"));
+    }
+    if (!contexts.isEmpty()) {
+      throw new DanaException(contexts);
+    }
+  }
+
+  private static boolean isSandbox() {
+    String env = System.getenv("DANA_ENV");
+    if (env == null || env.isEmpty()) {
+      env = System.getenv("ENV");
+    }
+    if (env == null || env.isEmpty()) {
+      env = "sandbox";
+    }
+    return "sandbox".equalsIgnoreCase(env);
+  }
+
+  /** In sandbox, amount.value must not exceed {@link #SANDBOX_MAX_AMOUNT}. */
+  private static void validateSandboxAmount(Object request) {
+    if (!(request instanceof WidgetPaymentRequest) || !isSandbox()) {
+      return;
+    }
+    Money amount = ((WidgetPaymentRequest) request).getAmount();
+    if (amount == null) {
+      return;
+    }
+    String value = amount.getValue();
+    if (value == null || value.trim().isEmpty()) {
+      return;
+    }
+    try {
+      double parsed = Double.parseDouble(value.trim());
+      if (parsed > SANDBOX_MAX_AMOUNT) {
+        throw new DanaException(Collections.singletonList(ctx(
+            "amount.value",
+            "in sandbox, amount.value must not exceed " + (long) SANDBOX_MAX_AMOUNT + "; got " + value)));
+      }
+    } catch (NumberFormatException ignored) {
+      // format is validated elsewhere
+    }
   }
 
   private static void validateValidUpToWidgetPaymentRequest(Object request) {

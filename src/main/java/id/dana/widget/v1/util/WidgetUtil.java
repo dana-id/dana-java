@@ -179,13 +179,13 @@ public class WidgetUtil {
             }
             
             if (!seamlessData.isEmpty()) {
+                // Always remap mobileNumber → mobile (matches Go/Node/PHP)
+                if (seamlessData.containsKey("mobileNumber")) {
+                    seamlessData.put("mobile", seamlessData.get("mobileNumber"));
+                    seamlessData.remove("mobileNumber");
+                }
+
                 if (mode.equals(Mode.DEEPLINK) && requestId != null) {
-                    // Convert mobileNumber to mobile if needed
-                    if (seamlessData.containsKey("mobileNumber")) {
-                        seamlessData.put("mobile", seamlessData.get("mobileNumber"));
-                        seamlessData.remove("mobileNumber");
-                    }
-                    
                     seamlessData.put("externalUid", externalId);
                     seamlessData.put("reqTime", timestamp);
                     seamlessData.put("verifiedTime", "0");
@@ -214,8 +214,9 @@ public class WidgetUtil {
                 finalUrl.append("&");
             }
             try {
+                // RFC3986-style (Go QueryEscape / PHP PHP_QUERY_RFC3986): space as %20, not +
                 finalUrl.append(entry.getKey()).append("=")
-                        .append(URLEncoder.encode(entry.getValue(), "UTF-8"));
+                        .append(encodeQueryParam(entry.getValue()));
             } catch (UnsupportedEncodingException e) {
                 throw new DanaException("Error encoding URL parameters: " + e.getMessage());
             }
@@ -262,6 +263,15 @@ public class WidgetUtil {
         }
         
         return jakartaTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX"));
+    }
+
+    /**
+     * Encode a query parameter value in RFC3986 style (space → %20).
+     * {@link URLEncoder} uses form encoding (space → +); replace to match Go QueryEscape / PHP RFC3986.
+     * Base64 seamlessSign "+" becomes "%2B" first, so the space fix does not corrupt signatures.
+     */
+    private static String encodeQueryParam(String value) throws UnsupportedEncodingException {
+        return URLEncoder.encode(value, "UTF-8").replace("+", "%20");
     }
 
     /**
@@ -328,7 +338,7 @@ public class WidgetUtil {
 
         String sep = webRedirectUrl.contains("?") ? "&" : "?";
         try {
-            return webRedirectUrl + sep + "ott=" + URLEncoder.encode(ottValue, "UTF-8").replace("+", "%20");
+            return webRedirectUrl + sep + "ott=" + encodeQueryParam(ottValue);
         } catch (UnsupportedEncodingException e) {
             throw new DanaException("UTF-8 is not supported by this Java runtime", e);
         }

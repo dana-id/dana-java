@@ -14,7 +14,7 @@
 |**osType** | **String** | Operating system type |  [optional] |
 |**appVersion** | **String** | App version |  [optional] |
 |**sdkVersion** | **String** | SDK version |  [optional] |
-|**sourcePlatform** | [**SourcePlatformEnum**](#SourcePlatformEnum) | The source platform is always independent payment gateway (IPG) |  |
+|**sourcePlatform** | [**SourcePlatformEnum**](#SourcePlatformEnum) | The source platform is always independent payment gateway (IPG). Defaults to IPG when omitted. |  [optional] |
 |**orderOsType** | **String** | Order operating system type |  [optional] |
 |**merchantAppVersion** | **String** | Merchant App version |  [optional] |
 |**terminalType** | [**TerminalTypeEnum**](#TerminalTypeEnum) | Terminal type. The enums:<br> * APP - Mobile Application<br> * WEB - Browser Web<br> * WAP - Mobile Wap<br> * SYSTEM - System Call<br>  |  |
