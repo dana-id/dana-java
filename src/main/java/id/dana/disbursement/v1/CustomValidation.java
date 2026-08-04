@@ -4,12 +4,10 @@ import id.dana.disbursement.v1.model.BankAccountInquiryRequest;
 import id.dana.disbursement.v1.model.BankAccountInquiryRequestAdditionalInfo;
 import id.dana.disbursement.v1.model.DanaAccountInquiryRequest;
 import id.dana.disbursement.v1.model.DanaAccountInquiryRequestAdditionalInfo;
-import id.dana.disbursement.v1.model.Money;
 import id.dana.disbursement.v1.model.TransferToBankRequest;
 import id.dana.disbursement.v1.model.TransferToBankRequestAdditionalInfo;
 import id.dana.disbursement.v1.model.TransferToDanaRequest;
 import id.dana.disbursement.v1.model.TransferToDanaRequestAdditionalInfo;
-import id.dana.disbursement.v1.model.TransferToDanaResponse;
 import id.dana.invoker.model.exception.DanaException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,10 +25,6 @@ import java.util.function.Consumer;
  */
 public final class CustomValidation {
 
-  private static final String SANDBOX_BENEFICIARY_ACCOUNT_NUMBER = "2460888509";
-  private static final String SANDBOX_BENEFICIARY_BANK_CODE = "014";
-  /** Sandbox maximum amount (major units) for Disbursement. */
-  private static final double SANDBOX_MAX_AMOUNT = 20000000d;
   private static final java.util.Set<String> ALLOWED_ACCOUNT_TYPES =
       Collections.unmodifiableSet(new java.util.HashSet<>(java.util.Arrays.asList(
           "MERCHANT_DEPOSIT_ACCOUNT",
@@ -45,29 +39,23 @@ public final class CustomValidation {
     List<Consumer<Object>> bankAccountInquiry = new ArrayList<>();
     bankAccountInquiry.add(CustomValidation::stripSandboxIgnoredFieldsBankAccountInquiry);
     bankAccountInquiry.add(CustomValidation::validateAccountTypeBankAccountInquiry);
-    bankAccountInquiry.add(CustomValidation::validateSandboxBeneficiaryBankAccountInquiry);
-    bankAccountInquiry.add(CustomValidation::validateSandboxAmount);
     bankAccountInquiry.add(CustomValidation::validateRequiredAdditionalInfoNotEmptyBankAccountInquiry);
     validationRegistry.put("BankAccountInquiryRequest", bankAccountInquiry);
 
     List<Consumer<Object>> transferToBank = new ArrayList<>();
     transferToBank.add(CustomValidation::stripSandboxIgnoredFieldsTransferToBank);
     transferToBank.add(CustomValidation::validateAccountTypeTransferToBank);
-    transferToBank.add(CustomValidation::validateSandboxBeneficiaryTransferToBank);
-    transferToBank.add(CustomValidation::validateSandboxAmount);
     transferToBank.add(CustomValidation::validateRequiredAdditionalInfoNotEmptyTransferToBank);
     validationRegistry.put("TransferToBankRequest", transferToBank);
 
     List<Consumer<Object>> transferToDana = new ArrayList<>();
     transferToDana.add(CustomValidation::stripSandboxIgnoredFieldsTransferToDana);
     transferToDana.add(CustomValidation::validateAccountTypeTransferToDana);
-    transferToDana.add(CustomValidation::validateSandboxAmount);
     transferToDana.add(CustomValidation::validateRequiredAdditionalInfoNotEmptyTransferToDana);
     validationRegistry.put("TransferToDanaRequest", transferToDana);
 
     List<Consumer<Object>> danaAccountInquiry = new ArrayList<>();
     danaAccountInquiry.add(CustomValidation::stripSandboxIgnoredFieldsDanaAccountInquiry);
-    danaAccountInquiry.add(CustomValidation::validateSandboxAmount);
     danaAccountInquiry.add(CustomValidation::validateRequiredAdditionalInfoNotEmptyDanaAccountInquiry);
     validationRegistry.put("DanaAccountInquiryRequest", danaAccountInquiry);
   }
@@ -97,38 +85,123 @@ public final class CustomValidation {
     }
   }
 
+  private static final String SANDBOX_POSITIVE_BENEFICIARY_ACCOUNT_NUMBER = "2460888509";
+  private static final String SANDBOX_POSITIVE_BENEFICIARY_BANK_CODE = "014";
+  private static final long SANDBOX_MAX_AMOUNT = 20000000L;
+
+  private static final String SANDBOX_POSITIVE_BANK_HINT =
+      "For testing positive case in sandbox use beneficiaryAccountNumber "
+          + SANDBOX_POSITIVE_BENEFICIARY_ACCOUNT_NUMBER
+          + " and beneficiaryBankCode "
+          + SANDBOX_POSITIVE_BENEFICIARY_BANK_CODE;
+
+  private static final String SANDBOX_AMOUNT_MAX_HINT =
+      "In sandbox, amount.value must not exceed " + SANDBOX_MAX_AMOUNT;
+
   private static final String SANDBOX_DANA_BALANCE_LIMIT_HINT =
       "Make sure DANA balance not exceeding limit of 21000000 after topup";
 
   /**
-   * Augment TransferToDana responses in sandbox on business errors.
+   * Augment Disbursement responses in sandbox with account/amount guidance.
    */
   public static void customValidationResponse(Object request, Object response) {
     if (!isSandbox() || request == null || response == null) {
       return;
     }
-    if (!(request instanceof TransferToDanaRequest) || !(response instanceof TransferToDanaResponse)) {
-      return;
-    }
-    TransferToDanaResponse transferToDanaResponse = (TransferToDanaResponse) response;
-    if (!isBusinessErrorResponse(transferToDanaResponse.getResponseCode())) {
-      return;
-    }
-    transferToDanaResponse.setResponseMessage(
-        appendSandboxDanaBalanceHint(transferToDanaResponse.getResponseMessage()));
+    applySandboxDisbursementHints(request, response);
   }
 
-  private static boolean isBusinessErrorResponse(String responseCode) {
-    String code = trimStr(responseCode);
-    return code.isEmpty() || !code.startsWith("200");
+  /**
+   * Enrich Disbursement HTTP-error bodies in sandbox (same tip rules as success-path hook).
+   */
+  public static void enrichDisbursementError(Object request, Object response) {
+    if (!isSandbox() || request == null || response == null) {
+      return;
+    }
+    applySandboxDisbursementHints(request, response);
   }
 
-  private static String appendSandboxDanaBalanceHint(String responseMessage) {
-    String hint = SANDBOX_DANA_BALANCE_LIMIT_HINT;
+  private static void applySandboxDisbursementHints(Object request, Object response) {
+    String responseCode = getResponseCode(response);
+    String responseMessage = getResponseMessage(response);
+
+    String updated = responseMessage == null ? "" : responseMessage;
+
+    if (isBankTransferRequest(request) && shouldAppendPositiveBankHint(responseCode)) {
+      updated = appendSandboxHint(
+          updated,
+          SANDBOX_POSITIVE_BANK_HINT,
+          SANDBOX_POSITIVE_BENEFICIARY_ACCOUNT_NUMBER,
+          "beneficiarybankcode " + SANDBOX_POSITIVE_BENEFICIARY_BANK_CODE);
+    }
+
+    if (request instanceof TransferToDanaRequest) {
+      if (shouldAppendDanaBalanceHint(responseCode, responseMessage)) {
+        updated = appendSandboxHint(updated, SANDBOX_DANA_BALANCE_LIMIT_HINT, "21000000", "after topup");
+      }
+    } else if (shouldAppendAmountMaxHint(responseMessage)) {
+      updated = appendSandboxHint(updated, SANDBOX_AMOUNT_MAX_HINT, String.valueOf(SANDBOX_MAX_AMOUNT));
+    }
+
+    if (!updated.equals(responseMessage == null ? "" : responseMessage)) {
+      setResponseMessage(response, updated);
+    }
+  }
+
+  private static boolean isBankTransferRequest(Object request) {
+    return request instanceof BankAccountInquiryRequest || request instanceof TransferToBankRequest;
+  }
+
+  private static boolean shouldAppendPositiveBankHint(String responseCode) {
+    return trimStr(responseCode).startsWith("500");
+  }
+
+  private static boolean shouldAppendDanaBalanceHint(String responseCode, String responseMessage) {
+    String msg = responseMessage == null ? "" : responseMessage.toLowerCase();
+    if (msg.contains("exceed") || msg.contains("melebihi")) {
+      return true;
+    }
+    return "4033802".equals(trimStr(responseCode));
+  }
+
+  private static boolean shouldAppendAmountMaxHint(String responseMessage) {
+    String msg = responseMessage == null ? "" : responseMessage.toLowerCase();
+    return msg.contains("exceed") || msg.contains("melebihi");
+  }
+
+  private static String getResponseCode(Object response) {
+    try {
+      Object value = response.getClass().getMethod("getResponseCode").invoke(response);
+      return value == null ? "" : String.valueOf(value);
+    } catch (ReflectiveOperationException ignored) {
+      return "";
+    }
+  }
+
+  private static String getResponseMessage(Object response) {
+    try {
+      Object value = response.getClass().getMethod("getResponseMessage").invoke(response);
+      return value == null ? "" : String.valueOf(value);
+    } catch (ReflectiveOperationException ignored) {
+      return "";
+    }
+  }
+
+  private static void setResponseMessage(Object response, String message) {
+    try {
+      response.getClass().getMethod("setResponseMessage", String.class).invoke(response, message);
+    } catch (ReflectiveOperationException ignored) {
+      // response model may be read-only in some contexts
+    }
+  }
+
+  private static String appendSandboxHint(String responseMessage, String hint, String... alreadyPresentMarkers) {
     String msg = responseMessage == null ? "" : responseMessage.trim();
     String lowerMsg = msg.toLowerCase();
-    if (lowerMsg.contains("21000000") || lowerMsg.contains("after topup")) {
-      return msg;
+    for (String marker : alreadyPresentMarkers) {
+      if (marker != null && !marker.isEmpty() && lowerMsg.contains(marker.toLowerCase())) {
+        return msg;
+      }
     }
     if (msg.isEmpty()) {
       return hint;
@@ -184,40 +257,6 @@ public final class CustomValidation {
       return trimStr(raw == null ? null : String.valueOf(raw));
     } catch (ReflectiveOperationException ignored) {
       return trimStr(String.valueOf(accountType));
-    }
-  }
-
-  /** In sandbox, amount.value must not exceed {@link #SANDBOX_MAX_AMOUNT}. */
-  private static void validateSandboxAmount(Object request) {
-    if (request == null || !isSandbox()) {
-      return;
-    }
-    Money amount = null;
-    if (request instanceof BankAccountInquiryRequest) {
-      amount = ((BankAccountInquiryRequest) request).getAmount();
-    } else if (request instanceof TransferToBankRequest) {
-      amount = ((TransferToBankRequest) request).getAmount();
-    } else if (request instanceof TransferToDanaRequest) {
-      amount = ((TransferToDanaRequest) request).getAmount();
-    } else if (request instanceof DanaAccountInquiryRequest) {
-      amount = ((DanaAccountInquiryRequest) request).getAmount();
-    }
-    if (amount == null) {
-      return;
-    }
-    String value = amount.getValue();
-    if (value == null || value.trim().isEmpty()) {
-      return;
-    }
-    try {
-      double parsed = Double.parseDouble(value.trim());
-      if (parsed > SANDBOX_MAX_AMOUNT) {
-        throw new DanaException(Collections.singletonList(ctx(
-            "amount.value",
-            "in sandbox, amount.value must not exceed " + (long) SANDBOX_MAX_AMOUNT + "; got " + value)));
-      }
-    } catch (NumberFormatException ignored) {
-      // format is validated elsewhere
     }
   }
 
@@ -336,51 +375,6 @@ public final class CustomValidation {
       return;
     }
     validateAccountTypeValue(accountType, "additionalInfo.accountType");
-  }
-
-  /** In sandbox, beneficiaryAccountNumber must be 2460888509 and beneficiaryBankCode must be 014. */
-  private static void validateSandboxBeneficiaryBankAccountInquiry(Object request) {
-    if (!isSandbox() || !(request instanceof BankAccountInquiryRequest)) {
-      return;
-    }
-    BankAccountInquiryRequest req = (BankAccountInquiryRequest) request;
-    List<Map<String, String>> contexts = new ArrayList<>();
-    if (!SANDBOX_BENEFICIARY_ACCOUNT_NUMBER.equals(trimStr(req.getBeneficiaryAccountNumber()))) {
-      contexts.add(ctx("beneficiaryAccountNumber",
-          "in sandbox, beneficiaryAccountNumber must be " + SANDBOX_BENEFICIARY_ACCOUNT_NUMBER
-              + "; got " + req.getBeneficiaryAccountNumber()));
-    }
-    BankAccountInquiryRequestAdditionalInfo info = req.getAdditionalInfo();
-    String bankCode = info == null ? null : info.getBeneficiaryBankCode();
-    if (!SANDBOX_BENEFICIARY_BANK_CODE.equals(trimStr(bankCode))) {
-      contexts.add(ctx("additionalInfo.beneficiaryBankCode",
-          "in sandbox, additionalInfo.beneficiaryBankCode must be " + SANDBOX_BENEFICIARY_BANK_CODE
-              + "; got " + bankCode));
-    }
-    if (!contexts.isEmpty()) {
-      throw new DanaException(contexts);
-    }
-  }
-
-  private static void validateSandboxBeneficiaryTransferToBank(Object request) {
-    if (!isSandbox() || !(request instanceof TransferToBankRequest)) {
-      return;
-    }
-    TransferToBankRequest req = (TransferToBankRequest) request;
-    List<Map<String, String>> contexts = new ArrayList<>();
-    if (!SANDBOX_BENEFICIARY_ACCOUNT_NUMBER.equals(trimStr(req.getBeneficiaryAccountNumber()))) {
-      contexts.add(ctx("beneficiaryAccountNumber",
-          "in sandbox, beneficiaryAccountNumber must be " + SANDBOX_BENEFICIARY_ACCOUNT_NUMBER
-              + "; got " + req.getBeneficiaryAccountNumber()));
-    }
-    if (!SANDBOX_BENEFICIARY_BANK_CODE.equals(trimStr(req.getBeneficiaryBankCode()))) {
-      contexts.add(ctx("beneficiaryBankCode",
-          "in sandbox, beneficiaryBankCode must be " + SANDBOX_BENEFICIARY_BANK_CODE
-              + "; got " + req.getBeneficiaryBankCode()));
-    }
-    if (!contexts.isEmpty()) {
-      throw new DanaException(contexts);
-    }
   }
 
   private static void validateRequiredAdditionalInfoNotEmptyBankAccountInquiry(Object request) {

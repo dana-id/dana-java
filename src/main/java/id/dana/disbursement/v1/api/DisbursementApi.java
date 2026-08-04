@@ -213,9 +213,15 @@ public class DisbursementApi {
                       customValidationClass.getMethod("enrichCreateOrderError", Object.class, Object.class);
                   enrichErrorMethod.invoke(null, bankAccountInquiryRequest, body);
                 } catch (NoSuchMethodException enrichMissing) {
-                  java.lang.reflect.Method customValidationResponseMethod =
-                      customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
-                  customValidationResponseMethod.invoke(null, bankAccountInquiryRequest, body);
+                  try {
+                    java.lang.reflect.Method enrichDisbursementMethod =
+                        customValidationClass.getMethod("enrichDisbursementError", Object.class, Object.class);
+                    enrichDisbursementMethod.invoke(null, bankAccountInquiryRequest, body);
+                  } catch (NoSuchMethodException disbursementMissing) {
+                    java.lang.reflect.Method customValidationResponseMethod =
+                        customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
+                    customValidationResponseMethod.invoke(null, bankAccountInquiryRequest, body);
+                  }
                 }
               } catch (ClassNotFoundException | NoClassDefFoundError | NoSuchMethodException e) {
                 // If CustomValidation response/error hook doesn't exist for this domain, skip it
@@ -323,9 +329,15 @@ public class DisbursementApi {
                       customValidationClass.getMethod("enrichCreateOrderError", Object.class, Object.class);
                   enrichErrorMethod.invoke(null, danaAccountInquiryRequest, body);
                 } catch (NoSuchMethodException enrichMissing) {
-                  java.lang.reflect.Method customValidationResponseMethod =
-                      customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
-                  customValidationResponseMethod.invoke(null, danaAccountInquiryRequest, body);
+                  try {
+                    java.lang.reflect.Method enrichDisbursementMethod =
+                        customValidationClass.getMethod("enrichDisbursementError", Object.class, Object.class);
+                    enrichDisbursementMethod.invoke(null, danaAccountInquiryRequest, body);
+                  } catch (NoSuchMethodException disbursementMissing) {
+                    java.lang.reflect.Method customValidationResponseMethod =
+                        customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
+                    customValidationResponseMethod.invoke(null, danaAccountInquiryRequest, body);
+                  }
                 }
               } catch (ClassNotFoundException | NoClassDefFoundError | NoSuchMethodException e) {
                 // If CustomValidation response/error hook doesn't exist for this domain, skip it
@@ -433,9 +445,15 @@ public class DisbursementApi {
                       customValidationClass.getMethod("enrichCreateOrderError", Object.class, Object.class);
                   enrichErrorMethod.invoke(null, transferToBankRequest, body);
                 } catch (NoSuchMethodException enrichMissing) {
-                  java.lang.reflect.Method customValidationResponseMethod =
-                      customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
-                  customValidationResponseMethod.invoke(null, transferToBankRequest, body);
+                  try {
+                    java.lang.reflect.Method enrichDisbursementMethod =
+                        customValidationClass.getMethod("enrichDisbursementError", Object.class, Object.class);
+                    enrichDisbursementMethod.invoke(null, transferToBankRequest, body);
+                  } catch (NoSuchMethodException disbursementMissing) {
+                    java.lang.reflect.Method customValidationResponseMethod =
+                        customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
+                    customValidationResponseMethod.invoke(null, transferToBankRequest, body);
+                  }
                 }
               } catch (ClassNotFoundException | NoClassDefFoundError | NoSuchMethodException e) {
                 // If CustomValidation response/error hook doesn't exist for this domain, skip it
@@ -543,9 +561,15 @@ public class DisbursementApi {
                       customValidationClass.getMethod("enrichCreateOrderError", Object.class, Object.class);
                   enrichErrorMethod.invoke(null, transferToBankInquiryStatusRequest, body);
                 } catch (NoSuchMethodException enrichMissing) {
-                  java.lang.reflect.Method customValidationResponseMethod =
-                      customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
-                  customValidationResponseMethod.invoke(null, transferToBankInquiryStatusRequest, body);
+                  try {
+                    java.lang.reflect.Method enrichDisbursementMethod =
+                        customValidationClass.getMethod("enrichDisbursementError", Object.class, Object.class);
+                    enrichDisbursementMethod.invoke(null, transferToBankInquiryStatusRequest, body);
+                  } catch (NoSuchMethodException disbursementMissing) {
+                    java.lang.reflect.Method customValidationResponseMethod =
+                        customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
+                    customValidationResponseMethod.invoke(null, transferToBankInquiryStatusRequest, body);
+                  }
                 }
               } catch (ClassNotFoundException | NoClassDefFoundError | NoSuchMethodException e) {
                 // If CustomValidation response/error hook doesn't exist for this domain, skip it
@@ -653,9 +677,15 @@ public class DisbursementApi {
                       customValidationClass.getMethod("enrichCreateOrderError", Object.class, Object.class);
                   enrichErrorMethod.invoke(null, transferToDanaRequest, body);
                 } catch (NoSuchMethodException enrichMissing) {
-                  java.lang.reflect.Method customValidationResponseMethod =
-                      customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
-                  customValidationResponseMethod.invoke(null, transferToDanaRequest, body);
+                  try {
+                    java.lang.reflect.Method enrichDisbursementMethod =
+                        customValidationClass.getMethod("enrichDisbursementError", Object.class, Object.class);
+                    enrichDisbursementMethod.invoke(null, transferToDanaRequest, body);
+                  } catch (NoSuchMethodException disbursementMissing) {
+                    java.lang.reflect.Method customValidationResponseMethod =
+                        customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
+                    customValidationResponseMethod.invoke(null, transferToDanaRequest, body);
+                  }
                 }
               } catch (ClassNotFoundException | NoClassDefFoundError | NoSuchMethodException e) {
                 // If CustomValidation response/error hook doesn't exist for this domain, skip it
@@ -763,9 +793,15 @@ public class DisbursementApi {
                       customValidationClass.getMethod("enrichCreateOrderError", Object.class, Object.class);
                   enrichErrorMethod.invoke(null, transferToDanaInquiryStatusRequest, body);
                 } catch (NoSuchMethodException enrichMissing) {
-                  java.lang.reflect.Method customValidationResponseMethod =
-                      customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
-                  customValidationResponseMethod.invoke(null, transferToDanaInquiryStatusRequest, body);
+                  try {
+                    java.lang.reflect.Method enrichDisbursementMethod =
+                        customValidationClass.getMethod("enrichDisbursementError", Object.class, Object.class);
+                    enrichDisbursementMethod.invoke(null, transferToDanaInquiryStatusRequest, body);
+                  } catch (NoSuchMethodException disbursementMissing) {
+                    java.lang.reflect.Method customValidationResponseMethod =
+                        customValidationClass.getMethod("customValidationResponse", Object.class, Object.class);
+                    customValidationResponseMethod.invoke(null, transferToDanaInquiryStatusRequest, body);
+                  }
                 }
               } catch (ClassNotFoundException | NoClassDefFoundError | NoSuchMethodException e) {
                 // If CustomValidation response/error hook doesn't exist for this domain, skip it

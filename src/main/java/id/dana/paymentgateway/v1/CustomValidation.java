@@ -112,19 +112,21 @@ public final class CustomValidation {
 
   private static final String SANDBOX_QRIS_GUIDANCE_HINT_SUCCESS =
       "If you want to use QRIS and it is not showing in payment methods, make sure you already fill externalStoreId. "
-          + "See https://dashboard.dana.id/sandbox/submerchants in the external shop id section.";
+          + "See https://dashboard.dana.id/sandbox/submerchants in the external shop id section. "
+          + "For QRIS, partnerReferenceNo max is 25 chars.";
 
   private static final String SANDBOX_QRIS_GUIDANCE_HINT_ERROR =
       "If you want to use QRIS, make sure you fill externalStoreId. "
           + "See https://dashboard.dana.id/sandbox/submerchants in the external shop id section. "
           + "For QRIS, partnerReferenceNo max is 25 chars.";
 
-  private static final String SANDBOX_SUB_MERCHANT_ID_GUIDANCE_HINT =
-      "Make sure your subMerchantId exists. You can see it at "
-          + "https://dashboard.dana.id/sandbox/submerchants in the External Division ID section.";
+  private static final String SANDBOX_NOT_FOUND_STORE_GUIDANCE_HINT =
+      "If you are using QRIS / making order for your store / submerchant, make sure externalStoreId / subMerchant exists. "
+          + "See https://dashboard.dana.id/sandbox/submerchants external shop id section for external store id "
+          + "and external division id section for submerchant";
 
   /**
-   * Augment successful CreateOrder responses in sandbox (QRIS SUCCESS / subMerchantId guidance).
+   * Augment CreateOrder responses in sandbox with code-specific tips.
    */
   public static void customValidationResponse(Object request, Object response) {
     if (!isSandbox() || request == null || response == null) {
@@ -133,84 +135,105 @@ public final class CustomValidation {
     if (!(response instanceof CreateOrderResponse)) {
       return;
     }
-    CreateOrderResponse createOrderResponse = (CreateOrderResponse) response;
-
-    if (request instanceof CreateOrderByRedirectRequest) {
-      CreateOrderByRedirectRequest redirectRequest = (CreateOrderByRedirectRequest) request;
-      String externalStoreId = redirectRequest.getExternalStoreId();
-      if (externalStoreId == null || externalStoreId.trim().isEmpty()) {
-        createOrderResponse.setResponseMessage(
-            appendSandboxHint(
-                createOrderResponse.getResponseMessage(),
-                SANDBOX_QRIS_GUIDANCE_HINT_SUCCESS,
-                "externalstoreid"));
-      }
-    }
-
-    String subMerchantId = extractSubMerchantId(request);
-    if (subMerchantId != null && !subMerchantId.isEmpty()
-        && isBusinessErrorResponse(createOrderResponse.getResponseCode())) {
-      createOrderResponse.setResponseMessage(
-          appendSandboxHint(
-              createOrderResponse.getResponseMessage(),
-              SANDBOX_SUB_MERCHANT_ID_GUIDANCE_HINT,
-              "submerchantid",
-              "externaldivisionid"));
-    }
+    applySandboxCreateOrderHints(request, (CreateOrderResponse) response);
   }
 
   /**
-   * Enrich CreateOrder HTTP-error bodies in sandbox.
-   * SubMerchant guidance goes on responseMessage; redirect missing externalStoreId gets ERROR QRIS
-   * wording (incl. partnerReferenceNo max 25) on responseMessage (Java returns body, does not throw).
+   * Enrich Payment Gateway HTTP-error bodies in sandbox (CreateOrder, QueryPayment, CancelOrder, etc.).
+   * Mirrors Go/Node/PHP: builds a SNAP-shaped carrier from any error response type.
    */
   public static void enrichCreateOrderError(Object request, Object response) {
     if (!isSandbox() || request == null || response == null) {
       return;
     }
-    if (!(response instanceof CreateOrderResponse)) {
+    if (response instanceof CreateOrderResponse) {
+      applySandboxCreateOrderHints(request, (CreateOrderResponse) response);
       return;
     }
-    CreateOrderResponse createOrderResponse = (CreateOrderResponse) response;
 
-    String subMerchantId = extractSubMerchantId(request);
-    if (subMerchantId != null && !subMerchantId.isEmpty()
-        && isBusinessErrorResponse(createOrderResponse.getResponseCode())) {
-      createOrderResponse.setResponseMessage(
-          appendSandboxHint(
-              createOrderResponse.getResponseMessage(),
-              SANDBOX_SUB_MERCHANT_ID_GUIDANCE_HINT,
-              "submerchantid",
-              "externaldivisionid"));
+    CreateOrderResponse hintCarrier = new CreateOrderResponse();
+    hintCarrier.setResponseCode(getSnapResponseCode(response));
+    hintCarrier.setResponseMessage(getSnapResponseMessage(response));
+    hintCarrier.setPartnerReferenceNo(getSnapPartnerReferenceNo(response));
+
+    String originalMessage = hintCarrier.getResponseMessage();
+    applySandboxCreateOrderHints(request, hintCarrier);
+
+    String enrichedMessage = hintCarrier.getResponseMessage();
+    if (enrichedMessage != null && !enrichedMessage.equals(originalMessage)) {
+      setSnapResponseMessage(response, enrichedMessage);
     }
+  }
 
-    if (request instanceof CreateOrderByRedirectRequest) {
-      CreateOrderByRedirectRequest redirectRequest = (CreateOrderByRedirectRequest) request;
-      String externalStoreId = redirectRequest.getExternalStoreId();
-      if (externalStoreId == null || externalStoreId.trim().isEmpty()) {
-        createOrderResponse.setResponseMessage(
-            appendSandboxHint(
-                createOrderResponse.getResponseMessage(),
-                SANDBOX_QRIS_GUIDANCE_HINT_ERROR,
-                "externalstoreid",
-                "partnerreferenceno"));
+  /**
+   * Tip rules:
+   * - 200*: SUCCESS QRIS tip when redirect omits externalStoreId (includes partnerRef max 25)
+   * - Invalid Merchant (e.g. 4045408): store/subMerchant existence tip
+   * - 500* or 400* with reference/store/merchant in message: ERROR QRIS tip
+   */
+  private static void applySandboxCreateOrderHints(Object request, CreateOrderResponse response) {
+    String code = trimStr(response.getResponseCode());
+
+    if (isSuccessfulSnapResponse(code)) {
+      if (request instanceof CreateOrderByRedirectRequest) {
+        CreateOrderByRedirectRequest redirectRequest = (CreateOrderByRedirectRequest) request;
+        String externalStoreId = redirectRequest.getExternalStoreId();
+        if (externalStoreId == null || externalStoreId.trim().isEmpty()) {
+          response.setResponseMessage(
+              appendSandboxHint(
+                  response.getResponseMessage(),
+                  SANDBOX_QRIS_GUIDANCE_HINT_SUCCESS,
+                  "externalstoreid",
+                  "partnerreferenceno"));
+        }
       }
+      return;
+    }
+
+    if (shouldAppendStoreSubmerchantHint(code, response.getResponseMessage())) {
+      response.setResponseMessage(
+          appendSandboxHint(
+              response.getResponseMessage(),
+              SANDBOX_NOT_FOUND_STORE_GUIDANCE_HINT,
+              "externalstoreid",
+              "submerchant",
+              "external division id",
+              "external shop id"));
+      return;
+    }
+
+    if (shouldAppendQrisErrorHint(code, response.getResponseMessage())) {
+      response.setResponseMessage(
+          appendSandboxHint(
+              response.getResponseMessage(),
+              SANDBOX_QRIS_GUIDANCE_HINT_ERROR,
+              "externalstoreid",
+              "partnerreferenceno"));
     }
   }
 
-  private static String extractSubMerchantId(Object request) {
-    if (request instanceof CreateOrderByApiRequest) {
-      return trimStr(((CreateOrderByApiRequest) request).getSubMerchantId());
-    }
-    if (request instanceof CreateOrderByRedirectRequest) {
-      return trimStr(((CreateOrderByRedirectRequest) request).getSubMerchantId());
-    }
-    return "";
+  private static boolean isSuccessfulSnapResponse(String responseCode) {
+    return trimStr(responseCode).startsWith("200");
   }
 
-  private static boolean isBusinessErrorResponse(String responseCode) {
+  private static boolean shouldAppendStoreSubmerchantHint(String responseCode, String responseMessage) {
+    String msg = responseMessage == null ? "" : responseMessage.toLowerCase().trim();
+    if (msg.contains("invalid merchant")) {
+      return true;
+    }
+    return "4045408".equals(trimStr(responseCode));
+  }
+
+  private static boolean shouldAppendQrisErrorHint(String responseCode, String responseMessage) {
     String code = trimStr(responseCode);
-    return code.isEmpty() || !code.startsWith("200");
+    if (code.startsWith("500")) {
+      return true;
+    }
+    if (!code.startsWith("400")) {
+      return false;
+    }
+    String msg = responseMessage == null ? "" : responseMessage.toLowerCase();
+    return msg.contains("reference") || msg.contains("store") || msg.contains("merchant");
   }
 
   private static String appendSandboxHint(
@@ -719,6 +742,41 @@ public final class CustomValidation {
 
     if (!contexts.isEmpty()) {
       throw new DanaException(contexts);
+    }
+  }
+
+  private static String getSnapResponseCode(Object response) {
+    try {
+      Object value = response.getClass().getMethod("getResponseCode").invoke(response);
+      return value == null ? "" : String.valueOf(value);
+    } catch (ReflectiveOperationException ignored) {
+      return "";
+    }
+  }
+
+  private static String getSnapResponseMessage(Object response) {
+    try {
+      Object value = response.getClass().getMethod("getResponseMessage").invoke(response);
+      return value == null ? "" : String.valueOf(value);
+    } catch (ReflectiveOperationException ignored) {
+      return "";
+    }
+  }
+
+  private static String getSnapPartnerReferenceNo(Object response) {
+    try {
+      Object value = response.getClass().getMethod("getPartnerReferenceNo").invoke(response);
+      return value == null ? "" : String.valueOf(value);
+    } catch (ReflectiveOperationException ignored) {
+      return "";
+    }
+  }
+
+  private static void setSnapResponseMessage(Object response, String message) {
+    try {
+      response.getClass().getMethod("setResponseMessage", String.class).invoke(response, message);
+    } catch (ReflectiveOperationException ignored) {
+      // response model may be read-only in some contexts
     }
   }
 }
