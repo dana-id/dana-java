@@ -5,12 +5,13 @@ import id.dana.widget.v1.model.WidgetPaymentResponse;
 import id.dana.widget.v1.model.ApplyOTTResponse;
 import id.dana.widget.v1.model.Oauth2UrlDataSeamlessData;
 import id.dana.invoker.model.DanaConfig;
+import id.dana.invoker.model.constant.EnvKey;
 import id.dana.invoker.model.exception.DanaException;
+import id.dana.invoker.util.ConfigUtil;
 import id.dana.invoker.util.DanaSignatureUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.security.SecureRandom;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -84,7 +85,7 @@ public class WidgetUtil {
             }
         }
         
-        String partnerId = System.getenv("X_PARTNER_ID");
+        String partnerId = ConfigUtil.getConfig(EnvKey.PARTNER_ID, "");
         if (partnerId == null || partnerId.isEmpty()) {
             throw new DanaException("X_PARTNER_ID is not defined");
         }
@@ -227,26 +228,20 @@ public class WidgetUtil {
     }
 
     /**
-     * Generate a channel ID in Jakarta time format (GMT+7): YYYYMMDDHHmmssSSSnnnnnnn
+     * Channel ID for widget OAuth URLs (max 5 characters), matching Go {@code GenerateChannelId}.
+     * Uses {@code CHANNEL_ID} from the environment / {@code .env}, defaulting to {@code 95221}.
      *
-     * @return The formatted channel ID string
+     * @return The channel ID string (at most 5 characters)
      */
     private static String generateChannelId() {
-        ZonedDateTime jakartaTime = ZonedDateTime.now(ZoneId.of("Asia/Jakarta"));
-        
-        String year = jakartaTime.format(DateTimeFormatter.ofPattern("yyyy"));
-        String month = jakartaTime.format(DateTimeFormatter.ofPattern("MM"));
-        String day = jakartaTime.format(DateTimeFormatter.ofPattern("dd"));
-        String hours = jakartaTime.format(DateTimeFormatter.ofPattern("HH"));
-        String minutes = jakartaTime.format(DateTimeFormatter.ofPattern("mm"));
-        String seconds = jakartaTime.format(DateTimeFormatter.ofPattern("ss"));
-        String milliseconds = jakartaTime.format(DateTimeFormatter.ofPattern("SSS"));
-        
-        // Generate a random 7-digit number for the nanopart
-        SecureRandom random = new SecureRandom();
-        String nanopart = String.format("%07d", random.nextInt(10000000));
-        
-        return year + month + day + hours + minutes + seconds + milliseconds + nanopart;
+        String channelId = ConfigUtil.getConfig(EnvKey.CHANNEL_ID, "95221");
+        if (channelId == null || channelId.isEmpty()) {
+            channelId = "95221";
+        }
+        if (channelId.length() > 5) {
+            return channelId.substring(0, 5);
+        }
+        return channelId;
     }
 
     /**

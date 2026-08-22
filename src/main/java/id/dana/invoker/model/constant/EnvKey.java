@@ -16,5 +16,6 @@ public final class EnvKey {
   public static final String PRIVATE_KEY_PATH = "PRIVATE_KEY_PATH";
   public static final String ORIGIN = "ORIGIN";
   public static final String X_DEBUG = "X_DEBUG";
+  public static final String CHANNEL_ID = "CHANNEL_ID";
 
 }
