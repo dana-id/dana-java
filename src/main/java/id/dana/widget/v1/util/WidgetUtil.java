@@ -215,9 +215,10 @@ public class WidgetUtil {
                 finalUrl.append("&");
             }
             try {
-                // RFC3986-style (Go QueryEscape / PHP PHP_QUERY_RFC3986): space as %20, not +
-                finalUrl.append(entry.getKey()).append("=")
-                        .append(encodeQueryParam(entry.getValue()));
+                String value = needsQueryEscape(entry.getKey())
+                        ? encodeQueryParam(entry.getValue())
+                        : entry.getValue();
+                finalUrl.append(entry.getKey()).append("=").append(value);
             } catch (UnsupportedEncodingException e) {
                 throw new DanaException("Error encoding URL parameters: " + e.getMessage());
             }
@@ -225,6 +226,13 @@ public class WidgetUtil {
         }
 
         return finalUrl.toString();
+    }
+
+    private static boolean needsQueryEscape(String paramName) {
+        return "redirectUrl".equals(paramName)
+                || "timestamp".equals(paramName)
+                || "seamlessData".equals(paramName)
+                || "seamlessSign".equals(paramName);
     }
 
     /**
