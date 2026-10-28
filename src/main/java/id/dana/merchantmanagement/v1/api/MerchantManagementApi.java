@@ -52,7 +52,7 @@ interface MerchantManagementApiService {
     "Content-Type:application/json",
     "X-API-TYPE:OPEN_API",
     "X-API-VERSION:2.0",
-    "X-API-FUNCTION:dana.member.asset.queryAssetCardList"
+    "X-API-FUNCTION:dana.merchant.division.createDivision"
   })
   @POST("dana/merchant/division/createDivision.htm")
   Call<CreateDivisionResponse> createDivision(

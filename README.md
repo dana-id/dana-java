@@ -40,7 +40,8 @@ Here is the link: https://github.com/dana-id/uat-script.
 
 ### Requirements
 
-- JDK 1.8 or later.
+- JDK 1.8 or later. Use a patched JDK build: 8u511, 11.0.33, 17.0.21, 21.0.13, 25.0.5 or later (Oracle builds; CVE-2026-91403 — confirm with your JDK vendor).
+- Spring Boot 2.x: the Spring Boot 2.7 BOM pins OkHttp 4.9.3 (okio 2.8.0, which carries CVE-2023-3635), Kotlin 1.6.21, Jackson 2.13.5 and commons-lang3 3.12.0, overriding the patched versions this SDK ships (OkHttp 4.12.0 with okio 3.6.0, Kotlin 1.9.25, Jackson 2.22.4, commons-lang3 3.21.0). Add `<jackson-bom.version>2.22.4</jackson-bom.version>`, `<commons-lang3.version>3.21.0</commons-lang3.version>`, `<okhttp.version>4.12.0</okhttp.version>` (Boot 2.7; use `<okhttp3.version>` on older 2.x lines, or set both) and `<kotlin.version>1.9.25</kotlin.version>` to the `<properties>` of your `pom.xml` to keep them.
 
 ### Install with Maven
 
@@ -50,7 +51,7 @@ To install the SDK to your Maven project, simply add the following dependency to
 <dependency>
     <groupId>id.dana</groupId>
     <artifactId>dana-java</artifactId>
-    <version>2.2.3</version>
+    <version>3.0.0</version>
 </dependency>
 ```
 
@@ -68,6 +69,7 @@ Before using the SDK, please make sure to set the following environment variable
 | `DANA_PUBLIC_KEY_PATH` | Path to DANA public key file for parsing webhook. If both set, `DANA_PUBLIC_KEY_PATH is used. | /path/to/dana_public_key.pem                                                    |
 | `ORIGIN`               | Origin domain.                                                                                | https://yourdomain.com                                                          |
 | `CLIENT_SECRET`        | Assigned client secret during registration. Must be set for DisbursementApi                   | your_client_secret                                                              |
+| `X_DEBUG`               | Turn on to enable debug mode (showing reason of failed request in additionalInfo.debugMessage in response)                                                           | true                                                                            |
 
 You can see these variables in .env.example, fill it, and change the file name to .env (remove the .example extension)
 

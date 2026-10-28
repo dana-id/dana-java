@@ -16,6 +16,7 @@ public class DanaConfig {
 
   private static volatile DanaConfig instance;
   private final DanaEnvironment env;
+  private final boolean envExplicit;
   private final String partnerId;
   private final String clientSecret;
   private final String danaPublicKey;
@@ -25,6 +26,7 @@ public class DanaConfig {
 
   private DanaConfig(Builder builder) {
     this.env = builder.env;
+    this.envExplicit = builder.envExplicit;
     this.partnerId = builder.partnerId;
     this.clientSecret = builder.clientSecret;
     this.danaPublicKey = cleanKey(builder.danaPublicKey);
@@ -45,11 +47,15 @@ public class DanaConfig {
     private String danaPublicKey = loadKey(EnvKey.DANA_PUBLIC_KEY_PATH, EnvKey.DANA_PUBLIC_KEY);
     private String privateKey = loadKey(EnvKey.PRIVATE_KEY_PATH, EnvKey.PRIVATE_KEY);
     private String origin = ConfigUtil.getConfig(EnvKey.ORIGIN, "");
+    private boolean envExplicit =
+        !ConfigUtil.getConfig(EnvKey.DANA_ENV, "").trim().isEmpty()
+            || !ConfigUtil.getConfig(EnvKey.ENV, "").trim().isEmpty();
     private boolean debugMode = ConfigUtil.getConfig(EnvKey.X_DEBUG,
         "SANDBOX".equalsIgnoreCase(ConfigUtil.getConfig(EnvKey.DANA_ENV, ConfigUtil.getConfig(EnvKey.ENV, "SANDBOX"))) ? "true" : "false").equals("true");
 
     public Builder env(DanaEnvironment env) {
       this.env = env;
+      this.envExplicit = true;
       return this;
     }
 
@@ -68,8 +74,12 @@ public class DanaConfig {
       return this;
     }
 
+    /**
+     * Accepts the same formats as PRIVATE_KEY / PRIVATE_KEY_PATH: PKCS#8, PKCS#1
+     * ("BEGIN RSA PRIVATE KEY", converted to PKCS#8) or raw base64.
+     */
     public Builder privateKey(String privateKey) {
-      this.privateKey = privateKey;
+      this.privateKey = convertToPkcs8IfNeeded(DanaConfig.normalizeKeyLineEndings(privateKey));
       return this;
     }
 
@@ -209,6 +219,14 @@ public class DanaConfig {
 
   public DanaEnvironment getEnv() {
     return env;
+  }
+
+  /**
+   * True when the environment was set explicitly (DANA_ENV / ENV config or Builder.env), rather
+   * than falling back to the SANDBOX default.
+   */
+  public boolean isEnvExplicit() {
+    return envExplicit;
   }
 
   public String getPartnerId() {

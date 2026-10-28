@@ -35,7 +35,7 @@ public final class DanaSignatureUtil {
   private static final ObjectMapper objectMapper = new ObjectMapper();
 
   /** Sandbox gateway public key (X.509 base64) for webhook verification when env is sandbox. */
-  private static final String SANDBOX_WEBHOOK_PUBLIC_KEY_BASE64 =
+  static final String SANDBOX_WEBHOOK_PUBLIC_KEY_BASE64 =
       "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnaKVGRbin4Wh4KN35OPh"
           + "ytJBjYTz7QZKSZjmHfiHxFmulfT87rta+IvGJ0rCBgg+1EtKk1hX8G5gPGJs1htJ"
           + "5jHa3/jCk9l+luzjnuT9UVlwJahvzmFw+IoDoM7hIPjsLtnIe04SgYo0tZBpEmkQ"
@@ -329,15 +329,26 @@ public final class DanaSignatureUtil {
     return forms;
   }
 
+  /**
+   * Selects the webhook verification key. The embedded sandbox key is used only when sandbox was
+   * chosen explicitly; a defaulted SANDBOX env falls back to the configured DANA public key.
+   */
+  static String resolveWebhookPublicKey(DanaEnvironment env, boolean envExplicit,
+      String danaPublicKey) {
+    return env == DanaEnvironment.SANDBOX && envExplicit
+        ? SANDBOX_WEBHOOK_PUBLIC_KEY_BASE64
+        : danaPublicKey;
+  }
+
   public static boolean verifySnapB2BScenarioSignature(String httpMethod, String relativePathUrl,
       String requestBody, String timestamp, String signatureToVerify) {
     try {
       String method = httpMethod.toUpperCase();
       List<String> bodyForms = bodyFormsForSignature(requestBody);
 
-      String publicKeyBase64 = DanaConfig.getInstance().getEnv() == DanaEnvironment.SANDBOX
-          ? SANDBOX_WEBHOOK_PUBLIC_KEY_BASE64
-          : DanaConfig.getInstance().getDanaPublicKey();
+      DanaConfig config = DanaConfig.getInstance();
+      String publicKeyBase64 = resolveWebhookPublicKey(
+          config.getEnv(), config.isEnvExplicit(), config.getDanaPublicKey());
 
       for (String body : bodyForms) {
         String bodyHash = DigestUtils.sha256Hex(body);
